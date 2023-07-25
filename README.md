@@ -1,5 +1,8 @@
 # refineryframe
 
+<a><img src="images/logo.png" width="35%" height="35%" align="right" /></a>
+
+
 Under construction! Not ready for use yet! Currently experimenting and planning!
 
 ## Initial plans
