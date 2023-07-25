@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: refineryframe
-Version: 0.0.3
+Version: 0.0.4
 Summary: Cleans data, best to be used as a part of initial preprocessor
 Author: Kyrylo Mordan
 Author-email: <parachute.repo@gmail.com>
@@ -202,7 +202,7 @@ replace_dict = {-996 : -999,
 ```python
 tns = Refiner(dataframe = df,
           replace_dict = replace_dict,
-          unexpected_exceptions = unexpected_exceptions)
+          unexpected_exceptions_duv = unexpected_exceptions)
 ```
 
 ##### function for detecting column types
@@ -479,26 +479,52 @@ unexpected_conditions = {
         'query': "{col} < 0",
         'warning': False,
         'set': 0
-    }}
+    },
+    '2': {
+        'description': "Clean text column from '-ing' endings and 'not ' beginings",
+        'group': 'regex clean',
+        'features': ['CharColumn'],
+        'query': [r'ing', r'^not.'],
+        'warning': False,
+        'set': ''
+    },
+    '3': {
+        'description': "Replace numeric values in certain column with zeros if > 2",
+        'group': 'multicol mapping',
+        'features': ['NumericColumn3'],
+        'query': '{col} > 2',
+        'warning': False,
+        'set': 0
+    },
+    '4': {
+        'description': "Replace strings with values if some part of the string is detected",
+        'group': 'string check',
+        'features': ['CharColumn'],
+        'query': f"CharColumn.str.contains('cted', regex = True)",
+        'warning': False,
+        'set': 'miss'
+    }
+    }
 ```
 
 
 ```python
-tns.replace_unexpected_values(numeric_lower_bound = "NumericColumn3",
-                                numeric_upper_bound = 4,
-                                earliest_date = "1920-01-02",
-                                latest_date = "DateColumn2",
-                                unexpected_conditions = unexpected_conditions,
-                                unexpected_exceptions = {"irregular_values": "ALL",
-                                                            "date_range": "ALL",
-                                                            "numeric_range": "ALL",
-                                                            "capitalization": "ALL",
-                                                            "unicode_character": "ALL"})
+tns.replace_unexpected_values(unexpected_conditions = unexpected_conditions)
 ```
 
+    DEBUG:Refiner:=== replacing missing values in category cols with missing types
+    DEBUG:Refiner:=== replacing all upper case characters with lower case
+    DEBUG:Refiner:=== replacing character unicode to latin
     DEBUG:Refiner:=== replacing with additional cons
     DEBUG:root:Replace numeric missing with with zero
-    DEBUG:Refiner:** Usable values in the dataframe:  75.56%
+    DEBUG:root:Clean text column from '-ing' endings and 'not ' beginings
+    DEBUG:root:Replace numeric values in certain column with zeros if > 2
+    DEBUG:root:Replace strings with values if some part of the string is detected
+    DEBUG:Refiner:=== replacing missing values in date cols with missing types
+    DEBUG:Refiner:=== replacing missing values in numeric cols with missing types
+    DEBUG:Refiner:=== replacing values outside of expected date range
+    DEBUG:Refiner:=== replacing values outside of expected numeric range
+    DEBUG:Refiner:** Usable values in the dataframe:  82.22%
     DEBUG:Refiner:** Uncorrected data quality score:  88.89%
     DEBUG:Refiner:** Corrected data quality score:  97.53%
 
@@ -563,7 +589,7 @@ tns.dataframe
       <td>2022-01-02</td>
       <td>2022-01-01</td>
       <td>2022-01-01</td>
-      <td>missing</td>
+      <td>miss</td>
     </tr>
     <tr>
       <th>2</th>
@@ -571,11 +597,11 @@ tns.dataframe
       <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>3</td>
+      <td>0</td>
       <td>2022-01-03</td>
       <td>1850-01-09</td>
       <td>1850-01-09</td>
-      <td>missing</td>
+      <td>miss</td>
     </tr>
     <tr>
       <th>3</th>
@@ -583,11 +609,11 @@ tns.dataframe
       <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>4</td>
+      <td>0</td>
       <td>2022-01-04</td>
       <td>1850-01-09</td>
       <td>1850-01-09</td>
-      <td>not expected</td>
+      <td>miss</td>
     </tr>
     <tr>
       <th>4</th>
@@ -599,7 +625,7 @@ tns.dataframe
       <td>2022-01-05</td>
       <td>1850-01-09</td>
       <td>1850-01-09</td>
-      <td>missing</td>
+      <td>miss</td>
     </tr>
   </tbody>
 </table>
@@ -640,7 +666,7 @@ print(f'ruv_score2: {tns.ruv_score2 :.4}')
 ```
 
     duv_score: 1.0
-    ruv_score0: 0.7556
+    ruv_score0: 0.8222
     ruv_score1: 0.8889
     ruv_score2: 0.9753
 

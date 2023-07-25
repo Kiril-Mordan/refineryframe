@@ -83,7 +83,7 @@ class Refiner:
     earliest_date = attr.ib(default="1900-08-25")
     latest_date = attr.ib(default="2100-01-01")
     
-    unexpected_exceptions = attr.ib(default={"col_names_types": "NONE",
+    unexpected_exceptions_duv = attr.ib(default={"col_names_types": "NONE",
                                               "missing_values": "NONE",
                                               "missing_types": "NONE",
                                               "inf_values": "NONE",
@@ -91,6 +91,12 @@ class Refiner:
                                               "duplicates": "NONE",
                                               "date_range": "NONE",
                                               "numeric_range": "NONE"}, type=dict)
+    
+    unexpected_exceptions_ruv = attr.ib(default={"irregular_values": "NONE",
+                                                      "date_range": "NONE",
+                                                      "numeric_range": "NONE",
+                                                      "capitalization": "NONE",
+                                                      "unicode_character": "NONE"}, type=dict)
     
     unexpected_conditions = attr.ib(default=None)
     
@@ -333,7 +339,7 @@ class Refiner:
         if MISSING_TYPES is None:
             MISSING_TYPES = self.MISSING_TYPES
         if unexpected_exceptions is None:
-            unexpected_exceptions = self.unexpected_exceptions
+            unexpected_exceptions = self.unexpected_exceptions_duv
         if unexpected_conditions is None:
             unexpected_conditions = self.unexpected_conditions
         if types_dict_str is None:
@@ -381,7 +387,7 @@ class Refiner:
         if MISSING_TYPES is None:
             MISSING_TYPES = self.MISSING_TYPES
         if unexpected_exceptions is None:
-            unexpected_exceptions = self.unexpected_exceptions
+            unexpected_exceptions = self.unexpected_exceptions_ruv
         if unexpected_conditions is None:
             unexpected_conditions = self.unexpected_conditions
         if earliest_date is None:
