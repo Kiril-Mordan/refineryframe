@@ -51,7 +51,6 @@ import re
 import attr
 
 
-
 # Default missing data types
 
 MISSING_TYPES = {'date_not_delivered': '1850-01-09',
@@ -60,6 +59,11 @@ MISSING_TYPES = {'date_not_delivered': '1850-01-09',
 
 @attr.s
 class Refiner:
+    
+    """
+    Refiner is a class that encapsulates funtions from refineframe.
+    """
+    
     
     # inputs
     dataframe = attr.ib(type=pd.DataFrame)
@@ -1362,24 +1366,6 @@ def treat_unexpected_cond(df : pd.DataFrame,
     df (pandas DataFrame): The DataFrame with replaced unexpected values, if replace is not None.
     """
     
-    def generate_condition(range_str):
-        
-        digits = []
-        for string in range_str:
-            match = re.search(r'\d+_\d+', string)
-            if match:
-                digits.append(match.group())
-        
-        range_str = digits[0]
-        
-        range_start, range_end = map(int, range_str.split('_'))
-
-        conditions = []
-        for i in range(range_end, range_start - 1, -1):
-            conditions.append(f"PAYM_BUCKET_{i:02} == -999999.0")
-
-        return " | ".join(["(" + " and ".join(conditions[:idx+1]) + ")" for idx in range(len(conditions))])
-    
     df = df.copy()
     
     logger.debug(description)
@@ -1403,11 +1389,11 @@ def treat_unexpected_cond(df : pd.DataFrame,
     if group in ['mapping missing', 'multicol mapping', 'string check', 'complex with missing']:   
         
         for col in features:
-            #print(col)
+            
             if group == 'multicol mapping':
-                #print(query)
+                
                 query1 = query.format(col = col)
-                #print(query1)
+                
             else:
                 query1 = query
             
@@ -1444,8 +1430,28 @@ def treat_unexpected_cond(df : pd.DataFrame,
 
                 for reg in query:
                     df.loc[:,col] = [re.sub(reg, replace, string) for string in df[col]]
+        
+    ## specialized temporary messy piece of code    
+    def generate_condition(range_str):
+        
+        digits = []
+        for string in range_str:
+            match = re.search(r'\d+_\d+', string)
+            if match:
+                digits.append(match.group())
+        
+        range_str = digits[0]
+        
+        range_start, range_end = map(int, range_str.split('_'))
+
+        conditions = []
+        for i in range(range_end, range_start - 1, -1):
+            conditions.append(f"PAYM_BUCKET_{i:02} == -999999.0")
+
+        return " | ".join(["(" + " and ".join(conditions[:idx+1]) + ")" for idx in range(len(conditions))])    
                     
     if group == 'regex payments clean':
+        
         
         if warning == False:
             
@@ -1557,10 +1563,9 @@ def replace_unexpected_values(dataframe : pd.DataFrame,
         
         cols_replace_capitalization = [x for x in category_cols
                                     if x not in unexpected_exceptions["capitalization"]]
-        #ipdb.set_trace()
+        
         # Check if all columns are exceptions
 
-        
         run_replace_category_missing_values = ((unexpected_exceptions["irregular_values"] != "ALL") & \
             (len(category_cols_replace_missing_values) > 0))
         
@@ -1587,7 +1592,7 @@ def replace_unexpected_values(dataframe : pd.DataFrame,
         
 
         if run_replace_category_missing_values:
-            #ipdb.set_trace()
+            
             logger.debug(f"=== replacing missing values in category cols with missing types")
             
             irregular_character_values = ["nan", "inf", "-inf", "None", "", "NaN", "NaT"]
@@ -1598,7 +1603,7 @@ def replace_unexpected_values(dataframe : pd.DataFrame,
             
                 
         if run_replace_capitalization:
-            #ipdb.set_trace()
+            
             logger.debug(f"=== replacing all upper case characters with lower case")
                         
             for col in cols_replace_capitalization:
@@ -1626,7 +1631,7 @@ def replace_unexpected_values(dataframe : pd.DataFrame,
             for cond in conds:
             
                 unexpected_condition = unexpected_conditions[cond]
-                #ipdb.set_trace()
+                
                 dataframe = treat_unexpected_cond(df = dataframe,
                                                   description = unexpected_condition['description'],
                                                   group = unexpected_condition['group'],

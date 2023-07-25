@@ -7,9 +7,9 @@ here = os.path.abspath(os.path.dirname(__file__))
 with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as fh:
     long_description = "\n" + fh.read()
 
-VERSION = '0.0.1'
+VERSION = '0.0.3'
 DESCRIPTION = 'Cleans data, best to be used as a part of initial preprocessor'
-LONG_DESCRIPTION = 'A package that allows to detect unexpected values in data and clean them in production python ml code'
+LONG_DESCRIPTION = 'A package that allows to detect unexpected values in data and clean them in production python ML code'
 
 # Setting up
 setup(
@@ -21,7 +21,7 @@ setup(
     long_description_content_type="text/markdown",
     long_description=long_description,
     packages=find_packages(),
-    install_requires=['logging','datetime','pandas','numpy','unidecode','attr'],
+    install_requires=['datetime','pandas','numpy','unidecode','attr'],
     keywords=['python', 'data cleaning', 'safeguards'],
     classifiers=[
         "Development Status :: 1 - Planning",
