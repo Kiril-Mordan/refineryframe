@@ -7,7 +7,7 @@ Under construction! Not ready for use yet! Currently experimenting and planning!
 
 ## Initial plans
 
-Goal of the package is to simplify life for data scientist that have to deal with imperfect raw data. The package suppose to detect and clean unexpected values, while doubling as safeguard in production code based on predifined conditions that arise from business assumptions or any other source. The package is well suited to be an initial preprocessing step in ml pipelines situated between data gathering and training/scoring steps.
+Goal of the package is to simplify life for data scientists, that have to deal with imperfect raw data. The package suppose to detect and clean unexpected values, while doubling as safeguard in production code based on predifined conditions that arise from business assumptions or any other source. The package is well suited to be an initial preprocessing step in ml pipelines situated between data gathering and training/scoring steps.
 
 Developed by Kyrylo Mordan (c) 2023
 
@@ -180,7 +180,7 @@ replace_dict = {-996 : -999,
                 "1000-01-09": "1850-01-09"}
 ```
 
-### Initializing TnS class
+### Initializing Refiner class
 
 
 ```python
@@ -461,7 +461,7 @@ unexpected_conditions = {
         'group': 'regex_columns',
         'features': r'^Numeric',
         'query': "{col} < 0",
-        'warning': False,
+        'warning': True,
         'set': 0
     },
     '2': {
@@ -473,11 +473,11 @@ unexpected_conditions = {
         'set': ''
     },
     '3': {
-        'description': "Replace numeric values in certain column with zeros if > 2",
+        'description': "Detect/Replace numeric values in certain column with zeros if > 2",
         'group': 'multicol mapping',
         'features': ['NumericColumn3'],
         'query': '{col} > 2',
-        'warning': False,
+        'warning': True,
         'set': 0
     },
     '4': {
@@ -491,6 +491,37 @@ unexpected_conditions = {
     }
 ```
 
+##### - to detect unexpected values
+
+
+```python
+tns.detect_unexpected_values(unexpected_conditions = unexpected_conditions)
+```
+
+    DEBUG:Refiner:=== checking column names and types
+    DEBUG:Refiner:=== checking for presence of missing values
+    DEBUG:Refiner:=== checking for presence of missing types
+    WARNING:root:Column CharColumn: (missing) : 3 : 60.00%
+    WARNING:root:Column DateColumn2: (1850-01-09) : 4 : 80.00%
+    WARNING:root:Column DateColumn3: (1850-01-09) : 4 : 80.00%
+    WARNING:root:Column NumericColumn: (-999) : 4 : 80.00%
+    WARNING:root:Column NumericColumn_exepted: (-999) : 4 : 80.00%
+    WARNING:root:Column NumericColumn2: (-999) : 5 : 100.00%
+    WARNING:root:Column NumericColumn3: (-999) : 1 : 20.00%
+    DEBUG:Refiner:=== checking propper date format
+    DEBUG:Refiner:=== checking expected date range
+    DEBUG:Refiner:=== checking for presense of inf values in numeric colums
+    DEBUG:Refiner:=== checking expected numeric range
+    DEBUG:Refiner:=== checking additional cons
+    DEBUG:Refiner:Replace numeric missing with with zero
+    WARNING:Refiner:Replace numeric missing with with zero :: 1
+    DEBUG:Refiner:Detect/Replace numeric values in certain column with zeros if > 2
+    WARNING:Refiner:Detect/Replace numeric values in certain column with zeros if > 2 :: 2
+    WARNING:Refiner:Percentage of passed tests: 75.00%
+
+
+##### - to replace unecpected values
+
 
 ```python
 tns.replace_unexpected_values(unexpected_conditions = unexpected_conditions)
@@ -500,10 +531,10 @@ tns.replace_unexpected_values(unexpected_conditions = unexpected_conditions)
     DEBUG:Refiner:=== replacing all upper case characters with lower case
     DEBUG:Refiner:=== replacing character unicode to latin
     DEBUG:Refiner:=== replacing with additional cons
-    DEBUG:root:Replace numeric missing with with zero
-    DEBUG:root:Clean text column from '-ing' endings and 'not ' beginings
-    DEBUG:root:Replace numeric values in certain column with zeros if > 2
-    DEBUG:root:Replace strings with values if some part of the string is detected
+    DEBUG:Refiner:Replace numeric missing with with zero
+    DEBUG:Refiner:Clean text column from '-ing' endings and 'not ' beginings
+    DEBUG:Refiner:Detect/Replace numeric values in certain column with zeros if > 2
+    DEBUG:Refiner:Replace strings with values if some part of the string is detected
     DEBUG:Refiner:=== replacing missing values in date cols with missing types
     DEBUG:Refiner:=== replacing missing values in numeric cols with missing types
     DEBUG:Refiner:=== replacing values outside of expected date range

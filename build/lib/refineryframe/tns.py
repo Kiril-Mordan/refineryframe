@@ -75,6 +75,7 @@ class Refiner:
     mess = attr.ib(default="INITIAL PREPROCESSING", type=str)
     shout_type = attr.ib(default="HEAD2", type=str)
     logger = attr.ib(default=logging)
+    logger_name = attr.ib(default='Refiner')
     loggerLvl = attr.ib(default=logging.DEBUG)
     dotline_length = attr.ib(default=50, type=int)
     
@@ -125,7 +126,7 @@ class Refiner:
     def initialize_logger(self):
         
         logging.basicConfig(level=self.loggerLvl)
-        logger = logging.getLogger('Refiner')
+        logger = logging.getLogger(self.logger_name)
         logger.setLevel(self.loggerLvl)
         
         self.logger = logger
@@ -1317,7 +1318,8 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
                                       features = unexpected_condition['features'],
                                       query = unexpected_condition['query'],
                                       warning = unexpected_condition['warning'],
-                                      replace = None)
+                                      replace = None,
+                                      logger=logger)
 
 
 
@@ -1379,18 +1381,27 @@ def treat_unexpected_cond(df : pd.DataFrame,
     if group == 'regex_columns':
         
         features = [i for i in list(df.columns) if re.compile(features).match(i)]
-        
-        if warning == False:
+                    
+        detected_nrows = 0
+                    
+        for col in features:
+            query1 = query.format(col = col)
             
-  
-            for col in features:
-                query1 = query.format(col = col)
+            search = df.query(query1)
+            nrow = search.shape[0]
+            
+            if nrow > 0:
                 
-                search = df.query(query1)
-                nrow = search.shape[0]
-                
-                if nrow > 0:
+                if warning:
+                    detected_nrows =+ 1       
+                else:
                     df.loc[search.index,col] = replace
+                    
+        if warning and (detected_nrows > 0):
+                    
+            mess = f"{description} :: {nrow}"
+            logger.warning(mess)  
+                    
         
     if group in ['mapping missing', 'multicol mapping', 'string check', 'complex with missing']:   
         
@@ -1423,17 +1434,20 @@ def treat_unexpected_cond(df : pd.DataFrame,
             
         if nrow > 0:
 
-            if warning:
-                
+            if warning:    
                 mess = f"{description} :: {nrow}"
                 logger.warning(mess)
+            else:
+                for col in features:
+                    df.loc[search.index, col] = replace
         
     if group == 'regex clean':
         
-        if warning == False:
-
+        if warning:    
+            mess = f"{description} :: {nrow}"
+            logger.warning(mess)
+        else:
             for col in features:
-
                 for reg in query:
                     df.loc[:,col] = [re.sub(reg, replace, string) for string in df[col]]
         
@@ -1644,7 +1658,8 @@ def replace_unexpected_values(dataframe : pd.DataFrame,
                                                   features = unexpected_condition['features'],
                                                   query = unexpected_condition['query'],
                                                   warning = False,
-                                                  replace = unexpected_condition['set'])
+                                                  replace = unexpected_condition['set'],
+                                                  logger=logger)
             
             
                         
