@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: refineryframe
-Version: 0.0.5
+Version: 0.0.6
 Summary: Cleans data, best to be used as a part of initial preprocessor
 Author: Kyrylo Mordan
 Author-email: <parachute.repo@gmail.com>
@@ -35,13 +35,18 @@ Install `refineryframe` via pip with
 pip install refineryframe
 ```
 
+
 ## Package usage example
+
 
 ```python
 import os 
 import sys 
+import numpy as np
+import pandas as pd
+import logging
 sys.path.append(os.path.dirname(sys.path[0])) 
-from refineryframe.tns import *
+from refineryframe.refiner import Refiner
 ```
 
 ### Creating example data (exceptionally messy dataframe)
@@ -201,8 +206,9 @@ replace_dict = {-996 : -999,
 
 ```python
 tns = Refiner(dataframe = df,
-          replace_dict = replace_dict,
-          unexpected_exceptions_duv = unexpected_exceptions)
+              replace_dict = replace_dict,
+              loggerLvl = logging.DEBUG,
+              unexpected_exceptions_duv = unexpected_exceptions)
 ```
 
 ##### function for detecting column types
@@ -304,21 +310,21 @@ tns.detect_unexpected_values(earliest_date = "1920-01-01",
 
     DEBUG:Refiner:=== checking column names and types
     DEBUG:Refiner:=== checking for presence of missing values
-    WARNING:root:Column CharColumn: (NA) : 2 : 40.00%
-    WARNING:root:Column DateColumn2: (NA) : 4 : 80.00%
-    WARNING:root:Column NumericColumn: (NA) : 2 : 40.00%
-    WARNING:root:Column NumericColumn2: (NA) : 4 : 80.00%
+    WARNING:Refiner:Column CharColumn: (NA) : 2 : 40.00%
+    WARNING:Refiner:Column DateColumn2: (NA) : 4 : 80.00%
+    WARNING:Refiner:Column NumericColumn: (NA) : 2 : 40.00%
+    WARNING:Refiner:Column NumericColumn2: (NA) : 4 : 80.00%
     DEBUG:Refiner:=== checking for presence of missing types
-    WARNING:root:Column DateColumn3: (1850-01-09) : 2 : 40.00%
-    WARNING:root:Column NumericColumn_exepted: (-999) : 1 : 20.00%
+    WARNING:Refiner:Column DateColumn3: (1850-01-09) : 2 : 40.00%
+    WARNING:Refiner:Column NumericColumn_exepted: (-999) : 1 : 20.00%
     DEBUG:Refiner:=== checking propper date format
-    WARNING:root:Column DateColumn2 has non-date values or unexpected format.
+    WARNING:Refiner:Column DateColumn2 has non-date values or unexpected format.
     DEBUG:Refiner:=== checking expected date range
-    WARNING:root:** Not all dates in DateColumn are later than DateColumn3
-    WARNING:root:Column DateColumn : future date : 4 : 80.00%
+    WARNING:Refiner:** Not all dates in DateColumn are later than DateColumn3
+    WARNING:Refiner:Column DateColumn : future date : 4 : 80.00%
     DEBUG:Refiner:=== checking for presense of inf values in numeric colums
-    WARNING:root:Column NumericColumn: (INF) : 2 : 40.00%
-    WARNING:root:Column NumericColumn_exepted: (INF) : 1 : 20.00%
+    WARNING:Refiner:Column NumericColumn: (INF) : 2 : 40.00%
+    WARNING:Refiner:Column NumericColumn_exepted: (INF) : 1 : 20.00%
     DEBUG:Refiner:=== checking expected numeric range
     WARNING:Refiner:Percentage of passed tests: 50.00%
 
@@ -517,13 +523,13 @@ tns.detect_unexpected_values(unexpected_conditions = unexpected_conditions)
     DEBUG:Refiner:=== checking column names and types
     DEBUG:Refiner:=== checking for presence of missing values
     DEBUG:Refiner:=== checking for presence of missing types
-    WARNING:root:Column CharColumn: (missing) : 3 : 60.00%
-    WARNING:root:Column DateColumn2: (1850-01-09) : 4 : 80.00%
-    WARNING:root:Column DateColumn3: (1850-01-09) : 4 : 80.00%
-    WARNING:root:Column NumericColumn: (-999) : 4 : 80.00%
-    WARNING:root:Column NumericColumn_exepted: (-999) : 4 : 80.00%
-    WARNING:root:Column NumericColumn2: (-999) : 5 : 100.00%
-    WARNING:root:Column NumericColumn3: (-999) : 1 : 20.00%
+    WARNING:Refiner:Column CharColumn: (missing) : 3 : 60.00%
+    WARNING:Refiner:Column DateColumn2: (1850-01-09) : 4 : 80.00%
+    WARNING:Refiner:Column DateColumn3: (1850-01-09) : 4 : 80.00%
+    WARNING:Refiner:Column NumericColumn: (-999) : 4 : 80.00%
+    WARNING:Refiner:Column NumericColumn_exepted: (-999) : 4 : 80.00%
+    WARNING:Refiner:Column NumericColumn2: (-999) : 5 : 100.00%
+    WARNING:Refiner:Column NumericColumn3: (-999) : 1 : 20.00%
     DEBUG:Refiner:=== checking propper date format
     DEBUG:Refiner:=== checking expected date range
     DEBUG:Refiner:=== checking for presense of inf values in numeric colums

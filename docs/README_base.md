@@ -19,5 +19,4 @@ Install `refineryframe` via pip with
 pip install refineryframe
 ```
 
-## Package usage example
 

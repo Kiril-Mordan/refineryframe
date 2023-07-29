@@ -1,6 +1,10 @@
 README.md
 setup.py
 refineryframe/__init__.py
+refineryframe/detect_unexpected.py
+refineryframe/other.py
+refineryframe/refiner.py
+refineryframe/replace_unexpected.py
 refineryframe/tns.py
 refineryframe.egg-info/PKG-INFO
 refineryframe.egg-info/SOURCES.txt
