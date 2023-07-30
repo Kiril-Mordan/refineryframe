@@ -18,7 +18,7 @@ def generate_feature_list(module, exceptions=[]):
         #     description = description.strip().split("\n")[0]  # Trim to the first line
         #     feature_list.append({"function": f"{module.__name__}.{name}", "description": description})
 
-    markdown_content = "# Feature List\n\n"
+    markdown_content = "## Feature List\n\n"
 
     for feature in feature_list:
         markdown_content += f"- `{feature['function']}` - {feature['description']}\n"

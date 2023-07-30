@@ -5,8 +5,6 @@
 ![](https://img.shields.io/pypi/pyversions/refineryframe)
 
 
-
-
 # refineryframe
 
 <a><img src="https://github.com/Kiril-Mordan/refineryframe/blob/main/images/logo.png" width="35%" height="35%" align="right" /></a>

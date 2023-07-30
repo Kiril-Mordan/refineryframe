@@ -3,6 +3,7 @@ Plans for near future
 - error break ability for detect unexpected
 - use case documents
 - shoutOUT standard for every print
-- documentation for duv and ruv scores
 - code optimization (for deduplication)
-- list of features 
+- save and load specification for detect and replace
+- arrange bash files into separate folder
+- code coverage badge
