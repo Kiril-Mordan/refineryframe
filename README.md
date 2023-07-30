@@ -1,3 +1,10 @@
+[![Build status](https://github.com/Kiril-Mordan/refineryframe/workflows/Tests/badge.svg)](https://github.com/{github_id}/{repository}/workflows/{workflow_name}/badge.svg)
+[![Downloads](https://static.pepy.tech/badge/refineryframe)](https://pepy.tech/project/refineryframe)
+[![Version](https://img.shields.io/pypi/v/refineryframe)](https://pypi.org/project/refineryframe/)
+![](https://img.shields.io/github/license/Kiril-Mordan/refineryframe)
+
+
+
 # refineryframe
 
 <a><img src="images/logo.png" width="35%" height="35%" align="right" /></a>
@@ -232,6 +239,30 @@ types_dict_str = {'num_id' : 'int64',
                    'CharColumn' : 'object'}
 ```
 
+#### Check independent conditions
+
+
+```python
+tns.check_missing_types()
+tns.check_missing_values()
+tns.check_inf_values()
+tns.check_col_names_types()
+tns.check_date_format()
+tns.check_duplicates()
+tns.check_numeric_range()
+```
+
+    WARNING:Refiner:Column DateColumn3: (1850-01-09) : 1 : 20.00%
+    WARNING:Refiner:Column NumericColumn: (NA) : 2 : 40.00%
+    WARNING:Refiner:Column NumericColumn_exepted: (NA) : 2 : 40.00%
+    WARNING:Refiner:Column NumericColumn2: (NA) : 4 : 80.00%
+    WARNING:Refiner:Column DateColumn2: (NA) : 4 : 80.00%
+    WARNING:Refiner:Column CharColumn: (NA) : 2 : 40.00%
+    WARNING:Refiner:Column NumericColumn: (INF) : 2 : 40.00%
+    WARNING:Refiner:Column NumericColumn_exepted: (INF) : 1 : 20.00%
+    WARNING:Refiner:Column DateColumn2 has non-date values or unexpected format.
+
+
 ##### moulding types
 
 
@@ -241,7 +272,7 @@ tns.set_types(type_dict = types_dict_str)
 
 
 ```python
-tns.get_type_dict_from_dataframe()
+tns.get_type_dict_from_dataframe() 
 ```
 
 
@@ -257,31 +288,6 @@ tns.get_type_dict_from_dataframe()
      'DateColumn3': 'datetime64[ns]',
      'CharColumn': 'object'}
 
-
-
-#### Check independent conditions
-
-
-```python
-tns.check_missing_types()
-tns.check_missing_values()
-tns.check_inf_values()
-tns.check_col_names_types()
-tns.check_date_format()
-tns.check_duplicates()
-tns.check_numeric_range()
-```
-
-    WARNING:Refiner:Column NumericColumn_exepted: (-999) : 1 : 20.00%
-    WARNING:Refiner:Column DateColumn3: (1850-01-09) : 2 : 40.00%
-    WARNING:Refiner:Column NumericColumn: (NA) : 2 : 40.00%
-    WARNING:Refiner:Column NumericColumn_exepted: (NA) : 2 : 40.00%
-    WARNING:Refiner:Column NumericColumn2: (NA) : 4 : 80.00%
-    WARNING:Refiner:Column DateColumn2: (NA) : 4 : 80.00%
-    WARNING:Refiner:Column CharColumn: (NA) : 2 : 40.00%
-    WARNING:Refiner:Column NumericColumn: (INF) : 2 : 40.00%
-    WARNING:Refiner:Column NumericColumn_exepted: (INF) : 1 : 20.00%
-    WARNING:Refiner:Column DateColumn2 has non-date values or unexpected format.
 
 
 #### Using the main function to detect unexpected values
@@ -355,105 +361,22 @@ tns.replace_unexpected_values(numeric_lower_bound = "NumericColumn3",
 
 
 ```python
-tns.dataframe
+tns.dataframe.dtypes
 ```
 
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>num_id</th>
-      <th>NumericColumn</th>
-      <th>NumericColumn_exepted</th>
-      <th>NumericColumn2</th>
-      <th>NumericColumn3</th>
-      <th>DateColumn</th>
-      <th>DateColumn2</th>
-      <th>DateColumn3</th>
-      <th>CharColumn</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>-999.0</td>
-      <td>1</td>
-      <td>2022-01-01</td>
-      <td>1850-01-09</td>
-      <td>1850-01-09</td>
-      <td>fol</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>-999.0</td>
-      <td>-999.0</td>
-      <td>-999.0</td>
-      <td>2</td>
-      <td>2022-01-02</td>
-      <td>2022-01-01</td>
-      <td>2022-01-01</td>
-      <td>missing</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>-999.0</td>
-      <td>-999.0</td>
-      <td>-999.0</td>
-      <td>3</td>
-      <td>2022-01-03</td>
-      <td>1850-01-09</td>
-      <td>1850-01-09</td>
-      <td>missing</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4</td>
-      <td>-999.0</td>
-      <td>-999.0</td>
-      <td>-999.0</td>
-      <td>4</td>
-      <td>2022-01-04</td>
-      <td>1850-01-09</td>
-      <td>1850-01-09</td>
-      <td>not expected</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5</td>
-      <td>-999.0</td>
-      <td>-999.0</td>
-      <td>-999.0</td>
-      <td>-999</td>
-      <td>2022-01-05</td>
-      <td>1850-01-09</td>
-      <td>1850-01-09</td>
-      <td>missing</td>
-    </tr>
-  </tbody>
-</table>
-</div>
+    num_id                           object
+    NumericColumn                   float64
+    NumericColumn_exepted           float64
+    NumericColumn2                  float64
+    NumericColumn3                    int64
+    DateColumn               datetime64[ns]
+    DateColumn2              datetime64[ns]
+    DateColumn3              datetime64[ns]
+    CharColumn                       object
+    dtype: object
 
 
 

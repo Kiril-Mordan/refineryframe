@@ -1,3 +1,10 @@
+[![Build status](https://github.com/Kiril-Mordan/refineryframe/workflows/Tests/badge.svg)](https://github.com/{github_id}/{repository}/workflows/{workflow_name}/badge.svg)
+[![Downloads](https://static.pepy.tech/badge/refineryframe)](https://pepy.tech/project/refineryframe)
+[![Version](https://img.shields.io/pypi/v/refineryframe)](https://pypi.org/project/refineryframe/)
+![](https://img.shields.io/github/license/Kiril-Mordan/refineryframe)
+
+
+
 # refineryframe
 
 <a><img src="images/logo.png" width="35%" height="35%" align="right" /></a>

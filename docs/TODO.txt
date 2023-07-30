@@ -3,10 +3,8 @@ Plans for near future
 - error break ability for detect unexpected
 - use case documents
 - shoutOUT standard for every print
-- better logo
-- python version and package version requirements
+- package version requirements
 - documentation for duv and ruv scores
 - code optimization (for deduplication)
 - tests for code
-- licence
 - list of features 
