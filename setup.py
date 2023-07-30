@@ -15,14 +15,14 @@ base_packages = [
     "unidecode"
 ]
 
-VERSION = '0.0.7'
+VERSION = '0.0.8'
 DESCRIPTION = 'Cleans data, best to be used as a part of initial preprocessor'
 LONG_DESCRIPTION = 'A package that allows to detect unexpected values in data and clean them according to set of predefined rules'
 
 # Setting up
 setup(
     name="refineryframe",
-    version=VERSION,
+    use_scm_version=True,
     author="Kyrylo Mordan",
     author_email="<parachute.repo@gmail.com>",
     description=DESCRIPTION,

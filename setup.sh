@@ -15,5 +15,5 @@ cat docs/duv_score_class.md >> README.md
 ./update_package_version.sh
 
 # generate new files
-python3 setup.py sdist bdist_wheel
+#python3 setup.py sdist bdist_wheel
 

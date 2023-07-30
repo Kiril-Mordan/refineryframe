@@ -1,0 +1,81 @@
+name: Tests and Publish
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ['3.8', '3.9', '3.10']
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install tox tox-gh-actions
+      - name: Test with tox
+        run: tox
+
+
+  post_test:
+    needs: test
+    if: ${{ needs.test.result == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      # Steps to be run after successful test
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependancies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Generate md file for example
+        run: jupyter nbconvert --to markdown --execute example_notebooks/duv_score_class.ipynb --output-dir=docs
+
+      - name: Update license year
+        run: ./update_licence.sh
+
+      - name: Combine README_base.md with example
+        run: |
+          cat docs/README_base.md > README.md
+          cat docs/duv_score_class.md >> README.md
+
+
+  publish:
+    needs: post_test
+    if: ${{ needs.post_test.result == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install setuptools wheel twine
+
+      - name: Build package
+        run: python setup.py sdist bdist_wheel
+
+      - name: Publish to PyPI
+        env:
+          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
+          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+        run: twine upload --skip-existing dist/*
