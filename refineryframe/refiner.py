@@ -4,31 +4,6 @@ refineryframe Module
 This module provides a Refiner class to encapsulate functions for data refinement
 and validation. The Refiner class is designed to work with pandas DataFrames and
 perform various checks and replacements for data preprocessing.
-
-Classes:
-    Refiner: A class that encapsulates functions for data refinement and validation.
-
-Functions:
-    shout(): Print a line of text with a specified length and format.
-    get_type_dict_from_dataframe(): Returns a string representation of a dictionary
-                                   containing the data types of each column in the given DataFrame.
-    set_type_dict(): Change the data types of the columns in the given DataFrame based on a dictionary of intended data types.
-    set_types(): Change the data types of the columns in the given DataFrame based on a dictionary of intended data types.
-    check_missing_types(): Search for missing types in each column of the DataFrame and log any instances found.
-    check_missing_values(): Count the number of NaN, None, and NaT values in each column of a pandas DataFrame.
-    check_inf_values(): Count the inf values in each column of a pandas DataFrame.
-    check_date_format(): Check if the values in the datetime columns of the input dataframe
-                            have the expected 'YYYY-MM-DD' format.
-    check_duplicates(): Check for duplicates in a pandas DataFrame.
-    check_col_names_types(): Check if a given dataframe has the same column names as keys in a given dictionary
-                                and those columns have the same types as items in the dictionary.
-    check_numeric_range(): Check if numeric values are in expected ranges.
-    check_date_range(): Check if dates are in expected ranges.
-    detect_unexpected_values(): Detect unexpected values in a pandas DataFrame.
-    replace_unexpected_values(): Replace unexpected values in a pandas DataFrame with missing types.
-
-Constants:
-    MISSING_TYPES: A dictionary containing default missing data types.
 """
 
 import logging
@@ -45,7 +20,7 @@ from refineryframe.replace_unexpected import replace_unexpected_values
 class Refiner:
 
     """
-    Refiner is a class that encapsulates funtions from refineframe.
+    Class that encapsulates funtions from refineryframe.
     """
 
 
@@ -127,7 +102,7 @@ class Refiner:
     def shout(self):
 
         """
-        Print a line of text with a specified length and format.
+        Prints a line of text with a specified length and format.
         """
 
         shoutOUT(output_type=self.shout_type,
@@ -140,7 +115,7 @@ class Refiner:
                       stringout=False):
 
         """
-        Returns a string representation of a dictionary containing the data types
+        Returns a dictionary or string representation of a dictionary containing the data types
         of each column in the given pandas DataFrame.
 
         Numeric columns will have type 'numeric', date columns will have type 'date',
@@ -160,7 +135,7 @@ class Refiner:
                       stringout=False):
 
         """
-        Change the data types of the columns in the given DataFrame
+        Changes the data types of the columns in the given DataFrame
         based on a dictionary of intended data types.
         """
 
@@ -179,7 +154,7 @@ class Refiner:
                   expected_date_format=None):
 
         """
-        Change the data types of the columns in the given DataFrame
+        Changes the data types of the columns in the given DataFrame
         based on a dictionary of intended data types.
         """
 
@@ -199,8 +174,9 @@ class Refiner:
     def check_missing_types(self):
 
         """
-        The function takes a DataFrame and a dictionary of missing types as input, and
-        searches for any instances of these missing types in each column of the DataFrame.
+        Takes a DataFrame and a dictionary of missing types as input,
+        and searches for any instances of these missing types in each column of the DataFrame.
+
         If any instances are found, a warning message is logged containing the column name,
         the missing value, and the count of missing values found.
         """
@@ -213,7 +189,7 @@ class Refiner:
     def check_missing_values(self):
 
         """
-        Count the number of NaN, None, and NaT values in each column of a pandas DataFrame.
+        Counts the number of NaN, None, and NaT values in each column of a pandas DataFrame.
         """
 
         self.MISSING_COUNT_TEST = check_missing_values(dataframe = self.dataframe,
@@ -222,7 +198,7 @@ class Refiner:
     def check_inf_values(self):
 
         """
-        Count the inf values in each column of a pandas DataFrame.
+        Counts the inf values in each column of a pandas DataFrame.
         """
 
         self.NUM_INF_TEST = check_inf_values(dataframe = self.dataframe,
@@ -232,7 +208,7 @@ class Refiner:
     def check_date_format(self):
 
         """
-        Check if the values in the datetime columns of the input dataframe
+        Checks if the values in the datetime columns of the input dataframe
         have the expected 'YYYY-MM-DD' format.
         """
 
@@ -245,7 +221,7 @@ class Refiner:
                          subset = None):
 
         """
-        Check for duplicates in a pandas DataFrame.
+        Checks for duplicates in a pandas DataFrame.
         """
 
         self.DUPLICATES_TEST = check_duplicates(dataframe = self.dataframe,
@@ -272,7 +248,7 @@ class Refiner:
                             ignore_values = None):
 
         """
-        Check if numeric values are in expected ranges
+        Checks if numeric values are in expected ranges.
         """
 
         if lower_bound is None:
@@ -296,7 +272,7 @@ class Refiner:
                         ignore_dates = None):
 
         """
-        Check if dates are in expected ranges
+        Checks if dates are in expected ranges.
         """
 
         if earliest_date is None:
@@ -328,7 +304,7 @@ class Refiner:
                                  print_score = True):
 
         """
-        Detect unexpected values in a pandas DataFrame.
+        Detects unexpected values in a pandas DataFrame.
         """
 
         if MISSING_TYPES is None:
@@ -376,7 +352,7 @@ class Refiner:
                              numeric_upper_bound = None):
 
         """
-        Replace unexpected values in a pandas DataFrame with missing types.
+        Replaces unexpected values in a pandas DataFrame with missing types.
         """
 
         if MISSING_TYPES is None:

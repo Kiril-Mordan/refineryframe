@@ -22,7 +22,8 @@ LONG_DESCRIPTION = 'A package that allows to detect unexpected values in data an
 # Setting up
 setup(
     name="refineryframe",
-    use_scm_version=True,
+    #use_scm_version=True,
+    version=VERSION,
     author="Kyrylo Mordan",
     author_email="<parachute.repo@gmail.com>",
     description=DESCRIPTION,

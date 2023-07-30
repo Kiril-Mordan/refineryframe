@@ -4,54 +4,6 @@ replace_unexpected.py - Data Replacement Module
 This module contains a function to replace unexpected values in a pandas DataFrame with specified missing types.
 It covers various aspects of data validation, including replacing missing values, out-of-range numeric values,
 date values outside specified date ranges, and handling character-related issues such as capitalization and Unicode characters.
-
-Functions:
-1. replace_unexpected_values(dataframe, MISSING_TYPES=MISSING_TYPES,
-                             unexpected_exceptions={"irregular_values": "NONE",
-                                                   "date_range": "NONE",
-                                                   "numeric_range": "NONE",
-                                                   "capitalization": "NONE",
-                                                   "unicode_character": "NONE"},
-                             unexpected_conditions=None, TEST_RUV_FLAGS_PATH=None,
-                             earliest_date="1900-08-25", latest_date="2100-01-01",
-                             numeric_lower_bound=0, numeric_upper_bound=float("inf"),
-                             logger=logging) -> dict:
-    Replace unexpected values in a pandas DataFrame with specified missing types.
-    The function applies a series of data replacement checks, and the output includes
-    the data quality score before and after the replacement.
-
-Parameters:
------------
-- dataframe (pd.DataFrame): The DataFrame to be checked and processed.
-- MISSING_TYPES (dict): Dictionary that maps column names to the values considered as missing
-                        for that column. Default is set by the module-level variable MISSING_TYPES.
-- unexpected_exceptions (dict): Dictionary that lists column exceptions for each of the following checks:
-                                col_names_types, missing_values, missing_types, inf_values,
-                                date_format, duplicates, date_range, and numeric_range. Default is an empty dictionary.
-- unexpected_conditions (dict): Dictionary defining additional conditions to replace unexpected values.
-                                The dictionary includes keys 'set', 'description', 'group', 'features', and 'query'.
-                                Default is None.
-- TEST_RUV_FLAGS_PATH (str): Path for storing the corrected data quality score. Default is None.
-- earliest_date (str): The earliest acceptable date in the format 'YYYY-MM-DD'. Default is "1900-08-25".
-- latest_date (str): The latest acceptable date in the format 'YYYY-MM-DD'. Default is "2100-01-01".
-- numeric_lower_bound (float): The lowest acceptable value for numeric columns. Default is 0.
-- numeric_upper_bound (float): The highest acceptable value for numeric columns. Default is infinity.
-- logger (logging.Logger): Logger object to log messages. Default is the module-level logging object.
-
-Returns:
---------
-A dictionary containing the following keys:
-- 'dataframe': The DataFrame with replaced unexpected values.
-- 'ruv_score0': Data quality score before replacement, representing the percentage of usable values.
-- 'ruv_score1': Uncorrected data quality score after replacement, considering column and row medians.
-- 'ruv_score2': Corrected data quality score after replacement, considering column and row medians.
-
-Note:
-- The function replaces unexpected values with specified missing types based on the provided parameters.
-- Additional replacement conditions can be defined using the 'unexpected_conditions' parameter.
-- The function calculates data quality scores before and after replacement to assess data quality improvement.
-- If the 'TEST_RUV_FLAGS_PATH' parameter is provided, the corrected data quality score is saved to the specified path.
-
 """
 
 import logging

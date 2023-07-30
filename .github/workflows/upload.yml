@@ -47,10 +47,28 @@ jobs:
       - name: Update license year
         run: ./update_licence.sh
 
-      - name: Combine README_base.md with example
+      - name: Generate md file for features
+        run: python -m generate_feature_list
+
+      - name: Make README_base.md a beginning of README.md
+        run: cat docs/README_base.md > README.md
+
+      - name: Add feature list to README.md
         run: |
-          cat docs/README_base.md > README.md
+          cat docs/feature_list.md >> README.md
+          echo '' >> README.md
+
+      - name: Add example1 to README.md
+        run: |
           cat docs/general_example_1.md >> README.md
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add README.md
+          git commit -m "Update README"
+          git push
 
 
   publish:
