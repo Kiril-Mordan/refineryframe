@@ -3,8 +3,6 @@ Plans for near future
 - error break ability for detect unexpected
 - use case documents
 - shoutOUT standard for every print
-- package version requirements
 - documentation for duv and ruv scores
 - code optimization (for deduplication)
-- tests for code
 - list of features 
