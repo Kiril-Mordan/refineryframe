@@ -47,6 +47,11 @@ jobs:
       - name: Update license year
         run: ./update_licence.sh
 
+      - name: Update package version
+        run: |
+          cd ${{ github.workspace }}
+          ./update_package_version.sh
+
       - name: Generate md file for features
         run: python -m generate_feature_list
 
@@ -66,8 +71,8 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add README.md
-          git commit -m "Update README"
+          git add README.md setup.py
+          git commit -m "Update README; setup.py"
           git push
 
 
@@ -89,6 +94,9 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install setuptools wheel twine
 
+      - name: Pull latest changes from the remote repository
+        run: git pull origin main
+
       - name: Build package
         run: python setup.py sdist bdist_wheel
 
@@ -97,3 +105,12 @@ jobs:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
         run: twine upload --skip-existing dist/*
+
+      - name: Commit changes
+        run: |
+          echo '' >> README.md
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add README.md
+          git commit -m "Update README"
+          git push
