@@ -1,4 +1,4 @@
-# Feature List
+## Feature List
 
 - `refineryframe.refiner.Refiner.check_col_names_types` - checks if a given dataframe has the same column names as keys in a given dictionary
 and those columns have the same types as items in the dictionary.

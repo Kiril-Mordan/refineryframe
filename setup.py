@@ -15,7 +15,7 @@ base_packages = [
     "unidecode"
 ]
 
-VERSION = '0.0.10'
+VERSION = '0.1.0'
 DESCRIPTION = 'Cleans data, best to be used as a part of initial preprocessor'
 LONG_DESCRIPTION = 'A package that allows to detect unexpected values in data and clean them according to set of predefined rules'
 
@@ -33,7 +33,7 @@ setup(
     install_requires=base_packages,
     keywords=['python', 'data cleaning', 'safeguards'],
     classifiers=[
-        "Development Status :: 1 - Planning",
+        "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
         "Programming Language :: Python :: 3",

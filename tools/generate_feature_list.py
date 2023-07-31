@@ -1,4 +1,6 @@
 import inspect
+import os
+import sys
 
 def generate_feature_list(module, exceptions=[]):
     feature_list = []
@@ -23,10 +25,11 @@ def generate_feature_list(module, exceptions=[]):
     for feature in feature_list:
         markdown_content += f"- `{feature['function']}` - {feature['description']}\n"
 
-    with open("docs/feature_list.md", "w") as file:
+    with open("../docs/feature_list.md", "w") as file:
         file.write(markdown_content)
 
 if __name__ == "__main__":
+    sys.path.append(os.path.dirname(sys.path[0]))
     import refineryframe.refiner
 
     # List of exceptions (class.method) that you want to skip in the feature list

@@ -674,3 +674,4 @@ $$
 score_{ruv2} =  1 - \frac{med_{col}^2 + med_{row}^2}{2}
 $$
 
+

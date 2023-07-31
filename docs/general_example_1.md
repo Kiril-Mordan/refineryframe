@@ -1,5 +1,23 @@
 ## Package usage example
 
+### Content:
+* [Initializing Refiner class](#initializning-refiner-class)
+    * [defining general conditions](#basic-specification)
+* [Use of simple general conditions](#simple-general-conditions)
+    * [detecting column types](#detecting_column_types)
+    * [using independant conditions](#check-independent-conditions)
+    * [detecting unexpected values](#detect-unexpected)
+    * [replacing unexpected values](#replace-unexpected)
+    * [moulding types](#moulding-types)
+* [Use of complex targeted conditions](#use-complex-targeted-conditions)
+    * [to detect unexpected](#detect_unexpected_with_conds)
+    * [to replace unexpected](#replace-unexpected-with-conds)
+* [Data quality scores](#scores)
+    * [duv score](#duv_scores)
+    * [ruv scores](#ruv_scores)
+
+### Creating example data (exceptionally messy dataframe)
+
 
 ```python
 import os 
@@ -10,8 +28,6 @@ import logging
 sys.path.append(os.path.dirname(sys.path[0])) 
 from refineryframe.refiner import Refiner
 ```
-
-### Creating example data (exceptionally messy dataframe)
 
 
 ```python
@@ -133,7 +149,7 @@ df
 
 
 
-#### Defining specification for the dataframe
+#### Defining specification for the dataframe <a class="anchor" id="basic-specification"></a>
 
 
 ```python
@@ -163,7 +179,7 @@ replace_dict = {-996 : -999,
                 "1000-01-09": "1850-01-09"}
 ```
 
-### Initializing Refiner class
+### Initializing Refiner class  <a name="initializning-refiner-class"></a>
 
 
 ```python
@@ -173,7 +189,7 @@ tns = Refiner(dataframe = df,
               unexpected_exceptions_duv = unexpected_exceptions)
 ```
 
-##### function for detecting column types
+##### function for detecting column types <a class="anchor" id="detecting-column-types"></a>
 
 
 ```python
@@ -210,7 +226,9 @@ types_dict_str = {'num_id' : 'int64',
                    'CharColumn' : 'object'}
 ```
 
-#### Check independent conditions
+### Use of simple general conditions <a class="anchor" id="simple-general-conditions"></a>
+
+#### Check independent conditions <a class="anchor" id="check-independent-conditions"></a>
 
 
 ```python
@@ -234,7 +252,7 @@ tns.check_numeric_range()
     WARNING:Refiner:Column DateColumn2 has non-date values or unexpected format.
 
 
-##### moulding types
+##### moulding types <a class="anchor" id="moulding-types"></a>
 
 
 ```python
@@ -261,7 +279,7 @@ tns.get_type_dict_from_dataframe()
 
 
 
-#### Using the main function to detect unexpected values
+#### Using the main function to detect unexpected values <a class="anchor" id="detect-unexpected"></a>
 
 
 ```python
@@ -302,7 +320,7 @@ tns.duv_score
 
 
 
-#### Using function to replace unexpected values with missing types
+#### Using function to replace unexpected values with missing types <a class="anchor" id="replace-unexpected"></a>
 
 
 ```python
@@ -330,28 +348,7 @@ tns.replace_unexpected_values(numeric_lower_bound = "NumericColumn3",
     DEBUG:Refiner:** Corrected data quality score:  52.57%
 
 
-
-```python
-tns.dataframe.dtypes
-```
-
-
-
-
-    num_id                           object
-    NumericColumn                   float64
-    NumericColumn_exepted           float64
-    NumericColumn2                  float64
-    NumericColumn3                    int64
-    DateColumn               datetime64[ns]
-    DateColumn2              datetime64[ns]
-    DateColumn3              datetime64[ns]
-    CharColumn                       object
-    dtype: object
-
-
-
-#### Use complex targeted conditions
+#### Use of complex targeted conditions <a class="anchor" id="complex-targeted-conditions"></a>
 
 
 ```python
@@ -391,7 +388,7 @@ unexpected_conditions = {
     }
 ```
 
-##### - to detect unexpected values
+##### - to detect unexpected values <a class="anchor" id="detect_unexpected_with_conds"></a>
 
 
 ```python
@@ -420,7 +417,7 @@ tns.detect_unexpected_values(unexpected_conditions = unexpected_conditions)
     WARNING:Refiner:Percentage of passed tests: 75.00%
 
 
-##### - to replace unecpected values
+##### - to replace unexpected values <a class="anchor" id="replace-unexpected-with-conds"></a>
 
 
 ```python
@@ -570,7 +567,7 @@ tns.detect_unexpected_values(unexpected_exceptions = {
     DEBUG:Refiner:=== checking expected numeric range
 
 
-#### Scores
+#### Scores <a class="anchor" id="scores"></a>
 
 
 ```python
