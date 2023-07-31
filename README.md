@@ -1,8 +1,9 @@
-[![Build status](https://github.com/Kiril-Mordan/refineryframe/workflows/Tests/badge.svg)](https://github.com/{github_id}/{repository}/workflows/{workflow_name}/badge.svg)
+[![Build status](https://github.com/Kiril-Mordan/refineryframe/workflows/Tests/badge.svg)](https://github.com/Kiril-Mordan/refineryframe/actions/)
 [![Downloads](https://static.pepy.tech/badge/refineryframe)](https://pepy.tech/project/refineryframe)
-[![Version](https://img.shields.io/pypi/v/refineryframe)](https://pypi.org/project/refineryframe/)
-![](https://img.shields.io/github/license/Kiril-Mordan/refineryframe)
-![](https://img.shields.io/pypi/pyversions/refineryframe)
+[![PyPiVersion](https://img.shields.io/pypi/v/refineryframe)](https://pypi.org/project/refineryframe/)
+[![License](https://img.shields.io/github/license/Kiril-Mordan/refineryframe)](https://github.com/Kiril-Mordan/refineryframe/blob/main/LICENSE)
+[![PyVersions](https://img.shields.io/pypi/pyversions/refineryframe)]()
+[![Codecov](https://codecov.io/gh/Kiril-Mordan/refineryframe/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Kiril-Mordan/refineryframe?branch=main)
 
 
 # refineryframe
