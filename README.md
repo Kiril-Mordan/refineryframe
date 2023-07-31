@@ -5,8 +5,6 @@
 ![](https://img.shields.io/pypi/pyversions/refineryframe)
 
 
-
-
 # refineryframe
 
 <a><img src="https://github.com/Kiril-Mordan/refineryframe/blob/main/images/logo.png" width="35%" height="35%" align="right" /></a>
@@ -25,7 +23,7 @@ pip install refineryframe
 ```
 
 
-# Feature List
+## Feature List
 
 - `refineryframe.refiner.Refiner.check_col_names_types` - checks if a given dataframe has the same column names as keys in a given dictionary
 and those columns have the same types as items in the dictionary.
@@ -49,6 +47,24 @@ based on a dictionary of intended data types.
 
 ## Package usage example
 
+### Content:
+* [Initializing Refiner class](#initializning-refiner-class)
+    * [defining general conditions](#basic-specification)
+* [Use of simple general conditions](#simple-general-conditions)
+    * [detecting column types](#detecting_column_types)
+    * [using independant conditions](#check-independent-conditions)
+    * [detecting unexpected values](#detect-unexpected)
+    * [replacing unexpected values](#replace-unexpected)
+    * [moulding types](#moulding-types)
+* [Use of complex targeted conditions](#use-complex-targeted-conditions)
+    * [to detect unexpected](#detect_unexpected_with_conds)
+    * [to replace unexpected](#replace-unexpected-with-conds)
+* [Data quality scores](#scores)
+    * [duv score](#duv_scores)
+    * [ruv scores](#ruv_scores)
+
+### Creating example data (exceptionally messy dataframe)
+
 
 ```python
 import os 
@@ -59,8 +75,6 @@ import logging
 sys.path.append(os.path.dirname(sys.path[0])) 
 from refineryframe.refiner import Refiner
 ```
-
-### Creating example data (exceptionally messy dataframe)
 
 
 ```python
@@ -182,7 +196,7 @@ df
 
 
 
-#### Defining specification for the dataframe
+#### Defining specification for the dataframe <a class="anchor" id="basic-specification"></a>
 
 
 ```python
@@ -212,7 +226,7 @@ replace_dict = {-996 : -999,
                 "1000-01-09": "1850-01-09"}
 ```
 
-### Initializing Refiner class
+### Initializing Refiner class  <a name="initializning-refiner-class"></a>
 
 
 ```python
@@ -222,7 +236,7 @@ tns = Refiner(dataframe = df,
               unexpected_exceptions_duv = unexpected_exceptions)
 ```
 
-##### function for detecting column types
+##### function for detecting column types <a class="anchor" id="detecting-column-types"></a>
 
 
 ```python
@@ -259,7 +273,9 @@ types_dict_str = {'num_id' : 'int64',
                    'CharColumn' : 'object'}
 ```
 
-#### Check independent conditions
+### Use of simple general conditions <a class="anchor" id="simple-general-conditions"></a>
+
+#### Check independent conditions <a class="anchor" id="check-independent-conditions"></a>
 
 
 ```python
@@ -283,7 +299,7 @@ tns.check_numeric_range()
     WARNING:Refiner:Column DateColumn2 has non-date values or unexpected format.
 
 
-##### moulding types
+##### moulding types <a class="anchor" id="moulding-types"></a>
 
 
 ```python
@@ -310,7 +326,7 @@ tns.get_type_dict_from_dataframe()
 
 
 
-#### Using the main function to detect unexpected values
+#### Using the main function to detect unexpected values <a class="anchor" id="detect-unexpected"></a>
 
 
 ```python
@@ -351,7 +367,7 @@ tns.duv_score
 
 
 
-#### Using function to replace unexpected values with missing types
+#### Using function to replace unexpected values with missing types <a class="anchor" id="replace-unexpected"></a>
 
 
 ```python
@@ -379,28 +395,7 @@ tns.replace_unexpected_values(numeric_lower_bound = "NumericColumn3",
     DEBUG:Refiner:** Corrected data quality score:  52.57%
 
 
-
-```python
-tns.dataframe.dtypes
-```
-
-
-
-
-    num_id                           object
-    NumericColumn                   float64
-    NumericColumn_exepted           float64
-    NumericColumn2                  float64
-    NumericColumn3                    int64
-    DateColumn               datetime64[ns]
-    DateColumn2              datetime64[ns]
-    DateColumn3              datetime64[ns]
-    CharColumn                       object
-    dtype: object
-
-
-
-#### Use complex targeted conditions
+#### Use of complex targeted conditions <a class="anchor" id="complex-targeted-conditions"></a>
 
 
 ```python
@@ -440,7 +435,7 @@ unexpected_conditions = {
     }
 ```
 
-##### - to detect unexpected values
+##### - to detect unexpected values <a class="anchor" id="detect_unexpected_with_conds"></a>
 
 
 ```python
@@ -469,7 +464,7 @@ tns.detect_unexpected_values(unexpected_conditions = unexpected_conditions)
     WARNING:Refiner:Percentage of passed tests: 75.00%
 
 
-##### - to replace unecpected values
+##### - to replace unexpected values <a class="anchor" id="replace-unexpected-with-conds"></a>
 
 
 ```python
@@ -619,7 +614,7 @@ tns.detect_unexpected_values(unexpected_exceptions = {
     DEBUG:Refiner:=== checking expected numeric range
 
 
-#### Scores
+#### Scores <a class="anchor" id="scores"></a>
 
 
 ```python
@@ -634,4 +629,47 @@ print(f'ruv_score2: {tns.ruv_score2 :.4}')
     ruv_score1: 0.8889
     ruv_score2: 0.9753
 
+
+##### DUV score <a class="anchor" id="duv_scores"></a>
+
+The score is the result of checking general conditions with `.detect_unexpected_values()`.
+
+It is a percentange of checks that passed.
+Ideally the score is 1, worse case scenario the score is 0.
+
+```math
+score_{duv} = \frac{\sum^{n}_{i=1} \text{check}_{i}}{n}
+```
+
+##### RUV scores <a class="anchor" id="ruv_scores"></a>
+
+The scores are the result of cleaning data with `.replace_unexpected_values()`.
+
+The goal of those scores originated in determining whether the dataset can be used to train a model or not, based on missing or effectivelly missing values. The most advanced one is RUV_score2, aims to accurately classiffy if the dataset is hopeless, which can be used as safeguad to signal critical fall in quality of collected data in production. These scores are experimental so use them with causion.
+
+* RUV_score0 is the simplest one, it is just a differance between 1 and proportion of number of missing values to number of all values available in the dataframe. This can be understood and usable portions of the dataframe.
+
+```math
+score_{ruv0} = 1 - \frac{\sum^{n*m}_{i=1;j=1} \text{unusable}_{ij}}{n*m}
+```
+
+* RUV_score1 is a simplified version of RUV_score2, the proportions of medians are not squared with makes the score worse for classification but better for traking data quality over time.
+
+$`med_{col} = med{\frac{\sum^{n}_{i=1} \text{unusable}_{i}}{n}}`$
+
+count number of unexpected values along each column, divide it by number of rows and calculate median of that proportion
+
+$`med_{row} = med{\frac{\sum^{m}_{j=1} \text{unusable}_{j}}{m}}`$
+
+count number of unexpected values along each row, divide it by number of columns and calculate median of that proportion
+
+$$
+score_{ruv1} =  1 - \frac{med_{col} + med_{row}}{2}
+$$
+
+* RUV_score2 takes advantage of the fact that if one has too many rows or columns of data that are completly unusable or some kind of mix of those situations, the dataset does become unusable. The values below 0.5 supposedly indicate completelly unusable dataset.
+
+$$
+score_{ruv2} =  1 - \frac{med_{col}^2 + med_{row}^2}{2}
+$$
 
