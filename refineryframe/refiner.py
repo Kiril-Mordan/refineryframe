@@ -99,14 +99,17 @@ class Refiner:
         self.logger = logger
 
 
-    def shout(self):
+    def shout(self, mess = None) -> None:
 
         """
         Prints a line of text with a specified length and format.
         """
 
+        if mess is None:
+            mess = self.mess
+
         shoutOUT(output_type=self.shout_type,
-                 mess=self.mess,
+                 mess=mess,
                  dotline_length=self.dotline_length,
                  logger=self.logger)
 
@@ -171,7 +174,52 @@ class Refiner:
                                   expected_date_format=expected_date_format,
                                       logger = self.logger)
 
-    def check_missing_types(self):
+        self.type_dict = type_dict
+
+    def get_refiner_settings(self) -> dict:
+
+        """
+        Extracts values of parameters from refiner and saves them in dictionary for later use.
+        """
+
+        exclude_attributes = ['dataframe',
+                      'MISSING_TYPES_TEST',
+                      'MISSING_COUNT_TEST',
+                      'NUM_INF_TEST',
+                      'DATE_FORMAT_TEST',
+                      'DATE_RANGE_TEST',
+                      'DUPLICATES_TEST',
+                      'COL_NAMES_TYPES_TEST',
+                      'NUMERIC_RANGE_TEST',
+                      'logger',
+                      'duv_score',
+                      'ruv_score0',
+                      'ruv_score1',
+                      'ruv_score2']
+
+        # Getting the dictionary representation of the instance
+        my_instance_dict = attr.asdict(self)
+
+        # Excluding 'exclude_attributes' from the dictionary representation
+        filtered_instance_dict = {key: value for key, value in my_instance_dict.items() if key not in exclude_attributes}
+
+        return filtered_instance_dict
+
+    def set_refiner_settings(self, settings : dict) -> None:
+
+        """
+        Updates input parameters with values from provided settings dict.
+        """
+
+        # Overwrite parameters of the existing instance
+        for key, value in settings.items():
+            setattr(self, key, value)
+
+        # Reinitialize logger
+        self.initialize_logger()
+
+
+    def check_missing_types(self) -> None:
 
         """
         Takes a DataFrame and a dictionary of missing types as input,
@@ -186,7 +234,7 @@ class Refiner:
                                                         independent = True,
                                       logger = self.logger)
 
-    def check_missing_values(self):
+    def check_missing_values(self) -> None:
 
         """
         Counts the number of NaN, None, and NaT values in each column of a pandas DataFrame.
@@ -195,7 +243,7 @@ class Refiner:
         self.MISSING_COUNT_TEST = check_missing_values(dataframe = self.dataframe,
                                       logger = self.logger)
 
-    def check_inf_values(self):
+    def check_inf_values(self) -> None:
 
         """
         Counts the inf values in each column of a pandas DataFrame.
@@ -205,7 +253,7 @@ class Refiner:
                                              independent = True,
                                              logger = self.logger)
 
-    def check_date_format(self):
+    def check_date_format(self) -> None:
 
         """
         Checks if the values in the datetime columns of the input dataframe
@@ -218,7 +266,7 @@ class Refiner:
                                                   logger = self.logger)
 
     def check_duplicates(self,
-                         subset = None):
+                         subset = None) -> None:
 
         """
         Checks for duplicates in a pandas DataFrame.
@@ -229,7 +277,7 @@ class Refiner:
                                                  independent = True,
                                                  logger = self.logger)
 
-    def check_col_names_types(self):
+    def check_col_names_types(self) -> None:
 
         """
         Checks if a given dataframe has the same column names as keys in a given dictionary
@@ -242,10 +290,10 @@ class Refiner:
                                       logger = self.logger)
 
     def check_numeric_range(self,
-                            numeric_cols = None,
+                            numeric_cols : list = None,
                             lower_bound = None,
                             upper_bound = None,
-                            ignore_values = None):
+                            ignore_values = None) -> None:
 
         """
         Checks if numeric values are in expected ranges.
@@ -269,7 +317,7 @@ class Refiner:
     def check_date_range(self,
                         earliest_date = None,
                         latest_date = None,
-                        ignore_dates = None):
+                        ignore_dates = None) -> None:
 
         """
         Checks if dates are in expected ranges.
@@ -301,7 +349,7 @@ class Refiner:
                                  latest_date = None,
                                  numeric_lower_bound = None,
                                  numeric_upper_bound = None,
-                                 print_score = True):
+                                 print_score = True) -> None:
 
         """
         Detects unexpected values in a pandas DataFrame.
@@ -349,7 +397,7 @@ class Refiner:
                              earliest_date = None,
                              latest_date = None,
                              numeric_lower_bound = None,
-                             numeric_upper_bound = None):
+                             numeric_upper_bound = None) -> None:
 
         """
         Replaces unexpected values in a pandas DataFrame with missing types.

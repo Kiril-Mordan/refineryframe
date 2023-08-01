@@ -1,6 +1,10 @@
-# generate md file for example
-echo 'Generating md file for example'
-jupyter nbconvert --to markdown --execute example_notebooks/general_example_1.ipynb --output-dir=docs
+# generate md file for examples
+echo 'Generating md file for example1'
+jupyter nbconvert  --TagRemovePreprocessor.remove_output_tags='{"excluded_cells"}' --to markdown --execute example_notebooks/general_example_1.ipynb --output-dir=docs
+
+echo 'Generating md file for example2'
+jupyter nbconvert  --TagRemovePreprocessor.remove_output_tags='{"excluded_cells"}' --to markdown --execute example_notebooks/general_example_2.ipynb --output-dir=docs
+
 
 # generate md file for feature list
 echo 'Generating md file for feature list'
@@ -11,15 +15,27 @@ cd ..
 # make README_base.md a beginning of README.md
 echo 'making README_base.md a beginning of README.md'
 cat docs/README_base.md > README.md
+echo '' >> README.md
 
 # add feature list to README.md
 echo 'adding feature list to README.md'
 cat docs/feature_list.md >> README.md
 echo '' >> README.md
 
+# add content table to README.md
+echo 'adding content table to README.md'
+cat docs/content.md >> README.md
+echo '' >> README.md
+echo '' >> README.md
+
 # add example1 to README.md
 echo 'adding example1 to README.md'
 cat docs/general_example_1.md >> README.md
+echo '' >> README.md
+
+# add example1 to README.md
+echo 'adding example2 to README.md'
+cat docs/general_example_2.md >> README.md
 echo '' >> README.md
 
 # add score to README.md

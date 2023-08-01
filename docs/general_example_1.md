@@ -1,21 +1,3 @@
-## Package usage example
-
-### Content:
-* [Initializing Refiner class](#initializning-refiner-class)
-    * [defining general conditions](#basic-specification)
-* [Use of simple general conditions](#simple-general-conditions)
-    * [detecting column types](#detecting_column_types)
-    * [using independant conditions](#check-independent-conditions)
-    * [detecting unexpected values](#detect-unexpected)
-    * [replacing unexpected values](#replace-unexpected)
-    * [moulding types](#moulding-types)
-* [Use of complex targeted conditions](#use-complex-targeted-conditions)
-    * [to detect unexpected](#detect_unexpected_with_conds)
-    * [to replace unexpected](#replace-unexpected-with-conds)
-* [Data quality scores](#scores)
-    * [duv score](#duv_scores)
-    * [ruv scores](#ruv_scores)
-
 ### Creating example data (exceptionally messy dataframe)
 
 
@@ -396,6 +378,8 @@ tns.detect_unexpected_values(unexpected_conditions = unexpected_conditions)
 ```
 
     DEBUG:Refiner:=== checking column names and types
+    WARNING:Refiner:Incorrect data types:
+    WARNING:Refiner:Column num_id: actual dtype is object, expected dtype is int64
     DEBUG:Refiner:=== checking for presence of missing values
     DEBUG:Refiner:=== checking for presence of missing types
     WARNING:Refiner:Column CharColumn: (missing) : 3 : 60.00%
@@ -414,7 +398,7 @@ tns.detect_unexpected_values(unexpected_conditions = unexpected_conditions)
     WARNING:Refiner:Replace numeric missing with with zero :: 1
     DEBUG:Refiner:Detect/Replace numeric values in certain column with zeros if > 2
     WARNING:Refiner:Detect/Replace numeric values in certain column with zeros if > 2 :: 2
-    WARNING:Refiner:Percentage of passed tests: 75.00%
+    WARNING:Refiner:Percentage of passed tests: 66.67%
 
 
 ##### - to replace unexpected values <a class="anchor" id="replace-unexpected-with-conds"></a>
@@ -560,14 +544,17 @@ tns.detect_unexpected_values(unexpected_exceptions = {
 ```
 
     DEBUG:Refiner:=== checking column names and types
+    WARNING:Refiner:Incorrect data types:
+    WARNING:Refiner:Column num_id: actual dtype is object, expected dtype is int64
     DEBUG:Refiner:=== checking for presence of missing values
     DEBUG:Refiner:=== checking propper date format
     DEBUG:Refiner:=== checking expected date range
     DEBUG:Refiner:=== checking for presense of inf values in numeric colums
     DEBUG:Refiner:=== checking expected numeric range
+    WARNING:Refiner:Percentage of passed tests: 88.89%
 
 
-#### Scores <a class="anchor" id="scores"></a>
+#### Scores
 
 
 ```python
@@ -577,7 +564,7 @@ print(f'ruv_score1: {tns.ruv_score1 :.4}')
 print(f'ruv_score2: {tns.ruv_score2 :.4}')
 ```
 
-    duv_score: 1.0
+    duv_score: 0.8889
     ruv_score0: 0.8222
     ruv_score1: 0.8889
     ruv_score2: 0.9753

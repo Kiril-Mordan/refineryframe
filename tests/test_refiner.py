@@ -170,7 +170,7 @@ def test_detect_unexpected_values_with_conds(tns, unexpected_conditions, caplog)
     assert "Replace numeric missing with with zero :: 1" in caplog.text
     assert "Detect/Replace numeric values in certain column with zeros if > 2" in caplog.text
     assert "Detect/Replace numeric values in certain column with zeros if > 2 :: 2" in caplog.text
-    assert "Percentage of passed tests: 75.00%" in caplog.text
+    assert "Percentage of passed tests: 66.67%" in caplog.text
 
 
 def test_replace_unexpected_with_conds(tns,df2, unexpected_conditions, caplog):
@@ -198,6 +198,25 @@ def test_replace_unexpected_with_conds(tns,df2, unexpected_conditions, caplog):
 
     assert tns.dataframe.equals(df2)
 
+
+def test_get_refiner_settings(tns2,refiner_settings):
+
+    refiner_settings2 = tns2.get_refiner_settings()
+
+    assert refiner_settings2 == refiner_settings
+
+def test_set_refiner_settings(tns2,df, refiner_settings):
+
+    tns = Refiner(dataframe = df)
+
+    tns.set_refiner_settings(refiner_settings)
+
+    tns.shout(mess = "TNS1")
+    tns.detect_unexpected_values()
+    tns2.shout(mess = "TNS2")
+    tns2.detect_unexpected_values()
+
+    assert tns.duv_score == tns2.duv_score
 
 
 #     @pytest.mark.parametrize("a,expected", [

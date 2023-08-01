@@ -1,3 +1,5 @@
+### Data quality scores <a class="anchor" id="scores"></a>
+
 ##### DUV score <a class="anchor" id="duv_scores"></a>
 
 The score is the result of checking general conditions with `.detect_unexpected_values()`.

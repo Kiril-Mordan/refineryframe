@@ -5,5 +5,3 @@ Plans for near future
 - shoutOUT standard for every print
 - code optimization (for deduplication)
 - save and load specification for detect and replace
-- arrange bash files into separate folder
-- code coverage badge

@@ -55,7 +55,7 @@ jobs:
 
       - name: Updating README.md
         run: |
-          ./tools.update_README.md
+          ./tools/update_README.sh
 
       - name: Commit changes
         run: |

@@ -12,9 +12,11 @@ and searches for any instances of these missing types in each column of the Data
 - `refineryframe.refiner.Refiner.check_missing_values` - counts the number of NaN, None, and NaT values in each column of a pandas DataFrame.
 - `refineryframe.refiner.Refiner.check_numeric_range` - checks if numeric values are in expected ranges.
 - `refineryframe.refiner.Refiner.detect_unexpected_values` - detects unexpected values in a pandas DataFrame.
+- `refineryframe.refiner.Refiner.get_refiner_settings` - extracts values of parameters from refiner and saves them in dictionary for later use.
 - `refineryframe.refiner.Refiner.get_type_dict_from_dataframe` - returns a dictionary or string representation of a dictionary containing the data types
 of each column in the given pandas DataFrame.
 - `refineryframe.refiner.Refiner.replace_unexpected_values` - replaces unexpected values in a pandas DataFrame with missing types.
+- `refineryframe.refiner.Refiner.set_refiner_settings` - updates input parameters with values from provided settings dict.
 - `refineryframe.refiner.Refiner.set_type_dict` - changes the data types of the columns in the given DataFrame
 based on a dictionary of intended data types.
 - `refineryframe.refiner.Refiner.set_types` - changes the data types of the columns in the given DataFrame
