@@ -67,6 +67,7 @@ class Refiner:
     ignore_dates = attr.ib(default=[])
 
     # outputs
+    unexpected_exceptions_scaned = attr.ib(default={},init = False, type=dict)
     type_dict = attr.ib(default={}, init = False, type=dict)
 
     MISSING_TYPES_TEST = attr.ib(default=None, init = False)
@@ -115,7 +116,7 @@ class Refiner:
 
     def get_type_dict_from_dataframe(self,
                       explicit=True,
-                      stringout=False):
+                      stringout=False) -> dict:
 
         """
         Returns a dictionary or string representation of a dictionary containing the data types
@@ -135,7 +136,7 @@ class Refiner:
     def set_type_dict(self,
                       type_dict=None,
                       explicit=True,
-                      stringout=False):
+                      stringout=False) -> None:
 
         """
         Changes the data types of the columns in the given DataFrame
@@ -192,6 +193,7 @@ class Refiner:
                       'COL_NAMES_TYPES_TEST',
                       'NUMERIC_RANGE_TEST',
                       'logger',
+                      'unexpected_exceptions_scaned',
                       'duv_score',
                       'ruv_score0',
                       'ruv_score1',
@@ -374,7 +376,7 @@ class Refiner:
         if numeric_upper_bound is None:
             numeric_upper_bound = self.upper_bound
 
-        self.duv_score = detect_unexpected_values(dataframe = self.dataframe,
+        duv_obj = detect_unexpected_values(dataframe = self.dataframe,
                                                  MISSING_TYPES = MISSING_TYPES,
                                                  unexpected_exceptions = unexpected_exceptions,
                                                  unexpected_conditions = unexpected_conditions,
@@ -388,6 +390,38 @@ class Refiner:
                                                  numeric_upper_bound = numeric_upper_bound,
                                                  print_score = print_score,
                                       logger = self.logger)
+
+        self.duv_score = duv_obj['duv_score']
+        self.unexpected_exceptions_scaned = duv_obj['unexpected_exceptions_scaned']
+
+    def get_unexpected_exceptions_scaned(self, dataframe = None) -> dict:
+
+        """
+        Returns unexpected_exceptions with appropriate settings to the values in the dataframe.
+        """
+
+        if dataframe is None:
+            dataframe = self.dataframe
+
+        duv_obj = detect_unexpected_values(dataframe = dataframe,
+                                                 MISSING_TYPES = self.MISSING_TYPES,
+                                                 unexpected_exceptions = self.unexpected_exceptions_duv,
+                                                 unexpected_conditions = self.unexpected_conditions,
+                                                 ids_for_dup = None,
+                                                 TEST_DUV_FLAGS_PATH = None,
+                                                 types_dict_str = self.type_dict,
+                                                 expected_date_format = self.expected_date_format,
+                                                 earliest_date = self.earliest_date,
+                                                 latest_date = self.latest_date,
+                                                 numeric_lower_bound = self.lower_bound,
+                                                 numeric_upper_bound = self.upper_bound,
+                                                 print_score = True,
+                                      logger = self.logger)
+
+        return duv_obj['unexpected_exceptions_scaned']
+
+
+
 
     def replace_unexpected_values(self,
                              MISSING_TYPES = None,

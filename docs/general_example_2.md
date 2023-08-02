@@ -240,6 +240,40 @@ refiner_settings
 tns2 = Refiner(dataframe = df)
 ```
 
+#### scanning dataframe for unexpected conditions <a name="scanning-dataframe"></a>
+
+
+```python
+scanned_unexpected_exceptions = tns2.get_unexpected_exceptions_scaned()
+scanned_unexpected_exceptions
+```
+
+    WARNING:Refiner:Column CharColumn: (NA) : 2 : 40.00%
+    WARNING:Refiner:Column DateColumn2: (NA) : 4 : 80.00%
+    WARNING:Refiner:Column NumericColumn: (NA) : 2 : 40.00%
+    WARNING:Refiner:Column NumericColumn_exepted: (NA) : 2 : 40.00%
+    WARNING:Refiner:Column NumericColumn2: (NA) : 4 : 80.00%
+    WARNING:Refiner:Column DateColumn3: (1850-01-09) : 1 : 20.00%
+    WARNING:Refiner:Column DateColumn2 has non-date values or unexpected format.
+    WARNING:Refiner:Column NumericColumn: (INF) : 2 : 40.00%
+    WARNING:Refiner:Column NumericColumn_exepted: (INF) : 1 : 20.00%
+    WARNING:Refiner:Percentage of passed tests: 71.43%
+
+
+
+
+
+    {'col_names_types': 'NONE',
+     'missing_values': 'ALL',
+     'missing_types': 'ALL',
+     'inf_values': 'ALL',
+     'date_format': 'ALL',
+     'duplicates': 'NONE',
+     'date_range': 'NONE',
+     'numeric_range': 'NONE'}
+
+
+
 #### detection before applying settings
 
 
@@ -279,4 +313,19 @@ tns2.detect_unexpected_values()
     WARNING:Refiner:Column NumericColumn: (INF) : 2 : 40.00%
     WARNING:Refiner:Column NumericColumn_exepted: (INF) : 1 : 20.00%
     WARNING:Refiner:Percentage of passed tests: 66.67%
+
+
+
+```python
+tns3 = Refiner(dataframe = df, 
+               unexpected_exceptions_duv = scanned_unexpected_exceptions)
+```
+
+
+```python
+tns3.detect_unexpected_values()
+print(f'duv score: {tns3.duv_score}')
+```
+
+    duv score: 1.0
 

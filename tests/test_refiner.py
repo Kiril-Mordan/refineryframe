@@ -117,6 +117,13 @@ def test_detect_unexpected_values(tns, caplog):
     assert "Percentage of passed tests: 50.00%" in caplog.text
 
 
+def test_get_unexpected_exceptions_scaned(tns, scanned_unexpected_exceptions):
+
+    scanned_unexpected_exceptions2 = tns.get_unexpected_exceptions_scaned()
+
+    assert scanned_unexpected_exceptions2 == scanned_unexpected_exceptions
+
+
 def test_duv_score1(tns):
 
     assert tns.duv_score == 0.5
@@ -204,6 +211,7 @@ def test_get_refiner_settings(tns2,refiner_settings):
     refiner_settings2 = tns2.get_refiner_settings()
 
     assert refiner_settings2 == refiner_settings
+
 
 def test_set_refiner_settings(tns2,df, refiner_settings):
 
