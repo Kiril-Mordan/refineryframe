@@ -15,6 +15,7 @@
     * [to replace unexpected](#replace-unexpected-with-conds)
 * [Refiner class settings](#refiner-class-settings)
     * [extracting settigns](#extracting-refiner-class-settings)
+    * [scanning unexpected conditions](#scanning-dataframe)
     * [recreating identical class with settings](#recreating-refiner-class-settings)
 * [Data quality scores](#scores)
     * [duv score](#duv_scores)

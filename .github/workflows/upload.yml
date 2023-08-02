@@ -45,9 +45,6 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Update license year
-        run: ./tools/update_licence.sh
-
       - name: Update package version
         run: |
           cd ${{ github.workspace }}

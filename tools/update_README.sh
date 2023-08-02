@@ -1,9 +1,9 @@
 # generate md file for examples
 echo 'Generating md file for example1'
-jupyter nbconvert  --TagRemovePreprocessor.remove_output_tags='{"excluded_cells"}' --to markdown --execute example_notebooks/general_example_1.ipynb --output-dir=docs
+jupyter nbconvert --to markdown --execute example_notebooks/general_example_1.ipynb --output-dir=docs
 
 echo 'Generating md file for example2'
-jupyter nbconvert  --TagRemovePreprocessor.remove_output_tags='{"excluded_cells"}' --to markdown --execute example_notebooks/general_example_2.ipynb --output-dir=docs
+jupyter nbconvert --to markdown --execute example_notebooks/general_example_2.ipynb --output-dir=docs
 
 
 # generate md file for feature list

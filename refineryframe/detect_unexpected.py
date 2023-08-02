@@ -622,7 +622,7 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
                              numeric_lower_bound : float = 0,
                              numeric_upper_bound : float = float("inf"),
                              print_score : bool = True,
-                            logger : logging.Logger = logging) -> float:
+                            logger : logging.Logger = logging) -> dict:
 
     """
     Detect unexpected values in a pandas DataFrame.
@@ -647,7 +647,8 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
                                     (default is infinity).
 
     Returns:
-        duv_score - number between 0 and 1 that means what percentage of tests have passed
+        duv_score (float) - number between 0 and 1 that means what percentage of tests have passed
+        unexpected_exceptions_scaned - unexpected_exceptions based on detected unexpected values
     """
 
 
@@ -712,8 +713,19 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
             ids_for_dup = index_cols
 
 
-        # Run checks
+        # Checks scan
+        unexpected_exceptions_scaned = {
+            "col_names_types": "NONE",
+            "missing_values": "NONE",
+            "missing_types": "NONE",
+            "inf_values": "NONE",
+            "date_format": "NONE",
+            "duplicates": "NONE",
+            "date_range": "NONE",
+            "numeric_range": "NONE"
+        }
 
+        # Run checks
         checks_list = []
 
 
@@ -726,12 +738,18 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
                                                        independent = False,
                                                        logger = logger))
 
+            if not checks_list[-1]:
+                unexpected_exceptions_scaned["col_names_types"] = "ALL"
+
         if run_check_missing_values:
 
             logger.debug("=== checking for presence of missing values")
 
             checks_list.extend([check_missing_values(dataframe = dataframe[cols_check_missing_values],
                                                      logger = logger)])
+
+            if not checks_list[-1]:
+                unexpected_exceptions_scaned["missing_values"] = "ALL"
 
         if run_check_missing_types:
 
@@ -742,6 +760,9 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
                                                     independent = False,
                                                     logger = logger))
 
+            if not checks_list[-1]:
+                unexpected_exceptions_scaned["missing_types"] = "ALL"
+
         if run_check_date_format:
 
             logger.debug("=== checking propper date format")
@@ -750,6 +771,9 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
                                                   expected_date_format = expected_date_format,
                                                   independent = False,
                                                   logger = logger)])
+
+            if not checks_list[-1]:
+                unexpected_exceptions_scaned["date_format"] = "ALL"
 
 
         if run_check_date_range:
@@ -764,6 +788,9 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
                                                                  if k.startswith("date_")],
                                                  logger = logger))
 
+            if not checks_list[-1]:
+                unexpected_exceptions_scaned["date_range"] = "ALL"
+
         if run_check_duplicates:
 
             logger.debug("=== checking for duplicates")
@@ -773,6 +800,9 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
                              independent = False,
                              logger = logger))
 
+            if not checks_list[-1]:
+                unexpected_exceptions_scaned["duplicates"] = "ALL"
+
 
         if run_check_inf_values:
 
@@ -781,6 +811,9 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
             checks_list.extend([check_inf_values(dataframe = dataframe[cols_check_inf_values],
                                                  independent = False,
                                                  logger = logger)])
+
+            if not checks_list[-1]:
+                unexpected_exceptions_scaned["inf_values"] = "ALL"
 
         if run_check_numeric_range:
 
@@ -793,6 +826,9 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
                                                     ignore_values = [v for k, v in MISSING_TYPES.items()
                                                                      if k.startswith("numeric_")],
                                                     logger = logger))
+
+            if not checks_list[-1]:
+                unexpected_exceptions_scaned["numeric_range"] = "ALL"
 
 
         if run_check_additional_cons:
@@ -829,7 +865,8 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
 
         else:
 
-            return duv_score
+            return {'duv_score' : duv_score,
+                    'unexpected_exceptions_scaned' : unexpected_exceptions_scaned}
 
 
     except Exception as e:

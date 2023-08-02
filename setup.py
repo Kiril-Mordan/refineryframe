@@ -33,7 +33,7 @@ setup(
     install_requires=base_packages,
     keywords=['python', 'data cleaning', 'safeguards'],
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
         "Programming Language :: Python :: 3",

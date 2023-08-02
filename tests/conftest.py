@@ -122,6 +122,23 @@ def unexpected_exceptions2():
 
 
 @pytest.fixture(scope='session')
+def scanned_unexpected_exceptions():
+
+    scanned_unexpected_exceptions = {
+                "col_names_types": "NONE",
+                "missing_values": "ALL",
+                "missing_types": "NONE",
+                "inf_values": "ALL",
+                "date_format": "ALL",
+                "duplicates": "NONE",
+                "date_range": "ALL",
+                "numeric_range": "NONE"
+            }
+
+    yield scanned_unexpected_exceptions
+
+
+@pytest.fixture(scope='session')
 def refiner_settings():
 
     refiner_settings = {'replace_dict': {-996: -999, '1000-01-09': '1850-01-09'},
