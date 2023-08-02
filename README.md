@@ -42,6 +42,7 @@ and searches for any instances of these missing types in each column of the Data
 - `refineryframe.refiner.Refiner.get_refiner_settings` - extracts values of parameters from refiner and saves them in dictionary for later use.
 - `refineryframe.refiner.Refiner.get_type_dict_from_dataframe` - returns a dictionary or string representation of a dictionary containing the data types
 of each column in the given pandas DataFrame.
+- `refineryframe.refiner.Refiner.get_unexpected_exceptions_scaned` - returns unexpected_exceptions with appropriate settings to the values in the dataframe.
 - `refineryframe.refiner.Refiner.replace_unexpected_values` - replaces unexpected values in a pandas DataFrame with missing types.
 - `refineryframe.refiner.Refiner.set_refiner_settings` - updates input parameters with values from provided settings dict.
 - `refineryframe.refiner.Refiner.set_type_dict` - changes the data types of the columns in the given DataFrame
@@ -66,6 +67,7 @@ based on a dictionary of intended data types.
     * [to replace unexpected](#replace-unexpected-with-conds)
 * [Refiner class settings](#refiner-class-settings)
     * [extracting settigns](#extracting-refiner-class-settings)
+    * [scanning unexpected conditions](#scanning-dataframe)
     * [recreating identical class with settings](#recreating-refiner-class-settings)
 * [Data quality scores](#scores)
     * [duv score](#duv_scores)
@@ -885,6 +887,40 @@ refiner_settings
 tns2 = Refiner(dataframe = df)
 ```
 
+#### scanning dataframe for unexpected conditions <a name="scanning-dataframe"></a>
+
+
+```python
+scanned_unexpected_exceptions = tns2.get_unexpected_exceptions_scaned()
+scanned_unexpected_exceptions
+```
+
+    WARNING:Refiner:Column CharColumn: (NA) : 2 : 40.00%
+    WARNING:Refiner:Column DateColumn2: (NA) : 4 : 80.00%
+    WARNING:Refiner:Column NumericColumn: (NA) : 2 : 40.00%
+    WARNING:Refiner:Column NumericColumn_exepted: (NA) : 2 : 40.00%
+    WARNING:Refiner:Column NumericColumn2: (NA) : 4 : 80.00%
+    WARNING:Refiner:Column DateColumn3: (1850-01-09) : 1 : 20.00%
+    WARNING:Refiner:Column DateColumn2 has non-date values or unexpected format.
+    WARNING:Refiner:Column NumericColumn: (INF) : 2 : 40.00%
+    WARNING:Refiner:Column NumericColumn_exepted: (INF) : 1 : 20.00%
+    WARNING:Refiner:Percentage of passed tests: 71.43%
+
+
+
+
+
+    {'col_names_types': 'NONE',
+     'missing_values': 'ALL',
+     'missing_types': 'ALL',
+     'inf_values': 'ALL',
+     'date_format': 'ALL',
+     'duplicates': 'NONE',
+     'date_range': 'NONE',
+     'numeric_range': 'NONE'}
+
+
+
 #### detection before applying settings
 
 
@@ -924,6 +960,21 @@ tns2.detect_unexpected_values()
     WARNING:Refiner:Column NumericColumn: (INF) : 2 : 40.00%
     WARNING:Refiner:Column NumericColumn_exepted: (INF) : 1 : 20.00%
     WARNING:Refiner:Percentage of passed tests: 66.67%
+
+
+
+```python
+tns3 = Refiner(dataframe = df, 
+               unexpected_exceptions_duv = scanned_unexpected_exceptions)
+```
+
+
+```python
+tns3.detect_unexpected_values()
+print(f'duv score: {tns3.duv_score}')
+```
+
+    duv score: 1.0
 
 
 ### Data quality scores <a class="anchor" id="scores"></a>
