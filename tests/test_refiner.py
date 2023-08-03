@@ -1,6 +1,6 @@
 import pytest
 import logging
-from refineryframe.refiner import Refiner
+from refineryframe.refiner import Refiner, check_duplicates
 
 def test_make_refiner_class(df, replace_dict, unexpected_exceptions):
 
@@ -84,6 +84,10 @@ def test_check_duplicates(tns, caplog):
     tns.check_duplicates()
 
     assert "" in caplog.text
+
+def test_check_duplicates_not_independent(df1):
+
+    assert all(check_duplicates(df1, independent=False)) is True
 
 def test_check_numeric_range(tns, caplog):
 

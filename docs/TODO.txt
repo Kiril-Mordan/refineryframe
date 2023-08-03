@@ -1,7 +1,12 @@
 Plans for near future
-- try-except thoughout code
+- more comprehensive text data cleaning methods
 - error break ability for detect unexpected
 - use case documents
 - shoutOUT standard for every print
 - code optimization (for deduplication)
-- save and load specification for detect and replace
+
+Performance tests:
+- generate large dataset of mimic data (small, medium, large size) (relatively clean, super unlean)
+- enritch dataframe with unexpected values, randomly or in specific pattern
+- generate profiling report
+-
