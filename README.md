@@ -860,7 +860,7 @@ refiner_settings
      'upper_bound': inf,
      'earliest_date': '1900-08-25',
      'latest_date': '2100-01-01',
-     'ids_for_dedup': None,
+     'ids_for_dedup': 'ALL',
      'unexpected_exceptions_duv': {'col_names_types': 'NONE',
       'missing_values': 'ALL',
       'missing_types': 'ALL',
