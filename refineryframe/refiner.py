@@ -46,6 +46,8 @@ class Refiner:
     earliest_date = attr.ib(default="1900-08-25")
     latest_date = attr.ib(default="2100-01-01")
 
+    ids_for_dedup = attr.ib(default=None)
+
     unexpected_exceptions_duv = attr.ib(default={"col_names_types": "NONE",
                                               "missing_values": "NONE",
                                               "missing_types": "NONE",
@@ -407,7 +409,7 @@ class Refiner:
                                                  MISSING_TYPES = self.MISSING_TYPES,
                                                  unexpected_exceptions = self.unexpected_exceptions_duv,
                                                  unexpected_conditions = self.unexpected_conditions,
-                                                 ids_for_dup = None,
+                                                 ids_for_dup = self.ids_for_dedup,
                                                  TEST_DUV_FLAGS_PATH = None,
                                                  types_dict_str = self.type_dict,
                                                  expected_date_format = self.expected_date_format,

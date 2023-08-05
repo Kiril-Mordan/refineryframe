@@ -709,8 +709,12 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
             run_check_additional_cons = False
 
 
-        if ids_for_dup is None and len(index_cols) > 0:
-            ids_for_dup = index_cols
+        if ids_for_dup is None:
+
+            if len(index_cols) > 0:
+                ids_for_dup = index_cols
+            else:
+                ids_for_dup = all_columns
 
 
         # Checks scan
