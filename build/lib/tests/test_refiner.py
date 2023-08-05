@@ -1,12 +1,13 @@
 import pytest
 import logging
-from refineryframe.refiner import Refiner
+from refineryframe.refiner import Refiner, check_duplicates
 
 def test_make_refiner_class(df, replace_dict, unexpected_exceptions):
 
     try:
         tns = Refiner(dataframe = df,
               replace_dict = replace_dict,
+              ids_for_dedup = None,
               loggerLvl = logging.DEBUG,
               unexpected_exceptions_duv = unexpected_exceptions)
     except Exception as e:
@@ -85,6 +86,10 @@ def test_check_duplicates(tns, caplog):
 
     assert "" in caplog.text
 
+def test_check_duplicates_not_independent(df1):
+
+    assert all(check_duplicates(df1, independent=False)) is True
+
 def test_check_numeric_range(tns, caplog):
 
     tns.check_numeric_range()
@@ -115,6 +120,13 @@ def test_detect_unexpected_values(tns, caplog):
     assert "checking for presense of inf values in numeric colums" in caplog.text
     assert "checking expected numeric range" in caplog.text
     assert "Percentage of passed tests: 50.00%" in caplog.text
+
+
+def test_get_unexpected_exceptions_scaned(tns, scanned_unexpected_exceptions):
+
+    scanned_unexpected_exceptions2 = tns.get_unexpected_exceptions_scaned()
+
+    assert scanned_unexpected_exceptions2 == scanned_unexpected_exceptions
 
 
 def test_duv_score1(tns):
@@ -170,7 +182,7 @@ def test_detect_unexpected_values_with_conds(tns, unexpected_conditions, caplog)
     assert "Replace numeric missing with with zero :: 1" in caplog.text
     assert "Detect/Replace numeric values in certain column with zeros if > 2" in caplog.text
     assert "Detect/Replace numeric values in certain column with zeros if > 2 :: 2" in caplog.text
-    assert "Percentage of passed tests: 75.00%" in caplog.text
+    assert "Percentage of passed tests: 66.67%" in caplog.text
 
 
 def test_replace_unexpected_with_conds(tns,df2, unexpected_conditions, caplog):
@@ -198,6 +210,26 @@ def test_replace_unexpected_with_conds(tns,df2, unexpected_conditions, caplog):
 
     assert tns.dataframe.equals(df2)
 
+
+def test_get_refiner_settings(tns2,refiner_settings):
+
+    refiner_settings2 = tns2.get_refiner_settings()
+
+    assert refiner_settings2 == refiner_settings
+
+
+def test_set_refiner_settings(tns2,df, refiner_settings):
+
+    tns = Refiner(dataframe = df)
+
+    tns.set_refiner_settings(refiner_settings)
+
+    tns.shout(mess = "TNS1")
+    tns.detect_unexpected_values()
+    tns2.shout(mess = "TNS2")
+    tns2.detect_unexpected_values()
+
+    assert tns.duv_score == tns2.duv_score
 
 
 #     @pytest.mark.parametrize("a,expected", [

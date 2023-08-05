@@ -4,31 +4,6 @@ refineryframe Module
 This module provides a Refiner class to encapsulate functions for data refinement
 and validation. The Refiner class is designed to work with pandas DataFrames and
 perform various checks and replacements for data preprocessing.
-
-Classes:
-    Refiner: A class that encapsulates functions for data refinement and validation.
-
-Functions:
-    shout(): Print a line of text with a specified length and format.
-    get_type_dict_from_dataframe(): Returns a string representation of a dictionary
-                                   containing the data types of each column in the given DataFrame.
-    set_type_dict(): Change the data types of the columns in the given DataFrame based on a dictionary of intended data types.
-    set_types(): Change the data types of the columns in the given DataFrame based on a dictionary of intended data types.
-    check_missing_types(): Search for missing types in each column of the DataFrame and log any instances found.
-    check_missing_values(): Count the number of NaN, None, and NaT values in each column of a pandas DataFrame.
-    check_inf_values(): Count the inf values in each column of a pandas DataFrame.
-    check_date_format(): Check if the values in the datetime columns of the input dataframe
-                            have the expected 'YYYY-MM-DD' format.
-    check_duplicates(): Check for duplicates in a pandas DataFrame.
-    check_col_names_types(): Check if a given dataframe has the same column names as keys in a given dictionary
-                                and those columns have the same types as items in the dictionary.
-    check_numeric_range(): Check if numeric values are in expected ranges.
-    check_date_range(): Check if dates are in expected ranges.
-    detect_unexpected_values(): Detect unexpected values in a pandas DataFrame.
-    replace_unexpected_values(): Replace unexpected values in a pandas DataFrame with missing types.
-
-Constants:
-    MISSING_TYPES: A dictionary containing default missing data types.
 """
 
 import logging
@@ -45,7 +20,60 @@ from refineryframe.replace_unexpected import replace_unexpected_values
 class Refiner:
 
     """
-    Refiner is a class that encapsulates funtions from refineframe.
+    Class that encapsulates functions for data refining and validation.
+
+    Attributes:
+        dataframe (pd.DataFrame): The input pandas DataFrame to be processed.
+        replace_dict (dict, optional): A dictionary to define replacements for specific values in the DataFrame.
+        MISSING_TYPES (dict, optional): Default values for missing types in different columns of the DataFrame.
+        expected_date_format (str, optional): The expected date format for date columns in the DataFrame.
+        mess (str, optional): A custom message used in the `shout` method for printing.
+        shout_type (str, optional): The type of output for the `shout` method (e.g., 'HEAD2').
+        logger (logging.Logger, optional): A custom logger object for logging messages.
+        logger_name (str, optional): The name of the logger for the class instance.
+        loggerLvl (int, optional): The logging level for the logger.
+        dotline_length (int, optional): The length of the line to be printed in the `shout` method.
+        lower_bound (float, optional): The lower bound for numeric range validation.
+        upper_bound (float, optional): The upper bound for numeric range validation.
+        earliest_date (str, optional): The earliest allowed date for date range validation.
+        latest_date (str, optional): The latest allowed date for date range validation.
+        ids_for_dedup (list, optional): A list of column names to be used for duplicate detection.
+        unexpected_exceptions_duv (dict, optional): A dictionary of unexpected exceptions for data value validation.
+        unexpected_exceptions_ruv (dict, optional): A dictionary of unexpected exceptions for data replacement validation.
+        unexpected_conditions (None or callable, optional): A callable function for custom unexpected conditions.
+        ignore_values (list, optional): A list of values to ignore during numeric range validation.
+        ignore_dates (list, optional): A list of dates to ignore during date range validation.
+
+    Methods:
+        shout(mess=None): Prints a line of text with a specified length and format.
+        get_type_dict_from_dataframe(explicit=True, stringout=False): Returns a dictionary containing the data types
+            of each column in the given pandas DataFrame.
+        set_type_dict(type_dict=None, explicit=True, stringout=False): Changes the data types of the columns in the
+            DataFrame based on a dictionary of intended data types.
+        set_types(type_dict=None, replace_dict=None, expected_date_format=None): Changes the data types of the columns
+            in the DataFrame based on a dictionary of intended data types.
+        get_refiner_settings(): Extracts values of parameters from the Refiner and saves them in a dictionary for later use.
+        set_refiner_settings(settings: dict): Updates input parameters with values from the provided settings dict.
+        check_missing_types(): Searches for instances of missing types in each column of the DataFrame.
+        check_missing_values(): Counts the number of NaN, None, and NaT values in each column of the DataFrame.
+        check_inf_values(): Counts the inf values in each column of the DataFrame.
+        check_date_format(): Checks if the values in the datetime columns have the expected 'YYYY-MM-DD' format.
+        check_duplicates(subset=None): Checks for duplicates in the DataFrame.
+        check_col_names_types(): Checks if the DataFrame has the same column names as the types_dict_str dictionary
+            and those columns have the same types as items in the dictionary.
+        check_numeric_range(numeric_cols=None, lower_bound=None, upper_bound=None, ignore_values=None): Checks if
+            numeric values are in expected ranges.
+        check_date_range(earliest_date=None, latest_date=None, ignore_dates=None): Checks if dates are in expected ranges.
+        detect_unexpected_values(MISSING_TYPES=None, unexpected_exceptions=None, unexpected_conditions=None,
+                                 ids_for_dedup=None, TEST_DUV_FLAGS_PATH=None, types_dict_str=None,
+                                 expected_date_format=None, earliest_date=None, latest_date=None, numeric_lower_bound=None,
+                                 numeric_upper_bound=None, print_score=True): Detects unexpected values in the DataFrame.
+        get_unexpected_exceptions_scaned(dataframe=None): Returns unexpected_exceptions with appropriate settings for the
+            values in the DataFrame.
+        replace_unexpected_values(MISSING_TYPES=None, unexpected_exceptions=None, unexpected_conditions=None,
+                                  TEST_RUV_FLAGS_PATH=None, earliest_date=None, latest_date=None, numeric_lower_bound=None,
+                                  numeric_upper_bound=None): Replaces unexpected values in the DataFrame with missing types
+                                  based on a dictionary of unexpected exceptions.
     """
 
 
@@ -70,6 +98,7 @@ class Refiner:
     upper_bound = attr.ib(default=float("inf"))
     earliest_date = attr.ib(default="1900-08-25")
     latest_date = attr.ib(default="2100-01-01")
+    ids_for_dedup = attr.ib(default="ALL", type=list)
 
     unexpected_exceptions_duv = attr.ib(default={"col_names_types": "NONE",
                                               "missing_values": "NONE",
@@ -92,6 +121,7 @@ class Refiner:
     ignore_dates = attr.ib(default=[])
 
     # outputs
+    unexpected_exceptions_scaned = attr.ib(default={},init = False, type=dict)
     type_dict = attr.ib(default={}, init = False, type=dict)
 
     MISSING_TYPES_TEST = attr.ib(default=None, init = False)
@@ -124,23 +154,26 @@ class Refiner:
         self.logger = logger
 
 
-    def shout(self):
+    def shout(self, mess = None) -> None:
 
         """
-        Print a line of text with a specified length and format.
+        Prints a line of text with a specified length and format.
         """
+
+        if mess is None:
+            mess = self.mess
 
         shoutOUT(output_type=self.shout_type,
-                 mess=self.mess,
+                 mess=mess,
                  dotline_length=self.dotline_length,
                  logger=self.logger)
 
     def get_type_dict_from_dataframe(self,
                       explicit=True,
-                      stringout=False):
+                      stringout=False) -> dict:
 
         """
-        Returns a string representation of a dictionary containing the data types
+        Returns a dictionary or string representation of a dictionary containing the data types
         of each column in the given pandas DataFrame.
 
         Numeric columns will have type 'numeric', date columns will have type 'date',
@@ -157,10 +190,10 @@ class Refiner:
     def set_type_dict(self,
                       type_dict=None,
                       explicit=True,
-                      stringout=False):
+                      stringout=False) -> None:
 
         """
-        Change the data types of the columns in the given DataFrame
+        Changes the data types of the columns in the given DataFrame
         based on a dictionary of intended data types.
         """
 
@@ -179,7 +212,7 @@ class Refiner:
                   expected_date_format=None):
 
         """
-        Change the data types of the columns in the given DataFrame
+        Changes the data types of the columns in the given DataFrame
         based on a dictionary of intended data types.
         """
 
@@ -196,11 +229,58 @@ class Refiner:
                                   expected_date_format=expected_date_format,
                                       logger = self.logger)
 
-    def check_missing_types(self):
+        self.type_dict = type_dict
+
+    def get_refiner_settings(self) -> dict:
 
         """
-        The function takes a DataFrame and a dictionary of missing types as input, and
-        searches for any instances of these missing types in each column of the DataFrame.
+        Extracts values of parameters from refiner and saves them in dictionary for later use.
+        """
+
+        exclude_attributes = ['dataframe',
+                      'MISSING_TYPES_TEST',
+                      'MISSING_COUNT_TEST',
+                      'NUM_INF_TEST',
+                      'DATE_FORMAT_TEST',
+                      'DATE_RANGE_TEST',
+                      'DUPLICATES_TEST',
+                      'COL_NAMES_TYPES_TEST',
+                      'NUMERIC_RANGE_TEST',
+                      'logger',
+                      'unexpected_exceptions_scaned',
+                      'duv_score',
+                      'ruv_score0',
+                      'ruv_score1',
+                      'ruv_score2']
+
+        # Getting the dictionary representation of the instance
+        my_instance_dict = attr.asdict(self)
+
+        # Excluding 'exclude_attributes' from the dictionary representation
+        filtered_instance_dict = {key: value for key, value in my_instance_dict.items() if key not in exclude_attributes}
+
+        return filtered_instance_dict
+
+    def set_refiner_settings(self, settings : dict) -> None:
+
+        """
+        Updates input parameters with values from provided settings dict.
+        """
+
+        # Overwrite parameters of the existing instance
+        for key, value in settings.items():
+            setattr(self, key, value)
+
+        # Reinitialize logger
+        self.initialize_logger()
+
+
+    def check_missing_types(self) -> None:
+
+        """
+        Takes a DataFrame and a dictionary of missing types as input,
+        and searches for any instances of these missing types in each column of the DataFrame.
+
         If any instances are found, a warning message is logged containing the column name,
         the missing value, and the count of missing values found.
         """
@@ -210,29 +290,29 @@ class Refiner:
                                                         independent = True,
                                       logger = self.logger)
 
-    def check_missing_values(self):
+    def check_missing_values(self) -> None:
 
         """
-        Count the number of NaN, None, and NaT values in each column of a pandas DataFrame.
+        Counts the number of NaN, None, and NaT values in each column of a pandas DataFrame.
         """
 
         self.MISSING_COUNT_TEST = check_missing_values(dataframe = self.dataframe,
                                       logger = self.logger)
 
-    def check_inf_values(self):
+    def check_inf_values(self) -> None:
 
         """
-        Count the inf values in each column of a pandas DataFrame.
+        Counts the inf values in each column of a pandas DataFrame.
         """
 
         self.NUM_INF_TEST = check_inf_values(dataframe = self.dataframe,
                                              independent = True,
                                              logger = self.logger)
 
-    def check_date_format(self):
+    def check_date_format(self) -> None:
 
         """
-        Check if the values in the datetime columns of the input dataframe
+        Checks if the values in the datetime columns of the input dataframe
         have the expected 'YYYY-MM-DD' format.
         """
 
@@ -242,18 +322,21 @@ class Refiner:
                                                   logger = self.logger)
 
     def check_duplicates(self,
-                         subset = None):
+                         subset = None) -> None:
 
         """
-        Check for duplicates in a pandas DataFrame.
+        Checks for duplicates in a pandas DataFrame.
         """
+
+        if subset is None:
+            subset = self.ids_for_dedup
 
         self.DUPLICATES_TEST = check_duplicates(dataframe = self.dataframe,
                                                  subset = subset,
                                                  independent = True,
                                                  logger = self.logger)
 
-    def check_col_names_types(self):
+    def check_col_names_types(self) -> None:
 
         """
         Checks if a given dataframe has the same column names as keys in a given dictionary
@@ -266,13 +349,13 @@ class Refiner:
                                       logger = self.logger)
 
     def check_numeric_range(self,
-                            numeric_cols = None,
+                            numeric_cols : list = None,
                             lower_bound = None,
                             upper_bound = None,
-                            ignore_values = None):
+                            ignore_values = None) -> None:
 
         """
-        Check if numeric values are in expected ranges
+        Checks if numeric values are in expected ranges.
         """
 
         if lower_bound is None:
@@ -293,10 +376,10 @@ class Refiner:
     def check_date_range(self,
                         earliest_date = None,
                         latest_date = None,
-                        ignore_dates = None):
+                        ignore_dates = None) -> None:
 
         """
-        Check if dates are in expected ranges
+        Checks if dates are in expected ranges.
         """
 
         if earliest_date is None:
@@ -317,7 +400,7 @@ class Refiner:
                                  MISSING_TYPES = None,
                                  unexpected_exceptions = None,
                                  unexpected_conditions = None,
-                                 ids_for_dup = None,
+                                 ids_for_dedup = None,
                                  TEST_DUV_FLAGS_PATH = None,
                                  types_dict_str = None,
                                  expected_date_format = None,
@@ -325,10 +408,10 @@ class Refiner:
                                  latest_date = None,
                                  numeric_lower_bound = None,
                                  numeric_upper_bound = None,
-                                 print_score = True):
+                                 print_score = True) -> None:
 
         """
-        Detect unexpected values in a pandas DataFrame.
+        Detects unexpected values in a pandas DataFrame.
         """
 
         if MISSING_TYPES is None:
@@ -339,6 +422,8 @@ class Refiner:
             unexpected_conditions = self.unexpected_conditions
         if types_dict_str is None:
             types_dict_str = self.type_dict
+        if ids_for_dedup is None:
+            ids_for_dedup = self.ids_for_dedup
         if expected_date_format is None:
             expected_date_format = self.expected_date_format
         if earliest_date is None:
@@ -350,11 +435,11 @@ class Refiner:
         if numeric_upper_bound is None:
             numeric_upper_bound = self.upper_bound
 
-        self.duv_score = detect_unexpected_values(dataframe = self.dataframe,
+        duv_obj = detect_unexpected_values(dataframe = self.dataframe,
                                                  MISSING_TYPES = MISSING_TYPES,
                                                  unexpected_exceptions = unexpected_exceptions,
                                                  unexpected_conditions = unexpected_conditions,
-                                                 ids_for_dup = ids_for_dup,
+                                                 ids_for_dedup = ids_for_dedup,
                                                  TEST_DUV_FLAGS_PATH = TEST_DUV_FLAGS_PATH,
                                                  types_dict_str = types_dict_str,
                                                  expected_date_format = expected_date_format,
@@ -365,6 +450,38 @@ class Refiner:
                                                  print_score = print_score,
                                       logger = self.logger)
 
+        self.duv_score = duv_obj['duv_score']
+        self.unexpected_exceptions_scaned = duv_obj['unexpected_exceptions_scaned']
+
+    def get_unexpected_exceptions_scaned(self, dataframe = None) -> dict:
+
+        """
+        Returns unexpected_exceptions with appropriate settings to the values in the dataframe.
+        """
+
+        if dataframe is None:
+            dataframe = self.dataframe
+
+        duv_obj = detect_unexpected_values(dataframe = dataframe,
+                                                 MISSING_TYPES = self.MISSING_TYPES,
+                                                 unexpected_exceptions = self.unexpected_exceptions_duv,
+                                                 unexpected_conditions = self.unexpected_conditions,
+                                                 ids_for_dedup = self.ids_for_dedup,
+                                                 TEST_DUV_FLAGS_PATH = None,
+                                                 types_dict_str = self.type_dict,
+                                                 expected_date_format = self.expected_date_format,
+                                                 earliest_date = self.earliest_date,
+                                                 latest_date = self.latest_date,
+                                                 numeric_lower_bound = self.lower_bound,
+                                                 numeric_upper_bound = self.upper_bound,
+                                                 print_score = True,
+                                      logger = self.logger)
+
+        return duv_obj['unexpected_exceptions_scaned']
+
+
+
+
     def replace_unexpected_values(self,
                              MISSING_TYPES = None,
                              unexpected_exceptions = None,
@@ -373,10 +490,10 @@ class Refiner:
                              earliest_date = None,
                              latest_date = None,
                              numeric_lower_bound = None,
-                             numeric_upper_bound = None):
+                             numeric_upper_bound = None) -> None:
 
         """
-        Replace unexpected values in a pandas DataFrame with missing types.
+        Replaces unexpected values in a pandas DataFrame with missing types.
         """
 
         if MISSING_TYPES is None:

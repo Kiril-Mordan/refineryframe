@@ -104,6 +104,81 @@ def unexpected_exceptions():
 
     yield unexpected_exceptions
 
+@pytest.fixture(scope='session')
+def unexpected_exceptions2():
+
+    unexpected_exceptions2 = {
+    "col_names_types": "NONE",
+    "missing_values": "ALL",
+    "missing_types": "ALL",
+    "inf_values": "NONE",
+    "date_format": "NONE",
+    "duplicates": "ALL",
+    "date_range": "NONE",
+    "numeric_range": "ALL"
+}
+
+    yield unexpected_exceptions2
+
+
+@pytest.fixture(scope='session')
+def scanned_unexpected_exceptions():
+
+    scanned_unexpected_exceptions = {
+                "col_names_types": "NONE",
+                "missing_values": "ALL",
+                "missing_types": "NONE",
+                "inf_values": "ALL",
+                "date_format": "ALL",
+                "duplicates": "NONE",
+                "date_range": "ALL",
+                "numeric_range": "NONE"
+            }
+
+    yield scanned_unexpected_exceptions
+
+
+@pytest.fixture(scope='session')
+def refiner_settings():
+
+    refiner_settings = {'replace_dict': {-996: -999, '1000-01-09': '1850-01-09'},
+                        'MISSING_TYPES': {'date_not_delivered': '1850-01-09',
+                        'numeric_not_delivered': -999,
+                        'character_not_delivered': 'missing'},
+                        'expected_date_format': '%Y-%m-%d',
+                        'mess': 'INITIAL PREPROCESSING',
+                        'shout_type': 'HEAD2',
+                        'logger_name': 'Refiner',
+                        'loggerLvl': 10,
+                        'dotline_length': 50,
+                        'lower_bound': -np.inf,
+                        'upper_bound': np.inf,
+                        'earliest_date': '1900-08-25',
+                        'latest_date': '2100-01-01',
+                        'ids_for_dedup': 'ALL',
+                        'unexpected_exceptions_duv': {'col_names_types': 'NONE',
+                        'missing_values': 'ALL',
+                        'missing_types': 'ALL',
+                        'inf_values': 'NONE',
+                        'date_format': 'NONE',
+                        'duplicates': 'ALL',
+                        'date_range': 'NONE',
+                        'numeric_range': 'ALL'},
+                        'unexpected_exceptions_ruv': {'irregular_values': 'NONE',
+                        'date_range': 'NONE',
+                        'numeric_range': 'NONE',
+                        'capitalization': 'NONE',
+                        'unicode_character': 'NONE'},
+                        'unexpected_conditions': None,
+                        'ignore_values': [],
+                        'ignore_dates': [],
+                        'type_dict': {}}
+
+    yield refiner_settings
+
+
+
+
 
 @pytest.fixture(scope='session')
 def types_dict_str():
@@ -136,6 +211,16 @@ def tns(df,replace_dict,unexpected_exceptions):
               replace_dict = replace_dict,
               loggerLvl = logging.DEBUG,
               unexpected_exceptions_duv = unexpected_exceptions)
+
+    yield tns
+
+@pytest.fixture(scope='session')
+def tns2(df,replace_dict,unexpected_exceptions2):
+
+    tns = Refiner(dataframe = df,
+              replace_dict = replace_dict,
+              loggerLvl = logging.DEBUG,
+              unexpected_exceptions_duv = unexpected_exceptions2)
 
     yield tns
 
