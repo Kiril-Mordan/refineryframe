@@ -329,6 +329,9 @@ class Refiner:
         Checks for duplicates in a pandas DataFrame.
         """
 
+        if subset is None:
+            subset = self.ids_for_dedup
+
         self.DUPLICATES_TEST = check_duplicates(dataframe = self.dataframe,
                                                  subset = subset,
                                                  independent = True,
@@ -437,7 +440,7 @@ class Refiner:
                                                  MISSING_TYPES = MISSING_TYPES,
                                                  unexpected_exceptions = unexpected_exceptions,
                                                  unexpected_conditions = unexpected_conditions,
-                                                 ids_for_dup = ids_for_dedup,
+                                                 ids_for_dedup = ids_for_dedup,
                                                  TEST_DUV_FLAGS_PATH = TEST_DUV_FLAGS_PATH,
                                                  types_dict_str = types_dict_str,
                                                  expected_date_format = expected_date_format,
@@ -464,7 +467,7 @@ class Refiner:
                                                  MISSING_TYPES = self.MISSING_TYPES,
                                                  unexpected_exceptions = self.unexpected_exceptions_duv,
                                                  unexpected_conditions = self.unexpected_conditions,
-                                                 ids_for_dup = self.ids_for_dedup,
+                                                 ids_for_dedup = self.ids_for_dedup,
                                                  TEST_DUV_FLAGS_PATH = None,
                                                  types_dict_str = self.type_dict,
                                                  expected_date_format = self.expected_date_format,

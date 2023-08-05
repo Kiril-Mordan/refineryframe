@@ -322,7 +322,7 @@ def check_duplicates(dataframe  : pd.DataFrame,
         duplicates = dataframe.duplicated()
         n_duplicates = duplicates.sum()
 
-        if subset is not None:
+        if (subset is not None) and (subset in list(dataframe.columns)):
             subset_duplicates = dataframe.duplicated(subset=subset)
             n_subset_duplicates = subset_duplicates.sum()
 
@@ -613,7 +613,7 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
                                                       "date_range": "NONE",
                                                       "numeric_range": "NONE"},
                              unexpected_conditions : dict = None,
-                             ids_for_dup : list = None,
+                             ids_for_dedup : list = None,
                              TEST_DUV_FLAGS_PATH : str = None,
                              types_dict_str : dict = None,
                              expected_date_format : str = '%Y-%m-%d',
@@ -636,7 +636,7 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
     unexpected_exceptions (dict): Dictionary that lists column exceptions for each of the
                                       following checks: col_names_types, missing_values, missing_types,
                                       inf_values, date_format, duplicates, date_range, and numeric_range.
-    ids_for_dup (list): List of columns to identify duplicates (default is None).
+    ids_for_dedup (list): List of columns to identify duplicates (default is None).
     TEST_DUV_FLAGS_PATH (str): Path for checking unexpected values (default is None).
     types_dict_str (str): String that describes the expected types of the columns (default is None).
     expected_date_format (str): The expected date format (default is '%Y-%m-%d').
@@ -709,12 +709,12 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
             run_check_additional_cons = False
 
 
-        if ids_for_dup is None:
+        if ids_for_dedup is None:
 
             if len(index_cols) > 0:
-                ids_for_dup = index_cols
+                ids_for_dedup = index_cols
             else:
-                ids_for_dup = all_columns
+                ids_for_dedup = all_columns
 
 
         # Checks scan
@@ -800,7 +800,7 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
             logger.debug("=== checking for duplicates")
 
             checks_list.extend(check_duplicates(dataframe = dataframe[cols_check_duplicates],
-                             subset = ids_for_dup,
+                             subset = ids_for_dedup,
                              independent = False,
                              logger = logger))
 
