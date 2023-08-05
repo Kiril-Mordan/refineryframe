@@ -15,6 +15,7 @@ and searches for any instances of these missing types in each column of the Data
 - `refineryframe.refiner.Refiner.get_refiner_settings` - extracts values of parameters from refiner and saves them in dictionary for later use.
 - `refineryframe.refiner.Refiner.get_type_dict_from_dataframe` - returns a dictionary or string representation of a dictionary containing the data types
 of each column in the given pandas DataFrame.
+- `refineryframe.refiner.Refiner.get_unexpected_exceptions_scaned` - returns unexpected_exceptions with appropriate settings to the values in the dataframe.
 - `refineryframe.refiner.Refiner.replace_unexpected_values` - replaces unexpected values in a pandas DataFrame with missing types.
 - `refineryframe.refiner.Refiner.set_refiner_settings` - updates input parameters with values from provided settings dict.
 - `refineryframe.refiner.Refiner.set_type_dict` - changes the data types of the columns in the given DataFrame
