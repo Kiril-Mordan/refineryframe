@@ -58,7 +58,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add README.md setup.py refineryframe/*
+          git add *
           git commit -m "Update README; setup.py; refineryframe files"
           git push
 
@@ -91,5 +91,5 @@ jobs:
         env:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
-        run: twine upload --skip-existing=false dist/*
+        run: twine upload dist/*
 
