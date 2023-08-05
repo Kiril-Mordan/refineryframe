@@ -7,6 +7,7 @@ def test_make_refiner_class(df, replace_dict, unexpected_exceptions):
     try:
         tns = Refiner(dataframe = df,
               replace_dict = replace_dict,
+              ids_for_dedup = None,
               loggerLvl = logging.DEBUG,
               unexpected_exceptions_duv = unexpected_exceptions)
     except Exception as e:

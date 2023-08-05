@@ -58,8 +58,8 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add README.md setup.py
-          git commit -m "Update README; setup.py"
+          git add README.md setup.py refineryframe/*
+          git commit -m "Update README; setup.py; refineryframe files"
           git push
 
 

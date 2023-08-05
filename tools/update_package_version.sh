@@ -4,21 +4,12 @@
 VERSION=$(grep -o "VERSION = '[0-9.]\+'" setup.py | grep -o "[0-9.]\+")
 
 # Increment the last number in the version string
-VERSION=$(echo $VERSION | awk -F. '{print $1"."$2"."$3+1}')
+VERSION=$(echo $VERSION | awk -F. '{$NF = $NF + 1;} 1' OFS=.)
 
-# Replace the old version with the updated version using Python
-python3 - <<EOF
-import re
+# Replace the old version with the updated version in the setup.py file
+awk -v new_version="$VERSION" '/VERSION =/ {gsub(/\047[0-9.]+\047/, "\047" new_version "\047")} 1' setup.py > setup.py.tmp && mv setup.py.tmp setup.py
 
-with open('setup.py', 'r') as file:
-    setup_py = file.read()
-
-# Replace the old version with the updated version using regex
-setup_py = re.sub(r"VERSION = '[0-9.]+'", "VERSION = '{}'".format("$VERSION"), setup_py)
-
-with open('setup.py', 'w') as file:
-    file.write(setup_py)
-EOF
+# Replace the old version with the updated version in the __init__.py file and preserve the other content
+awk -v new_version="$VERSION" '/__version__ =/ {gsub(/\047[0-9.]+\047/, "\047" new_version "\047")} 1' refineryframe/__init__.py > refineryframe/__init__.py.tmp && mv refineryframe/__init__.py.tmp refineryframe/__init__.py
 
 echo "Updated version to $VERSION"
-

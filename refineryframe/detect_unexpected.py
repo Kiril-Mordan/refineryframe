@@ -322,7 +322,7 @@ def check_duplicates(dataframe  : pd.DataFrame,
         duplicates = dataframe.duplicated()
         n_duplicates = duplicates.sum()
 
-        if (subset is not None) and (subset in list(dataframe.columns)):
+        if (subset is not None) and (subset != "ALL") and (subset in list(dataframe.columns)):
             subset_duplicates = dataframe.duplicated(subset=subset)
             n_subset_duplicates = subset_duplicates.sum()
 
@@ -709,9 +709,9 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
             run_check_additional_cons = False
 
 
-        if ids_for_dedup is None:
+        if ((ids_for_dedup is None) or (ids_for_dedup == "ALL")):
 
-            if (len(index_cols) > 0) and (index_cols in list(dataframe.columns)):
+            if (len(index_cols) > 0) and (list(index_cols) in list(dataframe.columns)):
                 ids_for_dedup = list(index_cols)
             else:
                 ids_for_dedup = list(dataframe.columns)
