@@ -99,7 +99,7 @@ class Refiner:
     earliest_date = attr.ib(default="1900-08-25")
     latest_date = attr.ib(default="2100-01-01")
 
-    ids_for_dedup = attr.ib(default=None)
+    ids_for_dedup = attr.ib(default=None, type=list)
 
     unexpected_exceptions_duv = attr.ib(default={"col_names_types": "NONE",
                                               "missing_values": "NONE",
