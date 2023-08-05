@@ -711,10 +711,10 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
 
         if ids_for_dedup is None:
 
-            if len(index_cols) > 0:
-                ids_for_dedup = index_cols
+            if (len(index_cols) > 0) and (index_cols in list(dataframe.columns)):
+                ids_for_dedup = list(index_cols)
             else:
-                ids_for_dedup = all_columns
+                ids_for_dedup = list(dataframe.columns)
 
 
         # Checks scan
