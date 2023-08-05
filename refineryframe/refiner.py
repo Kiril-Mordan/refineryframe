@@ -20,7 +20,60 @@ from refineryframe.replace_unexpected import replace_unexpected_values
 class Refiner:
 
     """
-    Class that encapsulates funtions from refineryframe.
+    Class that encapsulates functions for data refining and validation.
+
+    Attributes:
+        dataframe (pd.DataFrame): The input pandas DataFrame to be processed.
+        replace_dict (dict, optional): A dictionary to define replacements for specific values in the DataFrame.
+        MISSING_TYPES (dict, optional): Default values for missing types in different columns of the DataFrame.
+        expected_date_format (str, optional): The expected date format for date columns in the DataFrame.
+        mess (str, optional): A custom message used in the `shout` method for printing.
+        shout_type (str, optional): The type of output for the `shout` method (e.g., 'HEAD2').
+        logger (logging.Logger, optional): A custom logger object for logging messages.
+        logger_name (str, optional): The name of the logger for the class instance.
+        loggerLvl (int, optional): The logging level for the logger.
+        dotline_length (int, optional): The length of the line to be printed in the `shout` method.
+        lower_bound (float, optional): The lower bound for numeric range validation.
+        upper_bound (float, optional): The upper bound for numeric range validation.
+        earliest_date (str, optional): The earliest allowed date for date range validation.
+        latest_date (str, optional): The latest allowed date for date range validation.
+        ids_for_dedup (list, optional): A list of column names to be used for duplicate detection.
+        unexpected_exceptions_duv (dict, optional): A dictionary of unexpected exceptions for data value validation.
+        unexpected_exceptions_ruv (dict, optional): A dictionary of unexpected exceptions for data replacement validation.
+        unexpected_conditions (None or callable, optional): A callable function for custom unexpected conditions.
+        ignore_values (list, optional): A list of values to ignore during numeric range validation.
+        ignore_dates (list, optional): A list of dates to ignore during date range validation.
+
+    Methods:
+        shout(mess=None): Prints a line of text with a specified length and format.
+        get_type_dict_from_dataframe(explicit=True, stringout=False): Returns a dictionary containing the data types
+            of each column in the given pandas DataFrame.
+        set_type_dict(type_dict=None, explicit=True, stringout=False): Changes the data types of the columns in the
+            DataFrame based on a dictionary of intended data types.
+        set_types(type_dict=None, replace_dict=None, expected_date_format=None): Changes the data types of the columns
+            in the DataFrame based on a dictionary of intended data types.
+        get_refiner_settings(): Extracts values of parameters from the Refiner and saves them in a dictionary for later use.
+        set_refiner_settings(settings: dict): Updates input parameters with values from the provided settings dict.
+        check_missing_types(): Searches for instances of missing types in each column of the DataFrame.
+        check_missing_values(): Counts the number of NaN, None, and NaT values in each column of the DataFrame.
+        check_inf_values(): Counts the inf values in each column of the DataFrame.
+        check_date_format(): Checks if the values in the datetime columns have the expected 'YYYY-MM-DD' format.
+        check_duplicates(subset=None): Checks for duplicates in the DataFrame.
+        check_col_names_types(): Checks if the DataFrame has the same column names as the types_dict_str dictionary
+            and those columns have the same types as items in the dictionary.
+        check_numeric_range(numeric_cols=None, lower_bound=None, upper_bound=None, ignore_values=None): Checks if
+            numeric values are in expected ranges.
+        check_date_range(earliest_date=None, latest_date=None, ignore_dates=None): Checks if dates are in expected ranges.
+        detect_unexpected_values(MISSING_TYPES=None, unexpected_exceptions=None, unexpected_conditions=None,
+                                 ids_for_dedup=None, TEST_DUV_FLAGS_PATH=None, types_dict_str=None,
+                                 expected_date_format=None, earliest_date=None, latest_date=None, numeric_lower_bound=None,
+                                 numeric_upper_bound=None, print_score=True): Detects unexpected values in the DataFrame.
+        get_unexpected_exceptions_scaned(dataframe=None): Returns unexpected_exceptions with appropriate settings for the
+            values in the DataFrame.
+        replace_unexpected_values(MISSING_TYPES=None, unexpected_exceptions=None, unexpected_conditions=None,
+                                  TEST_RUV_FLAGS_PATH=None, earliest_date=None, latest_date=None, numeric_lower_bound=None,
+                                  numeric_upper_bound=None): Replaces unexpected values in the DataFrame with missing types
+                                  based on a dictionary of unexpected exceptions.
     """
 
 
@@ -345,7 +398,7 @@ class Refiner:
                                  MISSING_TYPES = None,
                                  unexpected_exceptions = None,
                                  unexpected_conditions = None,
-                                 ids_for_dup = None,
+                                 ids_for_dedup = None,
                                  TEST_DUV_FLAGS_PATH = None,
                                  types_dict_str = None,
                                  expected_date_format = None,
@@ -367,6 +420,8 @@ class Refiner:
             unexpected_conditions = self.unexpected_conditions
         if types_dict_str is None:
             types_dict_str = self.type_dict
+        if ids_for_dedup is None:
+            ids_for_dedup = self.ids_for_dedup
         if expected_date_format is None:
             expected_date_format = self.expected_date_format
         if earliest_date is None:
@@ -382,7 +437,7 @@ class Refiner:
                                                  MISSING_TYPES = MISSING_TYPES,
                                                  unexpected_exceptions = unexpected_exceptions,
                                                  unexpected_conditions = unexpected_conditions,
-                                                 ids_for_dup = ids_for_dup,
+                                                 ids_for_dup = ids_for_dedup,
                                                  TEST_DUV_FLAGS_PATH = TEST_DUV_FLAGS_PATH,
                                                  types_dict_str = types_dict_str,
                                                  expected_date_format = expected_date_format,
