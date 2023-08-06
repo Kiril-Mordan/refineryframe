@@ -9,26 +9,12 @@ import pandas as pd
 import logging
 sys.path.append(os.path.dirname(sys.path[0])) 
 from refineryframe.refiner import Refiner
+from refineryframe.demo import tiny_example
 ```
 
 
 ```python
-df = pd.DataFrame({
-    'num_id' : [1, 2, 3, 4, 5],
-    'NumericColumn': [1, -np.inf, np.inf,np.nan, None],
-    'NumericColumn_exepted': [1, -996, np.inf,np.nan, None],
-    'NumericColumn2': [None, None, 1,None, None],
-    'NumericColumn3': [1, 2, 3, 4, 5],
-    'DateColumn': pd.date_range(start='2022-01-01', periods=5),
-    'DateColumn2': [pd.NaT,pd.to_datetime('2022-01-01'),pd.NaT,pd.NaT,pd.NaT],
-    'DateColumn3': ['2122-05-01',
-                    '2022-01-01',
-                    '2021-01-01',
-                    '1000-01-09',
-                    '1850-01-09'],
-    'CharColumn': ['Fół', None, np.nan, 'nót eXpęćTęd', '']
-})
-
+df = tiny_example['dataframe']
 df
 ```
 
@@ -135,11 +121,32 @@ df
 
 
 ```python
-MISSING_TYPES = {'date_not_delivered': '1850-01-09',
-                 'date_other_missing_type': '1850-01-08',
-                 'numeric_not_delivered': -999,
-                 'character_not_delivered': 'missing'}
+MISSING_TYPES = tiny_example['MISSING_TYPES']
+MISSING_TYPES
 ```
+
+
+
+
+    {'date_not_delivered': '1850-01-09',
+     'date_other_missing_type': '1850-01-08',
+     'numeric_not_delivered': -999,
+     'character_not_delivered': 'missing'}
+
+
+
+
+```python
+replace_dict = tiny_example['replace_dict']
+replace_dict
+```
+
+
+
+
+    {-996: -999, '1000-01-09': '1850-01-09'}
+
+
 
 
 ```python
@@ -153,12 +160,6 @@ unexpected_exceptions = {
     "date_range": "NONE",
     "numeric_range": "NONE"
 }
-```
-
-
-```python
-replace_dict = {-996 : -999,
-                "1000-01-09": "1850-01-09"}
 ```
 
 ### Initializing Refiner class  <a name="initializning-refiner-class"></a>
@@ -269,6 +270,7 @@ tns.detect_unexpected_values(earliest_date = "1920-01-01",
                          latest_date = "DateColumn3")
 ```
 
+    DEBUG:Refiner:=== checking for column name duplicates
     DEBUG:Refiner:=== checking column names and types
     DEBUG:Refiner:=== checking for presence of missing values
     WARNING:Refiner:Column CharColumn: (NA) : 2 : 40.00%
@@ -287,7 +289,7 @@ tns.detect_unexpected_values(earliest_date = "1920-01-01",
     WARNING:Refiner:Column NumericColumn: (INF) : 2 : 40.00%
     WARNING:Refiner:Column NumericColumn_exepted: (INF) : 1 : 20.00%
     DEBUG:Refiner:=== checking expected numeric range
-    WARNING:Refiner:Percentage of passed tests: 50.00%
+    WARNING:Refiner:Percentage of passed tests: 53.85%
 
 
 
@@ -298,7 +300,7 @@ tns.duv_score
 
 
 
-    0.5
+    0.5384615384615384
 
 
 
@@ -377,6 +379,7 @@ unexpected_conditions = {
 tns.detect_unexpected_values(unexpected_conditions = unexpected_conditions)
 ```
 
+    DEBUG:Refiner:=== checking for column name duplicates
     DEBUG:Refiner:=== checking column names and types
     WARNING:Refiner:Incorrect data types:
     WARNING:Refiner:Column num_id: actual dtype is object, expected dtype is int64
@@ -398,7 +401,7 @@ tns.detect_unexpected_values(unexpected_conditions = unexpected_conditions)
     WARNING:Refiner:Replace numeric missing with with zero :: 1
     DEBUG:Refiner:Detect/Replace numeric values in certain column with zeros if > 2
     WARNING:Refiner:Detect/Replace numeric values in certain column with zeros if > 2 :: 2
-    WARNING:Refiner:Percentage of passed tests: 66.67%
+    WARNING:Refiner:Percentage of passed tests: 69.23%
 
 
 ##### - to replace unexpected values <a class="anchor" id="replace-unexpected-with-conds"></a>
@@ -543,6 +546,7 @@ tns.detect_unexpected_values(unexpected_exceptions = {
 })
 ```
 
+    DEBUG:Refiner:=== checking for column name duplicates
     DEBUG:Refiner:=== checking column names and types
     WARNING:Refiner:Incorrect data types:
     WARNING:Refiner:Column num_id: actual dtype is object, expected dtype is int64
@@ -551,7 +555,7 @@ tns.detect_unexpected_values(unexpected_exceptions = {
     DEBUG:Refiner:=== checking expected date range
     DEBUG:Refiner:=== checking for presense of inf values in numeric colums
     DEBUG:Refiner:=== checking expected numeric range
-    WARNING:Refiner:Percentage of passed tests: 88.89%
+    WARNING:Refiner:Percentage of passed tests: 90.00%
 
 
 #### Scores
@@ -564,7 +568,7 @@ print(f'ruv_score1: {tns.ruv_score1 :.4}')
 print(f'ruv_score2: {tns.ruv_score2 :.4}')
 ```
 
-    duv_score: 0.8889
+    duv_score: 0.9
     ruv_score0: 0.8222
     ruv_score1: 0.8889
     ruv_score2: 0.9753

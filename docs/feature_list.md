@@ -1,10 +1,12 @@
 ## Feature List
 
+- `refineryframe.refiner.Refiner.add_index_to_duplicate_columns` - adds an index to duplicate column names in a pandas DataFrame.
 - `refineryframe.refiner.Refiner.check_col_names_types` - checks if a given dataframe has the same column names as keys in a given dictionary
 and those columns have the same types as items in the dictionary.
 - `refineryframe.refiner.Refiner.check_date_format` - checks if the values in the datetime columns of the input dataframe
 have the expected 'YYYY-MM-DD' format.
 - `refineryframe.refiner.Refiner.check_date_range` - checks if dates are in expected ranges.
+- `refineryframe.refiner.Refiner.check_duplicate_col_names` - checks for duplicate column names in a pandas DataFrame.
 - `refineryframe.refiner.Refiner.check_duplicates` - checks for duplicates in a pandas DataFrame.
 - `refineryframe.refiner.Refiner.check_inf_values` - counts the inf values in each column of a pandas DataFrame.
 - `refineryframe.refiner.Refiner.check_missing_types` - takes a DataFrame and a dictionary of missing types as input,
