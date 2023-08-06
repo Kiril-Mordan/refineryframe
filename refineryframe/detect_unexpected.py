@@ -77,6 +77,7 @@ from refineryframe.other import get_type_dict, treat_unexpected_cond
 def check_missing_types(dataframe : pd.DataFrame,
                         MISSING_TYPES : dict,
                         independent : bool = True,
+                        throw_error : bool = False,
                         logger : logging.Logger = logging):
 
     """
@@ -119,6 +120,9 @@ def check_missing_types(dataframe : pd.DataFrame,
                             logger.warning(f"Column {col}: ({v}) : {counts[k]} : {(counts[k]/dataframe.shape[0])*100:.2f}%")
 
                         NUMERIC_MISS_TYPES_TEST_LIST.append(False)
+
+                        if throw_error:
+                            raise ValueError("Resolve issues before proceesing any further!")
                     else:
                         NUMERIC_MISS_TYPES_TEST_LIST.append(True)
             elif dtype.startswith('datetime') or dtype.startswith('datetime64'):
@@ -129,6 +133,9 @@ def check_missing_types(dataframe : pd.DataFrame,
                             if counts[k] > 0:
                                 logger.warning(f"Column {col}: ({v}) : {counts[k]} : {(counts[k]/dataframe.shape[0])*100:.2f}%")
                             DATE_MISS_TYPES_TEST_LIST.append(False)
+
+                            if throw_error:
+                                raise ValueError("Resolve issues before proceesing any further!")
                         else:
                             DATE_MISS_TYPES_TEST_LIST.append(True)
                     else:
@@ -142,12 +149,20 @@ def check_missing_types(dataframe : pd.DataFrame,
                             logger.warning(f"Column {col}: ({v}) : {counts[k]} : {(counts[k]/dataframe.shape[0])*100:.2f}%")
                         CHARACTER_MISS_TYPES_TEST_LIST.append(False)
 
+                        if throw_error:
+                            raise ValueError("Resolve issues before proceesing any further!")
+
                     else:
                         CHARACTER_MISS_TYPES_TEST_LIST.append(True)
     except Exception as e:
 
         logger.error("Error occured while checking missing types!")
-        print("The error:", e)
+
+        if throw_error:
+            raise e
+        else:
+            print("The error:", e)
+
         DATE_MISS_TYPES_TEST_LIST = [False]
         NUMERIC_MISS_TYPES_TEST_LIST = [False]
         CHARACTER_MISS_TYPES_TEST_LIST = [False]
@@ -165,6 +180,7 @@ def check_missing_types(dataframe : pd.DataFrame,
 
 
 def check_missing_values(dataframe : pd.DataFrame,
+                         throw_error : bool = False,
                         logger : logging.Logger = logging):
     """
     Count the number of NaN, None, and NaT values in each column of a pandas DataFrame.
@@ -194,13 +210,21 @@ def check_missing_values(dataframe : pd.DataFrame,
         if len(missing_counts_filtered) > 0:
             for col, count in zip(missing_counts_filtered.index.to_list(), list(missing_counts_filtered.values)):
                 logger.warning(f"Column {col}: (NA) : {count} : {count/dataframe.shape[0]*100:.2f}%")
+
+            if throw_error:
+                    raise ValueError("Resolve issues before proceesing any further!")
         else:
             MISSING_COUNT_TEST = True
 
     except Exception as e:
 
         logger.error("Error occured while counting missing values!")
-        print("The error:", e)
+
+
+        if throw_error:
+            raise e
+        else:
+            print("The error:", e)
 
     return MISSING_COUNT_TEST
 
@@ -208,6 +232,7 @@ def check_missing_values(dataframe : pd.DataFrame,
 
 def check_inf_values(dataframe : pd.DataFrame,
                      independent : bool = True,
+                     throw_error : bool = False,
                      logger : logging.Logger = logging):
     """
     Count the inf values in each column of a pandas DataFrame.
@@ -240,11 +265,19 @@ def check_inf_values(dataframe : pd.DataFrame,
             if col_missing_counts > 0:
                 logger.warning(f"Column {col}: (INF) : {col_missing_counts} : {col_missing_counts/dataframe.shape[0]*100:.2f}%")
                 NUM_INF_TEST_LIST.append(False)
+
+                if throw_error:
+                        raise ValueError("Resolve issues before proceesing any further!")
             else:
                 NUM_INF_TEST_LIST.append(True)
     except Exception as e:
         logger.error("Error occured while checking inf values!")
-        print("The error:", e)
+
+        if throw_error:
+            raise e
+        else:
+            print("The error:", e)
+
         NUM_INF_TEST_LIST = [False]
 
     return all(NUM_INF_TEST_LIST)
@@ -252,6 +285,7 @@ def check_inf_values(dataframe : pd.DataFrame,
 def check_date_format(dataframe : pd.DataFrame,
                       expected_date_format : str = '%Y-%m-%d',
                       independent : bool = True,
+                      throw_error : bool = False,
                       logger : logging.Logger = logging) -> bool:
 
     """
@@ -269,24 +303,36 @@ def check_date_format(dataframe : pd.DataFrame,
     """
 
     try:
-
         DATE_FORMAT_TEST_LIST = []
 
         for col in dataframe.columns:
             dtype = str(dataframe[col].dtype)
 
-            if dtype.startswith('date'):
-                date_vals = dataframe[col].astype(str).apply(lambda x: datetime.strptime(x, expected_date_format).date()
-                                                      if x != 'NaT' else None)
-                if any(date_vals.isna()):
+            if dtype.startswith('datetime'):
+                date_vals = pd.to_datetime(dataframe[col], errors='coerce').dt.date
+                non_date_mask = date_vals.isna()
+
+                if any(non_date_mask):
                     logger.warning(f"Column {col} has non-date values or unexpected format.")
                     DATE_FORMAT_TEST_LIST.append(False)
+
+                    if throw_error:
+                        raise ValueError("Resolve issues before proceesing any further!")
                 else:
                     DATE_FORMAT_TEST_LIST.append(True)
 
+        if not independent:
+            if any(DATE_FORMAT_TEST_LIST):
+                DATE_FORMAT_TEST_LIST = [all(DATE_FORMAT_TEST_LIST)]
+
     except Exception as e:
-        logger.error("Error occured while checking date format!")
-        print("The error:", e)
+        logger.error("Error occurred while checking date format!")
+
+        if throw_error:
+            raise e
+        else:
+            print("The error:", e)
+
         DATE_FORMAT_TEST_LIST = [False]
 
     return all(DATE_FORMAT_TEST_LIST)
@@ -296,6 +342,7 @@ def check_date_format(dataframe : pd.DataFrame,
 def check_duplicates(dataframe  : pd.DataFrame,
                      subset : list = None,
                      independent : bool = True,
+                     throw_error : bool = False,
                     logger : logging.Logger = logging) -> bool:
     """
     Check for duplicates in a pandas DataFrame.
@@ -335,9 +382,15 @@ def check_duplicates(dataframe  : pd.DataFrame,
 
                     logger.warning("** Deduplication keys do not form the super key!")
                     logger.warning(f"There are {n_true_dup} duplicates beyond keys : {n_true_dup/dataframe.shape[0]*100:.2f}%")
+
+                    if throw_error:
+                        raise ValueError("Resolve issues before proceesing any further!")
                 else:
                     ROW_DUPLICATES = False
                     KEY_DUPLICATES = True
+
+                    if throw_error:
+                        raise ValueError("Resolve issue with row duplicates before proceesing any further!")
 
             else:
                 ROW_DUPLICATES = True
@@ -351,7 +404,11 @@ def check_duplicates(dataframe  : pd.DataFrame,
 
     except Exception as e:
         logger.error("Error occured while checking duplicates!")
-        print("The error:", e)
+
+        if throw_error:
+            raise e
+        else:
+            print("The error:", e)
 
 
     if independent:
@@ -364,6 +421,7 @@ def check_duplicates(dataframe  : pd.DataFrame,
 def check_col_names_types(dataframe : pd.DataFrame,
                           types_dict_str : dict,
                           independent : bool = True,
+                          throw_error : bool = False,
                           logger : logging.Logger = logging) -> bool:
     """
     Checks if a given dataframe has the same column names as keys in a given dictionary
@@ -399,6 +457,9 @@ def check_col_names_types(dataframe : pd.DataFrame,
         if missing_cols:
             logger.warning("** Columns in the dataframe are not the same as in the provided dictionary")
             logger.warning(f"Missing columns: {', '.join(missing_cols)}")
+
+            if throw_error:
+                    raise ValueError("Resolve issues before proceesing any further!")
         else:
             COL_NAMES_TEST = True
 
@@ -411,13 +472,21 @@ def check_col_names_types(dataframe : pd.DataFrame,
             logger.warning("Incorrect data types:")
             for col, actual_dtype, expected_dtype in incorrect_dtypes:
                 logger.warning(f"Column {col}: actual dtype is {actual_dtype}, expected dtype is {expected_dtype}")
+
+            if throw_error:
+                    raise ValueError("Resolve issues before proceesing any further!")
         else:
             COL_TYPES_TEST = True
 
 
     except Exception as e:
         logger.error("Error occured while checking column names and types")
-        print("The error:", e)
+
+        if throw_error:
+            raise e
+        else:
+            print("The error:", e)
+
         COL_NAMES_TEST = False
         COL_TYPES_TEST = False
 
@@ -433,6 +502,7 @@ def check_numeric_range(dataframe : pd.DataFrame,
                         upper_bound : float = float("inf"),
                         independent : bool = True,
                         ignore_values : list = [],
+                        throw_error : bool = False,
                         logger : logging.Logger = logging) -> bool:
     """
     Check if numeric values are in expected ranges
@@ -491,6 +561,11 @@ def check_numeric_range(dataframe : pd.DataFrame,
                 logger.warning(f"** Not all values in {col} are higher than {lower_bound}")
                 logger.warning(f"Column {col}: unexpected low values : {min_value} : {min_values_n/dataframe.shape[0]*100:.2f} %")
                 LOW_NUMERIC_TEST_LIST.append(False)
+
+                if throw_error:
+
+                    raise ValueError("Resolve issue with numeric values being lower the acceptable lower bound before proceesing any further!")
+
             else:
                 LOW_NUMERIC_TEST_LIST.append(True)
 
@@ -504,12 +579,21 @@ def check_numeric_range(dataframe : pd.DataFrame,
                 logger.warning(f"** Not all values in {col} are lower than {upper_bound}")
                 logger.warning(f"Column {col}: unexpected high values : {max_value} : {max_values_n/dataframe.shape[0]*100:.2f} %")
                 HIGH_NUMERIC_TEST_LIST.append(False)
+
+                if throw_error:
+
+                    raise ValueError("Resolve issue with numeric values exceeding upper bound before proceesing any further!")
             else:
                 HIGH_NUMERIC_TEST_LIST.append(True)
 
     except Exception as e:
         logger.error("Error occurred while checking numeric ranges!")
-        logger.error(f"The error: {e}")
+
+        if throw_error:
+            raise e
+        else:
+            print("The error:", e)
+
         LOW_NUMERIC_TEST_LIST = [False]
         HIGH_NUMERIC_TEST_LIST = [False]
 
@@ -525,6 +609,7 @@ def check_date_range(dataframe : pd.DataFrame,
                      latest_date : str = "2100-01-01",
                      independent : bool = True,
                      ignore_dates : list = [],
+                     throw_error : bool = False,
                     logger : logging.Logger = logging) -> bool:
     """
     Check if dates are in expected ranges
@@ -576,6 +661,9 @@ def check_date_range(dataframe : pd.DataFrame,
                 logger.warning(f"** Not all dates in {col} are later than {earliest_date}")
                 logger.warning(f"Column {col} : ancient date : {early_dates} : {early_dates/dataframe.shape[0]*100:.2f}%")
                 ANCIENT_DATE_TEST_LIST.append(False)
+
+                if throw_error:
+                    raise ValueError("Resolve issue with ancient dates before proceesing any further!")
             else:
                 ANCIENT_DATE_TEST_LIST.append(True)
 
@@ -585,12 +673,21 @@ def check_date_range(dataframe : pd.DataFrame,
                 logger.warning(f"** Not all dates in {col} are later than {latest_date}")
                 logger.warning(f"Column {col} : future date : {future_dates} : {future_dates/dataframe.shape[0]*100:.2f}%")
                 FUTURE_DATE_TEST_LIST.append(False)
+
+                if throw_error:
+                    raise ValueError("Resolve issue with future dates before proceesing any further!")
             else:
                 FUTURE_DATE_TEST_LIST.append(True)
 
+
     except Exception as e:
         logger.error("Error occured while checking date ranges!")
-        print("The error:", e)
+
+        if throw_error:
+            raise e
+        else:
+            print("The error:", e)
+
         ANCIENT_DATE_TEST_LIST = [False]
         FUTURE_DATE_TEST_LIST = [False]
 
@@ -598,6 +695,120 @@ def check_date_range(dataframe : pd.DataFrame,
         return all([all(ANCIENT_DATE_TEST_LIST), all(FUTURE_DATE_TEST_LIST)])
     else:
         return (all(ANCIENT_DATE_TEST_LIST), all(FUTURE_DATE_TEST_LIST))
+
+def check_duplicate_col_names(dataframe  : pd.DataFrame,
+                                throw_error : bool = False,
+                                logger : logging.Logger = logging) -> dict:
+
+    """
+    Checks for duplicate column names in a pandas DataFrame.
+
+    Parameters:
+    -----------
+    dataframe : pandas DataFrame
+        The DataFrame to check for duplicate column names.
+    throw_error : bool, optional
+        If True, raise a ValueError when duplicate column names are found.
+        If False, print a warning message and continue execution.
+        Default is False.
+    logger : logging.Logger, optional
+        The logger object to use for logging warning and error messages.
+        Default is the root logger.
+
+    Returns:
+    --------
+    dict
+        A dictionary containing information about the duplicates.
+        'column_name_freq': dict
+            A dictionary where keys are duplicate column names, and values are the number of occurrences.
+        'COLUMN_NAMES_DUPLICATES_TEST': bool
+            True if duplicate column names are found, False otherwise.
+    """
+
+
+    try:
+
+        dataframe = dataframe.copy()
+
+        dataframe_u_columns = dataframe.columns.unique()
+
+        column_name_freq = {col : pd.DataFrame(dataframe[col]).shape[1] for col in dataframe.columns.unique()}
+
+        if len(dataframe.columns) != len(dataframe_u_columns):
+
+            logger.warning("There are duplicate column names")
+
+            [logger.warning(f"Column {col} : duplicate column names : {n_dup}")  for col,n_dup in column_name_freq.items()]
+
+            if throw_error:
+
+                raise ValueError("Resolve issue with duplicate column names before proceesing any further!")
+
+
+            COLUMN_NAMES_DUPLICATES_TEST = False
+
+        else:
+
+            COLUMN_NAMES_DUPLICATES_TEST = True
+
+            column_name_freq = None
+
+
+    except Exception as e:
+
+        logger.error("Error occured while checking duplicates!")
+
+        if throw_error:
+            raise e
+        else:
+            print("The error:", e)
+
+        column_name_freq = {}
+        COLUMN_NAMES_DUPLICATES_TEST = False
+
+    return {'column_name_freq' : column_name_freq,
+            'COLUMN_NAMES_DUPLICATES_TEST' : [COLUMN_NAMES_DUPLICATES_TEST]}
+
+
+def add_index_to_duplicate_columns(dataframe: pd.DataFrame,
+                                   column_name_freq: dict,
+                                  logger : logging.Logger = logging) -> pd.DataFrame:
+    """
+    Adds an index to duplicate column names in a pandas DataFrame.
+
+    Parameters:
+    -----------
+    dataframe : pandas DataFrame
+        The DataFrame containing the duplicate columns.
+    column_name_freq : dict
+        A dictionary where keys are duplicate column names, and values are the number of occurrences.
+
+    Returns:
+    --------
+    pandas DataFrame
+        The DataFrame with updated column names.
+    """
+
+    try:
+
+        dataframe = dataframe.copy()
+
+        new_columns = []
+        for col, freq in column_name_freq.items():
+            if freq == 1:
+                new_columns.append(col)
+            else:
+                new_columns.extend([f"{col}_({i + 1})" for i in range(freq)])
+        dataframe.columns = new_columns
+
+        logger.warning("Indexes added to duplicated column names!")
+
+    except Exception as e:
+        logger.error("Error occured while adding index to duplicated column names!")
+        raise e
+
+
+    return dataframe
 
 
 def detect_unexpected_values(dataframe : pd.DataFrame,
@@ -612,6 +823,15 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
                                                       "duplicates": "NONE",
                                                       "date_range": "NONE",
                                                       "numeric_range": "NONE"},
+                             unexpected_exceptions_error = {"col_name_duplicates": False,
+                                                   "col_names_types": False,
+                                                    "missing_values": False,
+                                                    "missing_types": False,
+                                                    "inf_values": False,
+                                                    "date_format": False,
+                                                    "duplicates": False,
+                                                    "date_range": False,
+                                                    "numeric_range": False},
                              unexpected_conditions : dict = None,
                              ids_for_dedup : list = None,
                              TEST_DUV_FLAGS_PATH : str = None,
@@ -654,6 +874,28 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
 
     try:
 
+        dataframe = dataframe.copy()
+
+        # Checks for duv score
+        checks_list = []
+
+        # Check of column names are not duplicated
+
+        logger.debug("=== checking for column name duplicates")
+
+        cdcn_obj = check_duplicate_col_names(dataframe = dataframe,
+                                                    throw_error = unexpected_exceptions_error['col_name_duplicates'],
+                                                    logger = logger)
+
+        checks_list.extend(cdcn_obj['COLUMN_NAMES_DUPLICATES_TEST'])
+
+
+
+        if not checks_list[-1]:
+
+            dataframe = add_index_to_duplicate_columns(dataframe = dataframe,
+                                                        column_name_freq = cdcn_obj['column_name_freq'],
+                                                        logger = logger)
 
         # Separate column names by major types
 
@@ -729,9 +971,6 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
             "numeric_range": "NONE"
         }
 
-        # Run checks
-        checks_list = []
-
 
         if run_check_col_names_types:
 
@@ -740,6 +979,7 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
             checks_list.extend(check_col_names_types(dataframe = dataframe[cols_check_col_names_types],
                                                        types_dict_str = types_dict_str,
                                                        independent = False,
+                                                       throw_error = unexpected_exceptions_error['col_names_types'],
                                                        logger = logger))
 
             if not checks_list[-1]:
@@ -750,6 +990,7 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
             logger.debug("=== checking for presence of missing values")
 
             checks_list.extend([check_missing_values(dataframe = dataframe[cols_check_missing_values],
+                                                     throw_error = unexpected_exceptions_error['missing_values'],
                                                      logger = logger)])
 
             if not checks_list[-1]:
@@ -762,6 +1003,7 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
             checks_list.extend(check_missing_types(dataframe = dataframe[cols_check_missing_types],
                                                     MISSING_TYPES = MISSING_TYPES,
                                                     independent = False,
+                                                    throw_error = unexpected_exceptions_error['missing_types'],
                                                     logger = logger))
 
             if not checks_list[-1]:
@@ -774,6 +1016,7 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
             checks_list.extend([check_date_format(dataframe = dataframe[cols_check_date_format],
                                                   expected_date_format = expected_date_format,
                                                   independent = False,
+                                                  throw_error = unexpected_exceptions_error['date_format'],
                                                   logger = logger)])
 
             if not checks_list[-1]:
@@ -790,6 +1033,7 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
                                                  independent = False,
                                                  ignore_dates = [v for k, v in MISSING_TYPES.items()
                                                                  if k.startswith("date_")],
+                                                 throw_error = unexpected_exceptions_error['date_range'],
                                                  logger = logger))
 
             if not checks_list[-1]:
@@ -800,9 +1044,10 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
             logger.debug("=== checking for duplicates")
 
             checks_list.extend(check_duplicates(dataframe = dataframe[cols_check_duplicates],
-                             subset = ids_for_dedup,
-                             independent = False,
-                             logger = logger))
+                                                subset = ids_for_dedup,
+                                                independent = False,
+                                                throw_error = unexpected_exceptions_error['duplicates'],
+                                                logger = logger))
 
             if not checks_list[-1]:
                 unexpected_exceptions_scaned["duplicates"] = "ALL"
@@ -814,6 +1059,7 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
 
             checks_list.extend([check_inf_values(dataframe = dataframe[cols_check_inf_values],
                                                  independent = False,
+                                                 throw_error = unexpected_exceptions_error['inf_values'],
                                                  logger = logger)])
 
             if not checks_list[-1]:
@@ -829,6 +1075,7 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
                                                     independent = False,
                                                     ignore_values = [v for k, v in MISSING_TYPES.items()
                                                                      if k.startswith("numeric_")],
+                                                    throw_error = unexpected_exceptions_error['numeric_range'],
                                                     logger = logger))
 
             if not checks_list[-1]:

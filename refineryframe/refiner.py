@@ -13,7 +13,8 @@ from refineryframe.other import shoutOUT, get_type_dict, set_types
 from refineryframe.detect_unexpected import check_date_range, \
     check_col_names_types, check_date_format, check_duplicates, \
         check_inf_values, check_missing_values, check_numeric_range, \
-            check_missing_types, detect_unexpected_values
+            check_missing_types, detect_unexpected_values, add_index_to_duplicate_columns, \
+                check_duplicate_col_names
 from refineryframe.replace_unexpected import replace_unexpected_values
 
 @attr.s
@@ -40,6 +41,7 @@ class Refiner:
         ids_for_dedup (list, optional): A list of column names to be used for duplicate detection.
         unexpected_exceptions_duv (dict, optional): A dictionary of unexpected exceptions for data value validation.
         unexpected_exceptions_ruv (dict, optional): A dictionary of unexpected exceptions for data replacement validation.
+        unexpected_exceptions_error (dict, optional): A dictionary that indicates if error should be raised during duv.
         unexpected_conditions (None or callable, optional): A callable function for custom unexpected conditions.
         ignore_values (list, optional): A list of values to ignore during numeric range validation.
         ignore_dates (list, optional): A list of dates to ignore during date range validation.
@@ -54,6 +56,8 @@ class Refiner:
             in the DataFrame based on a dictionary of intended data types.
         get_refiner_settings(): Extracts values of parameters from the Refiner and saves them in a dictionary for later use.
         set_refiner_settings(settings: dict): Updates input parameters with values from the provided settings dict.
+        check_duplicate_col_names(throw_error=None): Checks for duplicate column names in a pandas DataFrame.
+        add_index_to_duplicate_columns(column_names_freq: dict): Adds an index to duplicate column names in a pandas DataFrame.
         check_missing_types(): Searches for instances of missing types in each column of the DataFrame.
         check_missing_values(): Counts the number of NaN, None, and NaT values in each column of the DataFrame.
         check_inf_values(): Counts the inf values in each column of the DataFrame.
@@ -110,10 +114,20 @@ class Refiner:
                                               "numeric_range": "NONE"}, type=dict)
 
     unexpected_exceptions_ruv = attr.ib(default={"irregular_values": "NONE",
-                                                      "date_range": "NONE",
-                                                      "numeric_range": "NONE",
-                                                      "capitalization": "NONE",
-                                                      "unicode_character": "NONE"}, type=dict)
+                                                "date_range": "NONE",
+                                                "numeric_range": "NONE",
+                                                "capitalization": "NONE",
+                                                "unicode_character": "NONE"}, type=dict)
+
+    unexpected_exceptions_error = attr.ib(default={"col_name_duplicates": False,
+                                                   "col_names_types": False,
+                                                    "missing_values": False,
+                                                    "missing_types": False,
+                                                    "inf_values": False,
+                                                    "date_format": False,
+                                                    "duplicates": False,
+                                                    "date_range": False,
+                                                    "numeric_range": False}, type=dict)
 
     unexpected_conditions = attr.ib(default=None)
 
@@ -124,6 +138,7 @@ class Refiner:
     unexpected_exceptions_scaned = attr.ib(default={},init = False, type=dict)
     type_dict = attr.ib(default={}, init = False, type=dict)
 
+    COLUMN_NAMES_DUPLICATES_TEST = attr.ib(default=None, init = False)
     MISSING_TYPES_TEST = attr.ib(default=None, init = False)
     MISSING_COUNT_TEST = attr.ib(default=None, init = False)
     NUM_INF_TEST = attr.ib(default=None, init = False)
@@ -167,6 +182,36 @@ class Refiner:
                  mess=mess,
                  dotline_length=self.dotline_length,
                  logger=self.logger)
+
+    def check_duplicate_col_names(self,
+                                  throw_error = None) -> None:
+
+        """
+        Checks for duplicate column names in a pandas DataFrame.
+        """
+
+        if throw_error is None:
+            throw_error = self.unexpected_exceptions_error["col_name_duplicates"]
+
+        cdcn_obj = check_duplicate_col_names(dataframe = self.dataframe,
+                                  throw_error = throw_error,
+                                  logger = self.logger)
+
+        self.COLUMN_NAMES_DUPLICATES_TEST = cdcn_obj['COLUMN_NAMES_DUPLICATES_TEST']
+        self.column_name_freq = cdcn_obj['column_name_freq']
+
+    def add_index_to_duplicate_columns(self,
+                                       column_name_freq = None) -> None:
+
+        """
+        Adds an index to duplicate column names in a pandas DataFrame.
+        """
+
+        if column_name_freq is None:
+            column_name_freq = self.column_name_freq
+
+        self.dataframe = add_index_to_duplicate_columns(dataframe = self.dataframe,
+                                                        column_name_freq = column_name_freq)
 
     def get_type_dict_from_dataframe(self,
                       explicit=True,
@@ -238,20 +283,21 @@ class Refiner:
         """
 
         exclude_attributes = ['dataframe',
-                      'MISSING_TYPES_TEST',
-                      'MISSING_COUNT_TEST',
-                      'NUM_INF_TEST',
-                      'DATE_FORMAT_TEST',
-                      'DATE_RANGE_TEST',
-                      'DUPLICATES_TEST',
-                      'COL_NAMES_TYPES_TEST',
-                      'NUMERIC_RANGE_TEST',
-                      'logger',
-                      'unexpected_exceptions_scaned',
-                      'duv_score',
-                      'ruv_score0',
-                      'ruv_score1',
-                      'ruv_score2']
+                              'COLUMN_NAMES_DUPLICATES_TEST',
+                                'MISSING_TYPES_TEST',
+                                'MISSING_COUNT_TEST',
+                                'NUM_INF_TEST',
+                                'DATE_FORMAT_TEST',
+                                'DATE_RANGE_TEST',
+                                'DUPLICATES_TEST',
+                                'COL_NAMES_TYPES_TEST',
+                                'NUMERIC_RANGE_TEST',
+                                'logger',
+                                'unexpected_exceptions_scaned',
+                                'duv_score',
+                                'ruv_score0',
+                                'ruv_score1',
+                                'ruv_score2']
 
         # Getting the dictionary representation of the instance
         my_instance_dict = attr.asdict(self)

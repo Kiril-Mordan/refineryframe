@@ -12,6 +12,7 @@ import pandas as pd
 import numpy as np
 from unidecode import unidecode
 from refineryframe.other import get_type_dict, treat_unexpected_cond
+from refineryframe.detect_unexpected import check_duplicate_col_names, add_index_to_duplicate_columns
 
 
 ####
@@ -59,8 +60,20 @@ def replace_unexpected_values(dataframe : pd.DataFrame,
 
     try:
 
-
         dataframe = dataframe.copy()
+
+        # Check of column names are not duplicated
+
+        cdcn_obj = check_duplicate_col_names(dataframe = dataframe,
+                                                    throw_error = False,
+                                                    logger = logger)
+
+
+        if not cdcn_obj['COLUMN_NAMES_DUPLICATES_TEST'][-1]:
+
+            dataframe = add_index_to_duplicate_columns(dataframe = dataframe,
+                                                        column_name_freq = cdcn_obj['column_name_freq'],
+                                                        logger = logger)
 
         # Separate column names by major types
 

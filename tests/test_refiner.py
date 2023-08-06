@@ -119,7 +119,7 @@ def test_detect_unexpected_values(tns, caplog):
     assert "Not all dates in DateColumn are later than DateColumn3" in caplog.text
     assert "checking for presense of inf values in numeric colums" in caplog.text
     assert "checking expected numeric range" in caplog.text
-    assert "Percentage of passed tests: 50.00%" in caplog.text
+    assert "Percentage of passed tests: 53.85%" in caplog.text
 
 
 def test_get_unexpected_exceptions_scaned(tns, scanned_unexpected_exceptions):
@@ -131,7 +131,7 @@ def test_get_unexpected_exceptions_scaned(tns, scanned_unexpected_exceptions):
 
 def test_duv_score1(tns):
 
-    assert tns.duv_score == 0.5
+    assert tns.duv_score == 0.5384615384615384
 
 
 def test_replace_unexpected(tns,df1, caplog):
@@ -182,7 +182,7 @@ def test_detect_unexpected_values_with_conds(tns, unexpected_conditions, caplog)
     assert "Replace numeric missing with with zero :: 1" in caplog.text
     assert "Detect/Replace numeric values in certain column with zeros if > 2" in caplog.text
     assert "Detect/Replace numeric values in certain column with zeros if > 2 :: 2" in caplog.text
-    assert "Percentage of passed tests: 66.67%" in caplog.text
+    assert "Percentage of passed tests: 69.23%" in caplog.text
 
 
 def test_replace_unexpected_with_conds(tns,df2, unexpected_conditions, caplog):
