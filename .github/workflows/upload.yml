@@ -6,6 +6,7 @@ on:
       - main
   pull_request:
 
+
 jobs:
   test:
     runs-on: ${{ matrix.os }}
@@ -34,7 +35,7 @@ jobs:
 
   post_test:
     needs: test
-    if: ${{ needs.test.result == 'success' }}
+    if: ${{ needs.test.result == 'success' && github.ref == 'refs/heads/main'}}
     runs-on: ubuntu-latest
     steps:
       # Steps to be run after successful test
@@ -65,7 +66,7 @@ jobs:
 
   publish:
     needs: post_test
-    if: ${{ needs.post_test.result == 'success' }}
+    if: ${{ needs.post_test.result == 'success' && github.ref == 'refs/heads/main'}}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -80,9 +81,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install setuptools wheel twine
-
-      - name: Pull latest changes from the remote repository
-        run: git pull origin main
 
       - name: Build package
         run: python setup.py sdist bdist_wheel
