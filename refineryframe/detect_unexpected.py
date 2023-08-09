@@ -369,7 +369,7 @@ def check_duplicates(dataframe  : pd.DataFrame,
         duplicates = dataframe.duplicated()
         n_duplicates = duplicates.sum()
 
-        if (subset is not None) and (subset != "ALL") and (subset in list(dataframe.columns)):
+        if (subset is not None) and (subset != "ALL") and all(col in dataframe.columns for col in subset):
             subset_duplicates = dataframe.duplicated(subset=subset)
             n_subset_duplicates = subset_duplicates.sum()
 

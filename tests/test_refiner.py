@@ -1,6 +1,10 @@
 import pytest
 import logging
 from refineryframe.refiner import Refiner, check_duplicates
+from refineryframe.detect_unexpected import check_missing_types, \
+    check_missing_values, check_inf_values, check_date_format, \
+        check_duplicates, check_col_names_types, check_numeric_range, \
+            check_date_range
 
 def test_make_refiner_class(df, replace_dict, unexpected_exceptions):
 
@@ -231,6 +235,52 @@ def test_set_refiner_settings(tns2,df, refiner_settings):
 
     assert tns.duv_score == tns2.duv_score
 
+
+
+def test_check_missing_types_error(df1, MISSING_TYPES):
+    with pytest.raises(ValueError):
+        check_missing_types(df1,
+                            MISSING_TYPES,
+                            throw_error=True)
+
+def test_check_missing_values_error(df):
+    with pytest.raises(ValueError):
+        check_missing_values(df,
+                             throw_error=True)
+
+def test_check_inf_values_error(df):
+    with pytest.raises(ValueError):
+        check_inf_values(df,
+                         throw_error=True)
+
+def test_check_date_format_error(df):
+    with pytest.raises(ValueError):
+        check_date_format(df,
+                          throw_error=True)
+
+def test_check_duplicates_error(df2):
+    with pytest.raises(ValueError):
+        check_duplicates(df2,
+                         subset=['NumericColumn'],
+                         throw_error=True)
+
+def test_check_col_names_types_error(df,types_dict_str):
+    with pytest.raises(ValueError):
+        check_col_names_types(df,
+                              types_dict_str,
+                              throw_error=True)
+
+def test_check_numeric_range_error(df):
+    with pytest.raises(ValueError):
+        check_numeric_range(df,
+                            numeric_cols=['NumericColumn','NumericColumn_exepted'],
+                              lower_bound=0,
+                              throw_error=True)
+
+def test_check_date_range_error(df1):
+    with pytest.raises(ValueError):
+        check_date_range(df1,
+                         throw_error=True)
 
 #     @pytest.mark.parametrize("a,expected", [
 #     (2, 4),
