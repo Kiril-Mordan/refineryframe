@@ -376,9 +376,10 @@ def check_duplicates(dataframe  : pd.DataFrame,
             if n_subset_duplicates > 0:
                 logger.warning(f"There are {n_subset_duplicates} duplicate keys : {n_subset_duplicates/dataframe.shape[0]*100:.2f}%")
 
+                n_duplicates = dataframe.drop(columns=subset).duplicated().sum()
                 n_true_dup = n_subset_duplicates - n_duplicates
 
-                if n_true_dup > 0 & n_duplicates > 0:
+                if n_true_dup > 0:
 
                     logger.warning("** Deduplication keys do not form the super key!")
                     logger.warning(f"There are {n_true_dup} duplicates beyond keys : {n_true_dup/dataframe.shape[0]*100:.2f}%")
@@ -398,6 +399,9 @@ def check_duplicates(dataframe  : pd.DataFrame,
         else:
             if n_duplicates > 0:
                 logger.warning(f"There are {n_duplicates} duplicates : {n_duplicates/dataframe.shape[0]*100:.2f}%")
+
+                if throw_error:
+                    raise ValueError("Resolve issue with row duplicates before proceesing any further!")
             else:
                 ROW_DUPLICATES = True
                 KEY_DUPLICATES = True
@@ -573,7 +577,7 @@ def check_numeric_range(dataframe : pd.DataFrame,
             if outside_upper_bound > 0:
                 max_values = (dataframe[col] > upper_bound) & (~dataframe[col].isin(ignore_values))
 
-                max_vales_n = sum(max_values)
+                max_values_n = sum(max_values)
 
                 max_value = max(dataframe[col][max_values])
                 logger.warning(f"** Not all values in {col} are lower than {upper_bound}")
