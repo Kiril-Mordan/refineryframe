@@ -34,6 +34,44 @@ def df():
 
 
 @pytest.fixture(scope='session')
+def df_dup():
+
+    df = pd.DataFrame({
+    'num_id': ['1', '2', '3', '4', '5','5'],
+    'NumericColumn': [1.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+    'NumericColumn_exepted': [1.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+    'NumericColumn2': [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+    'NumericColumn3': [1, 2, 0, 0, 0, 0],
+    'DateColumn': ['2022-01-01', '2022-01-02', '2022-01-03', '2022-01-04', '2022-01-05', '2022-01-05'],
+    'DateColumn2': ['1850-01-09', '2022-01-01', '1850-01-09', '1850-01-09', '1850-01-09', '1850-01-09'],
+    'DateColumn3': ['1850-01-09', '2022-01-01', '1850-01-09', '1850-01-09', '1850-01-09', '1850-01-09'],
+    'CharColumn': ['fol', 'miss', 'miss', 'miss', 'miss', 'miss']
+})
+
+    yield df
+
+@pytest.fixture(scope='session')
+def df_dup2():
+
+    df = pd.DataFrame({
+    'num_id': ['1', '2', '3', '4', '5','5'],
+    'NumericColumn': [1.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+    'NumericColumn00': [1.0, 0.0, 0.0, 0.0, 0.0, 0.1],
+    'NumericColumn_exepted': [1.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+    'NumericColumn2': [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+    'NumericColumn3': [1, 2, 0, 0, 0, 0],
+    'DateColumn': ['2022-01-01', '2022-01-02', '2022-01-03', '2022-01-04', '2022-01-05', '2022-01-05'],
+    'DateColumn2': ['1850-01-09', '2022-01-01', '1850-01-09', '1850-01-09', '1850-01-09', '1850-01-09'],
+    'DateColumn3': ['1850-01-09', '2022-01-01', '1850-01-09', '1850-01-09', '1850-01-09', '1850-01-09'],
+    'CharColumn': ['fol', 'miss', 'miss', 'miss', 'miss', 'miss']
+})
+    df.columns = ['num_id', 'NumericColumn', 'NumericColumn', 'NumericColumn_exepted',
+       'NumericColumn2', 'NumericColumn3', 'DateColumn', 'DateColumn2',
+       'DateColumn3', 'CharColumn']
+
+    yield df
+
+@pytest.fixture(scope='session')
 def df1():
 
     df = pd.DataFrame({
@@ -194,6 +232,37 @@ def types_dict_str():
 
     types_dict_str = {'num_id' : 'int64',
                    'NumericColumn' : 'float64',
+                   'NumericColumn_exepted' : 'float64',
+                   'NumericColumn2' : 'float64',
+                   'NumericColumn3' : 'int64',
+                   'DateColumn' : 'datetime64[ns]',
+                   'DateColumn2' : 'datetime64[ns]',
+                   'DateColumn3' : 'datetime64[ns]',
+                   'CharColumn' : 'object'}
+
+    yield types_dict_str
+
+@pytest.fixture(scope='session')
+def types_dict_str2():
+
+    types_dict_str = """{'num_id' : 'int64',\
+        'NumericColumn' : 'float64',\
+            'NumericColumn_exepted' : 'float64',\
+                'NumericColumn2' : 'float64',\
+                    'NumericColumn3' : 'int64',\
+                        'DateColumn' : 'datetime64[ns]',\
+                            'DateColumn2' : 'datetime64[ns]',\
+                                'DateColumn3' : 'datetime64[ns]',\
+                                    'CharColumn' : 'object'}"""
+
+    yield types_dict_str
+
+@pytest.fixture(scope='session')
+def types_dict_str3():
+
+    types_dict_str = {'num_id' : 'int64',
+                   'NumericColumn' : 'float64',
+                   'NumericColumn4' : 'float64',
                    'NumericColumn_exepted' : 'float64',
                    'NumericColumn2' : 'float64',
                    'NumericColumn3' : 'int64',
