@@ -237,10 +237,29 @@ def test_set_refiner_settings(tns2,df, refiner_settings):
 
 
 
-def test_check_missing_types_error(df1, MISSING_TYPES):
+def test_check_missing_types_int_error(df1):
     with pytest.raises(ValueError):
         check_missing_types(df1,
-                            MISSING_TYPES,
+                            MISSING_TYPES={
+                        'numeric_not_delivered': -999},
+                            throw_error=True)
+
+def test_check_missing_types_date_error(df1):
+    with pytest.raises(ValueError):
+        check_missing_types(df1,
+                            MISSING_TYPES={'date_not_delivered': '1850-01-09'},
+                            throw_error=True)
+
+def test_check_missing_types_cat_error(df1):
+    with pytest.raises(ValueError):
+        check_missing_types(df1,
+                            MISSING_TYPES={'character_not_delivered': 'missing'},
+                            throw_error=True)
+
+def test_check_missing_types_exc_error(df1):
+    with pytest.raises(AttributeError):
+        check_missing_types(df1,
+                            MISSING_TYPES=-1,
                             throw_error=True)
 
 def test_check_missing_values_error(df):
@@ -253,10 +272,24 @@ def test_check_inf_values_error(df):
         check_inf_values(df,
                          throw_error=True)
 
+def test_check_inf_values_print_error(caplog):
+
+    check_inf_values(-1,
+                     throw_error=False)
+
+    assert "Error occured while checking inf values!" in caplog.text
+
 def test_check_date_format_error(df):
     with pytest.raises(ValueError):
         check_date_format(df,
                           throw_error=True)
+
+def test_check_date_format_print_error(caplog):
+
+    check_date_format(-1,
+                      throw_error=False)
+
+    assert "Error occurred while checking date format!" in caplog.text
 
 def test_check_duplicates_error(df2):
     with pytest.raises(ValueError):
@@ -270,11 +303,18 @@ def test_check_col_names_types_error(df,types_dict_str):
                               types_dict_str,
                               throw_error=True)
 
-def test_check_numeric_range_error(df):
+def test_check_numeric_range_lower_error(df):
     with pytest.raises(ValueError):
         check_numeric_range(df,
                             numeric_cols=['NumericColumn','NumericColumn_exepted'],
                               lower_bound=0,
+                              throw_error=True)
+
+def test_check_numeric_range_upper_error(df):
+    with pytest.raises(ValueError):
+        check_numeric_range(df,
+                            numeric_cols=['NumericColumn','NumericColumn_exepted'],
+                              upper_bound=0.5,
                               throw_error=True)
 
 def test_check_date_range_error(df1):

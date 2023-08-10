@@ -573,7 +573,7 @@ def check_numeric_range(dataframe : pd.DataFrame,
             if outside_upper_bound > 0:
                 max_values = (dataframe[col] > upper_bound) & (~dataframe[col].isin(ignore_values))
 
-                max_vales_n = sum(max_values)
+                max_values_n = sum(max_values)
 
                 max_value = max(dataframe[col][max_values])
                 logger.warning(f"** Not all values in {col} are lower than {upper_bound}")
