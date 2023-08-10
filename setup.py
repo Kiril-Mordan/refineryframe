@@ -15,7 +15,7 @@ base_packages = [
     "unidecode"
 ]
 
-VERSION = '0.1.15'
+VERSION = '0.1.16'
 DESCRIPTION = 'Cleans data, best to be used as a part of initial preprocessor'
 LONG_DESCRIPTION = 'A package that allows to detect unexpected values in data and clean them according to set of predefined rules'
 
