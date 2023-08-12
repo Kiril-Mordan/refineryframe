@@ -135,7 +135,8 @@ class Refiner:
     ignore_dates = attr.ib(default=[])
 
     # outputs
-    unexpected_exceptions_scaned = attr.ib(default={},init = False, type=dict)
+    unexpected_exceptions_scaned = attr.ib(default={}, init = False, type=dict)
+    check_scores = attr.ib(default={}, init = False, type=dict)
     type_dict = attr.ib(default={}, init = False, type=dict)
 
     COLUMN_NAMES_DUPLICATES_TEST = attr.ib(default=None, init = False)
@@ -497,6 +498,7 @@ class Refiner:
                                       logger = self.logger)
 
         self.duv_score = duv_obj['duv_score']
+        self.check_scores = duv_obj['check_scores']
         self.unexpected_exceptions_scaned = duv_obj['unexpected_exceptions_scaned']
 
     def get_unexpected_exceptions_scaned(self, dataframe = None) -> dict:
