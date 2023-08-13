@@ -40,13 +40,19 @@ tns.detect_unexpected_values()
 
     DEBUG:Refiner:=== checking for column name duplicates
     DEBUG:Refiner:=== checking column names and types
+    ERROR:Refiner:Error occured while checking column names and types
     DEBUG:Refiner:=== checking propper date format
     WARNING:Refiner:Column DateColumn2 has non-date values or unexpected format.
+    WARNING:Refiner:Date format score was lower then expected: 50.0 < 100
     DEBUG:Refiner:=== checking expected date range
     DEBUG:Refiner:=== checking for presense of inf values in numeric colums
     WARNING:Refiner:Column NumericColumn: (INF) : 2 : 40.00%
     WARNING:Refiner:Column NumericColumn_exepted: (INF) : 1 : 20.00%
-    WARNING:Refiner:Percentage of passed tests: 71.43%
+    WARNING:Refiner:Inf score was lower then expected: 88.0 < 100
+    WARNING:Refiner:Percentage of passed tests: 42.86%
+
+
+    The error: division by zero
 
 
 #### extracting Refiner settings <a name="extracting-refiner-class-settings"></a>
@@ -97,6 +103,16 @@ refiner_settings
       'duplicates': False,
       'date_range': False,
       'numeric_range': False},
+     'thresholds': {'cmt_scores': {'numeric_score': 100,
+       'date_score': 100,
+       'cat_score': 100},
+      'cmv_scores': {'missing_values_score': 100},
+      'ccnt_scores': {'missing_score': 100, 'incorrect_dtypes_score': 100},
+      'inf_scores': {'inf_score': 100},
+      'cdf_scores': {'date_format_score': 100},
+      'dup_scores': {'row_dup_score': 100, 'key_dup_score': 100},
+      'cnr_scores': {'low_numeric_score': 100, 'upper_numeric_score': 100},
+      'cdr_scores': {'early_dates_score': 100, 'future_dates_score': 100}},
      'unexpected_conditions': None,
      'ignore_values': [],
      'ignore_dates': [],
@@ -119,22 +135,30 @@ scanned_unexpected_exceptions = tns2.get_unexpected_exceptions_scaned()
 scanned_unexpected_exceptions
 ```
 
+    ERROR:Refiner:Error occured while checking column names and types
     WARNING:Refiner:Column CharColumn: (NA) : 2 : 40.00%
     WARNING:Refiner:Column DateColumn2: (NA) : 4 : 80.00%
     WARNING:Refiner:Column NumericColumn: (NA) : 2 : 40.00%
     WARNING:Refiner:Column NumericColumn_exepted: (NA) : 2 : 40.00%
     WARNING:Refiner:Column NumericColumn2: (NA) : 4 : 80.00%
+    WARNING:Refiner:Missing values score was lower then expected: 53.33 < 100
     WARNING:Refiner:Column DateColumn3: (1850-01-09) : 1 : 20.00%
+    WARNING:Refiner:Character score was lower then expected: 97.14 < 100
     WARNING:Refiner:Column DateColumn2 has non-date values or unexpected format.
+    WARNING:Refiner:Date format score was lower then expected: 50.0 < 100
     WARNING:Refiner:Column NumericColumn: (INF) : 2 : 40.00%
     WARNING:Refiner:Column NumericColumn_exepted: (INF) : 1 : 20.00%
-    WARNING:Refiner:Percentage of passed tests: 73.33%
+    WARNING:Refiner:Inf score was lower then expected: 88.0 < 100
+    WARNING:Refiner:Percentage of passed tests: 60.00%
+
+
+    The error: division by zero
 
 
 
 
 
-    {'col_names_types': 'NONE',
+    {'col_names_types': 'ALL',
      'missing_values': 'ALL',
      'missing_types': 'ALL',
      'inf_values': 'ALL',
@@ -152,16 +176,24 @@ scanned_unexpected_exceptions
 tns2.detect_unexpected_values()
 ```
 
+    ERROR:Refiner:Error occured while checking column names and types
     WARNING:Refiner:Column CharColumn: (NA) : 2 : 40.00%
     WARNING:Refiner:Column DateColumn2: (NA) : 4 : 80.00%
     WARNING:Refiner:Column NumericColumn: (NA) : 2 : 40.00%
     WARNING:Refiner:Column NumericColumn_exepted: (NA) : 2 : 40.00%
     WARNING:Refiner:Column NumericColumn2: (NA) : 4 : 80.00%
+    WARNING:Refiner:Missing values score was lower then expected: 53.33 < 100
     WARNING:Refiner:Column DateColumn3: (1850-01-09) : 1 : 20.00%
+    WARNING:Refiner:Character score was lower then expected: 97.14 < 100
     WARNING:Refiner:Column DateColumn2 has non-date values or unexpected format.
+    WARNING:Refiner:Date format score was lower then expected: 50.0 < 100
     WARNING:Refiner:Column NumericColumn: (INF) : 2 : 40.00%
     WARNING:Refiner:Column NumericColumn_exepted: (INF) : 1 : 20.00%
-    WARNING:Refiner:Percentage of passed tests: 73.33%
+    WARNING:Refiner:Inf score was lower then expected: 88.0 < 100
+    WARNING:Refiner:Percentage of passed tests: 60.00%
+
+
+    The error: division by zero
 
 
 #### using saved refiner settings for new instance <a name="recreating-refiner-class-settings"></a> 
@@ -178,13 +210,21 @@ tns2.detect_unexpected_values()
 
     DEBUG:Refiner:=== checking for column name duplicates
     DEBUG:Refiner:=== checking column names and types
+    ERROR:Refiner:Error occured while checking column names and types
     DEBUG:Refiner:=== checking propper date format
     WARNING:Refiner:Column DateColumn2 has non-date values or unexpected format.
+    WARNING:Refiner:Date format score was lower then expected: 50.0 < 100
     DEBUG:Refiner:=== checking expected date range
+
+
+    The error: division by zero
+
+
     DEBUG:Refiner:=== checking for presense of inf values in numeric colums
     WARNING:Refiner:Column NumericColumn: (INF) : 2 : 40.00%
     WARNING:Refiner:Column NumericColumn_exepted: (INF) : 1 : 20.00%
-    WARNING:Refiner:Percentage of passed tests: 71.43%
+    WARNING:Refiner:Inf score was lower then expected: 88.0 < 100
+    WARNING:Refiner:Percentage of passed tests: 42.86%
 
 
 
@@ -199,5 +239,9 @@ tns3.detect_unexpected_values()
 print(f'duv score: {tns3.duv_score}')
 ```
 
+    ERROR:Refiner:Error occured while checking column names and types
+
+
+    The error: division by zero
     duv score: 1.0
 

@@ -225,14 +225,22 @@ tns.check_numeric_range()
 ```
 
     WARNING:Refiner:Column DateColumn3: (1850-01-09) : 1 : 20.00%
+    WARNING:Refiner:Character score was lower then expected: 97.14 < 100
     WARNING:Refiner:Column NumericColumn: (NA) : 2 : 40.00%
     WARNING:Refiner:Column NumericColumn_exepted: (NA) : 2 : 40.00%
     WARNING:Refiner:Column NumericColumn2: (NA) : 4 : 80.00%
     WARNING:Refiner:Column DateColumn2: (NA) : 4 : 80.00%
     WARNING:Refiner:Column CharColumn: (NA) : 2 : 40.00%
+    WARNING:Refiner:Missing values score was lower then expected: 53.33 < 100
     WARNING:Refiner:Column NumericColumn: (INF) : 2 : 40.00%
     WARNING:Refiner:Column NumericColumn_exepted: (INF) : 1 : 20.00%
+    WARNING:Refiner:Inf score was lower then expected: 94.0 < 100
+    ERROR:Refiner:Error occured while checking column names and types
     WARNING:Refiner:Column DateColumn2 has non-date values or unexpected format.
+    WARNING:Refiner:Date format score was lower then expected: 50.0 < 100
+
+
+    The error: division by zero
 
 
 ##### moulding types <a class="anchor" id="moulding-types"></a>
@@ -277,17 +285,23 @@ tns.detect_unexpected_values(earliest_date = "1920-01-01",
     WARNING:Refiner:Column DateColumn2: (NA) : 4 : 80.00%
     WARNING:Refiner:Column NumericColumn: (NA) : 2 : 40.00%
     WARNING:Refiner:Column NumericColumn2: (NA) : 4 : 80.00%
+    WARNING:Refiner:Missing values score was lower then expected: 52.0 < 100
     DEBUG:Refiner:=== checking for presence of missing types
     WARNING:Refiner:Column DateColumn3: (1850-01-09) : 2 : 40.00%
     WARNING:Refiner:Column NumericColumn_exepted: (-999) : 1 : 20.00%
+    WARNING:Refiner:Numeric score was lower then expected: 98.75 < 100
+    WARNING:Refiner:Date score was lower then expected: 96.0 < 100
     DEBUG:Refiner:=== checking propper date format
     WARNING:Refiner:Column DateColumn2 has non-date values or unexpected format.
+    WARNING:Refiner:Date format score was lower then expected: 66.67 < 100
     DEBUG:Refiner:=== checking expected date range
     WARNING:Refiner:** Not all dates in DateColumn are later than DateColumn3
     WARNING:Refiner:Column DateColumn : future date : 4 : 80.00%
+    WARNING:Refiner:Future dates score was lower then expected: 80.0 < 100
     DEBUG:Refiner:=== checking for presense of inf values in numeric colums
     WARNING:Refiner:Column NumericColumn: (INF) : 2 : 40.00%
     WARNING:Refiner:Column NumericColumn_exepted: (INF) : 1 : 20.00%
+    WARNING:Refiner:Inf score was lower then expected: 88.0 < 100
     DEBUG:Refiner:=== checking expected numeric range
     WARNING:Refiner:Percentage of passed tests: 53.85%
 
@@ -383,6 +397,7 @@ tns.detect_unexpected_values(unexpected_conditions = unexpected_conditions)
     DEBUG:Refiner:=== checking column names and types
     WARNING:Refiner:Incorrect data types:
     WARNING:Refiner:Column num_id: actual dtype is object, expected dtype is int64
+    WARNING:Refiner:Dtypes score was lower then expected: 88.89 < 100
     DEBUG:Refiner:=== checking for presence of missing values
     DEBUG:Refiner:=== checking for presence of missing types
     WARNING:Refiner:Column CharColumn: (missing) : 3 : 60.00%
@@ -392,6 +407,9 @@ tns.detect_unexpected_values(unexpected_conditions = unexpected_conditions)
     WARNING:Refiner:Column NumericColumn_exepted: (-999) : 4 : 80.00%
     WARNING:Refiner:Column NumericColumn2: (-999) : 5 : 100.00%
     WARNING:Refiner:Column NumericColumn3: (-999) : 1 : 20.00%
+    WARNING:Refiner:Numeric score was lower then expected: 78.46 < 100
+    WARNING:Refiner:Date score was lower then expected: 84.0 < 100
+    WARNING:Refiner:Character score was lower then expected: 91.43 < 100
     DEBUG:Refiner:=== checking propper date format
     DEBUG:Refiner:=== checking expected date range
     DEBUG:Refiner:=== checking for presense of inf values in numeric colums
@@ -550,6 +568,7 @@ tns.detect_unexpected_values(unexpected_exceptions = {
     DEBUG:Refiner:=== checking column names and types
     WARNING:Refiner:Incorrect data types:
     WARNING:Refiner:Column num_id: actual dtype is object, expected dtype is int64
+    WARNING:Refiner:Dtypes score was lower then expected: 88.89 < 100
     DEBUG:Refiner:=== checking for presence of missing values
     DEBUG:Refiner:=== checking propper date format
     DEBUG:Refiner:=== checking expected date range
