@@ -32,7 +32,7 @@ def replace_unexpected_values(dataframe : pd.DataFrame,
                              latest_date : str = "2100-01-01",
                              numeric_lower_bound : float = 0,
                              numeric_upper_bound : float = float("inf"),
-                            logger : logging.Logger = logging) -> dict:
+                            logger : logging.Logger = None) -> dict:
 
     """
     Replace unexpected values in a pandas DataFrame with missing types.
@@ -40,23 +40,34 @@ def replace_unexpected_values(dataframe : pd.DataFrame,
     Parameters:
     -----------
 
-    dataframe (pandas DataFrame): The DataFrame to be checked.
-    MISSING_TYPES (dict): Dictionary that maps column names to the values considered as missing
-                              for that column.
-    unexpected_exceptions (dict): Dictionary that lists column exceptions for each of the
-                                      following checks: col_names_types, missing_values, missing_types,
-                                      inf_values, date_format, duplicates, date_range, and numeric_range.
-    TEST_DUV_FLAGS_PATH (str): Path for checking unexpected values (default is None).
-    earliest_date (str): The earliest acceptable date (default is "1900-08-25").
-    latest_date (str): The latest acceptable date (default is "2100-01-01").
-    numeric_lower_bound (float): The lowest acceptable value for numeric columns (default is 0).
-    numeric_upper_bound (float): The highest acceptable value for numeric columns
-                                    (default is infinity).
+    dataframe (pandas DataFrame):
+        The DataFrame to be checked.
+    MISSING_TYPES (dict):
+        Dictionary that maps column names to the values considered as missing
+        for that column.
+    unexpected_exceptions (dict):
+        Dictionary that lists column exceptions for each of the \
+            following checks: col_names_types, missing_values, missing_types, \
+                inf_values, date_format, duplicates, date_range, and numeric_range.
+    TEST_DUV_FLAGS_PATH (str):
+        Path for checking unexpected values (default is None).
+    earliest_date (str):
+        The earliest acceptable date (default is "1900-08-25").
+    latest_date (str):
+        The latest acceptable date (default is "2100-01-01").
+    numeric_lower_bound (float):
+        The lowest acceptable value for numeric columns (default is 0).
+    numeric_upper_bound (float):
+        The highest acceptable value for numeric columns
+        (default is infinity).
 
     Returns:
         ruv_score - number between 0 and 1 that means data quality score
     """
 
+    # Create a logger if not provided
+    if logger is None:
+        logger = logging.getLogger(__name__)
 
     try:
 

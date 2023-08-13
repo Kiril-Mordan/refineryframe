@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>refineryframe package &mdash; refineryframe package  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="refineryframe" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            refineryframe package
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">refineryframe</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">refineryframe package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-refineryframe.demo">refineryframe.demo module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-refineryframe.detect_unexpected">refineryframe.detect_unexpected module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#refineryframe.detect_unexpected.add_index_to_duplicate_columns"><code class="docutils literal notranslate"><span class="pre">add_index_to_duplicate_columns()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#refineryframe.detect_unexpected.check_col_names_types"><code class="docutils literal notranslate"><span class="pre">check_col_names_types()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#refineryframe.detect_unexpected.check_date_format"><code class="docutils literal notranslate"><span class="pre">check_date_format()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#refineryframe.detect_unexpected.check_date_range"><code class="docutils literal notranslate"><span class="pre">check_date_range()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#refineryframe.detect_unexpected.check_duplicate_col_names"><code class="docutils literal notranslate"><span class="pre">check_duplicate_col_names()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#refineryframe.detect_unexpected.check_duplicates"><code class="docutils literal notranslate"><span class="pre">check_duplicates()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#refineryframe.detect_unexpected.check_inf_values"><code class="docutils literal notranslate"><span class="pre">check_inf_values()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#refineryframe.detect_unexpected.check_missing_types"><code class="docutils literal notranslate"><span class="pre">check_missing_types()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#refineryframe.detect_unexpected.check_missing_values"><code class="docutils literal notranslate"><span class="pre">check_missing_values()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#refineryframe.detect_unexpected.check_numeric_range"><code class="docutils literal notranslate"><span class="pre">check_numeric_range()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#refineryframe.detect_unexpected.detect_unexpected_values"><code class="docutils literal notranslate"><span class="pre">detect_unexpected_values()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-refineryframe.other">refineryframe.other module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#refineryframe.other.get_type_dict"><code class="docutils literal notranslate"><span class="pre">get_type_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#refineryframe.other.set_types"><code class="docutils literal notranslate"><span class="pre">set_types()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#refineryframe.other.shoutOUT"><code class="docutils literal notranslate"><span class="pre">shoutOUT()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#refineryframe.other.treat_unexpected_cond"><code class="docutils literal notranslate"><span class="pre">treat_unexpected_cond()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-refineryframe.refiner">refineryframe.refiner module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#refineryframe.refiner.Refiner"><code class="docutils literal notranslate"><span class="pre">Refiner</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-refineryframe.replace_unexpected">refineryframe.replace_unexpected module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#refineryframe.replace_unexpected.replace_unexpected_values"><code class="docutils literal notranslate"><span class="pre">replace_unexpected_values()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-refineryframe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">refineryframe package</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">refineryframe</a></li>
+      <li class="breadcrumb-item active">refineryframe package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/refineryframe.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="refineryframe-package">
+<h1>refineryframe package<a class="headerlink" href="#refineryframe-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-refineryframe.demo">
+<span id="refineryframe-demo-module"></span><h2>refineryframe.demo module<a class="headerlink" href="#module-refineryframe.demo" title="Permalink to this heading"></a></h2>
+<p>demo.py - Support module for refineryframe package that contains definitions of testing dataframes, etc.</p>
+</section>
+<section id="module-refineryframe.detect_unexpected">
+<span id="refineryframe-detect-unexpected-module"></span><h2>refineryframe.detect_unexpected module<a class="headerlink" href="#module-refineryframe.detect_unexpected" title="Permalink to this heading"></a></h2>
+<p>detect_unexpected.py - Data Quality Checking Module</p>
+<p>This module contains functions to detect unexpected values in a pandas DataFrame,
+helping to identify potential data quality issues. The functions cover various aspects
+of data validation, including checking for missing values, unexpected data types, duplicates,
+incorrect date formats, out-of-range numeric values, and date values outside specified date ranges.</p>
+<p>Functions:</p>
+<ol class="arabic">
+<li><p>check_missing_types(dataframe, MISSING_TYPES, independent=True, logger=logging):</p>
+<blockquote>
+<div><p>Check for instances of missing types in each column of the DataFrame.
+Logs warning messages if any missing values are found.</p>
+</div></blockquote>
+</li>
+<li><p>check_missing_values(dataframe, logger=logging):</p>
+<blockquote>
+<div><p>Count the number of NaN, None, and NaT values in each column of the DataFrame.
+Logs warning messages if any missing values are found.</p>
+</div></blockquote>
+</li>
+<li><p>check_inf_values(dataframe, independent=True, logger=logging):</p>
+<blockquote>
+<div><p>Count the infinite (INF) values in each numeric column of the DataFrame.
+Logs warning messages if any INF values are found.</p>
+</div></blockquote>
+</li>
+<li><p>check_date_format(dataframe, expected_date_format=’%Y-%m-%d’, independent=True, logger=logging):</p>
+<blockquote>
+<div><p>Check if the values in datetime columns of the DataFrame have the expected format.
+Logs warning messages for columns with non-date values or unexpected date formats.</p>
+</div></blockquote>
+</li>
+<li><p>check_duplicates(dataframe, subset=None, independent=True, logger=logging):</p>
+<blockquote>
+<div><p>Check for duplicates in the DataFrame.
+Logs warning messages if any duplicates are found based on specified columns.</p>
+</div></blockquote>
+</li>
+<li><p>check_col_names_types(dataframe, types_dict_str, independent=True, logger=logging):</p>
+<blockquote>
+<div><p>Check if the DataFrame has the same column names as specified in the dictionary
+and if those columns have the expected data types as values in the dictionary.
+Logs warning messages for columns with incorrect names or data types.</p>
+</div></blockquote>
+</li>
+<li><p>check_numeric_range(dataframe, numeric_cols=None, lower_bound=-float(‘inf’), upper_bound=float(‘inf’),    independent=True, ignore_values=[], logger=logging):</p>
+<blockquote>
+<div><p>Check if numeric values in the DataFrame are within specified ranges.
+Logs warning messages for numeric values outside the specified range.</p>
+</div></blockquote>
+</li>
+<li><p>check_date_range(dataframe, earliest_date=’1900-01-01’, latest_date=’2100-12-31’,    independent=True, ignore_dates=[], logger=logging):</p>
+<blockquote>
+<div><p>Check if date values in the DataFrame are within specified date ranges.
+Logs warning messages for date values outside the specified range.</p>
+</div></blockquote>
+</li>
+<li><p>detect_unexpected_values(dataframe, MISSING_TYPES, unexpected_exceptions,                            unexpected_exceptions_error, unexpected_conditions, thresholds,                            ids_for_dedup, TEST_DUV_FLAGS_PATH, types_dict_str,                            expected_date_format, earliest_date, latest_date,                            numeric_lower_bound, numeric_upper_bound, print_score,                            logger):</p>
+<blockquote>
+<div><p>Detect unexpected values in a pandas DataFrame by running a series of data quality checks.
+The function returns the “duv_score,” representing the percentage of passed tests.</p>
+</div></blockquote>
+</li>
+</ol>
+<p>Note:
+- Some functions use the <cite>logger</cite> parameter for logging warning messages instead of printing.
+- Users can specify exceptions for certain checks using the <cite>unexpected_exceptions</cite> dictionary.
+- Users can define additional conditions to check for unexpected values using the <cite>unexpected_conditions</cite> dictionary.
+- The <cite>thresholds</cite> parameter in the <cite>detect_unexpected_values</cite> function allows users to set threshold scores for different checks.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="refineryframe.detect_unexpected.add_index_to_duplicate_columns">
+<span class="sig-prename descclassname"><span class="pre">refineryframe.detect_unexpected.</span></span><span class="sig-name descname"><span class="pre">add_index_to_duplicate_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name_freq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="_modules/refineryframe/detect_unexpected.html#add_index_to_duplicate_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.detect_unexpected.add_index_to_duplicate_columns" title="Permalink to this definition"></a></dt>
+<dd><p>Adds an index to duplicate column names in a pandas DataFrame.</p>
+<section id="parameters">
+<h3>Parameters:<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>dataframe<span class="classifier">pandas DataFrame</span></dt><dd><p>The DataFrame containing the duplicate columns.</p>
+</dd>
+<dt>column_name_freq<span class="classifier">dict</span></dt><dd><p>A dictionary where keys are duplicate column names, and values are the number of occurrences.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h3>Returns:<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>pandas DataFrame</dt><dd><p>The DataFrame with updated column names.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="refineryframe.detect_unexpected.check_col_names_types">
+<span class="sig-prename descclassname"><span class="pre">refineryframe.detect_unexpected.</span></span><span class="sig-name descname"><span class="pre">check_col_names_types</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">types_dict_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">independent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">throw_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'incorrect_dtypes_score':</span> <span class="pre">100,</span> <span class="pre">'missing_score':</span> <span class="pre">100}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/refineryframe/detect_unexpected.html#check_col_names_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.detect_unexpected.check_col_names_types" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if a given dataframe has the same column names as keys in a given dictionary
+and those columns have the same types as items in the dictionary.</p>
+<p>Args:
+- dataframe: pandas DataFrame
+- column_dict: dictionary with column names as keys and expected data types as values</p>
+<p>Returns:
+- Boolean indicating whether the dataframe has the same columns and types as specified in the dictionary</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="refineryframe.detect_unexpected.check_date_format">
+<span class="sig-prename descclassname"><span class="pre">refineryframe.detect_unexpected.</span></span><span class="sig-name descname"><span class="pre">check_date_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_date_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'%Y-%m-%d'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">independent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">throw_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'date_format_score':</span> <span class="pre">100}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/refineryframe/detect_unexpected.html#check_date_format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.detect_unexpected.check_date_format" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the values in the datetime columns of the input dataframe
+have the expected ‘YYYY-MM-DD’ format.</p>
+<section id="id1">
+<h3>Parameters:<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>dataframe: pandas.DataFrame</dt><dd><p>The dataframe to be checked for date format.</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h3>Returns:<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="refineryframe.detect_unexpected.check_date_range">
+<span class="sig-prename descclassname"><span class="pre">refineryframe.detect_unexpected.</span></span><span class="sig-name descname"><span class="pre">check_date_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">earliest_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'1900-08-25'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latest_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'2100-01-01'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">independent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_dates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">throw_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'early_dates_score':</span> <span class="pre">100,</span> <span class="pre">'future_dates_score':</span> <span class="pre">100}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/refineryframe/detect_unexpected.html#check_date_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.detect_unexpected.check_date_range" title="Permalink to this definition"></a></dt>
+<dd><p>Check if dates are in expected ranges</p>
+<section id="id3">
+<h3>Parameters:<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>dataframe<span class="classifier">pandas DataFrame</span></dt><dd><p>The DataFrame to check for dates.</p>
+</dd>
+<dt>earliest_date<span class="classifier">str, optional</span></dt><dd><p>The earliest date allowed in the DataFrame. Defaults to ‘1900-08-25’.</p>
+</dd>
+<dt>latest_date<span class="classifier">str, optional</span></dt><dd><p>The latest date allowed in the DataFrame. Defaults to ‘2100-01-01’.</p>
+</dd>
+</dl>
+</section>
+<section id="id4">
+<h3>Returns:<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>None</dt><dd><p>This function does not return anything, but logs warning messages if any dates are outside
+the specified range.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="refineryframe.detect_unexpected.check_duplicate_col_names">
+<span class="sig-prename descclassname"><span class="pre">refineryframe.detect_unexpected.</span></span><span class="sig-name descname"><span class="pre">check_duplicate_col_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">throw_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/refineryframe/detect_unexpected.html#check_duplicate_col_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.detect_unexpected.check_duplicate_col_names" title="Permalink to this definition"></a></dt>
+<dd><p>Check for duplicate column names in a pandas DataFrame.</p>
+<section id="id5">
+<h3>Parameters:<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>dataframe<span class="classifier">pandas DataFrame</span></dt><dd><p>The DataFrame to check for duplicate column names.</p>
+</dd>
+<dt>throw_error<span class="classifier">bool, optional</span></dt><dd><p>If True, raise a ValueError when duplicate column names are found.
+If False, print a warning message and continue execution.
+Default is False.</p>
+</dd>
+<dt>logger<span class="classifier">logging.Logger, optional</span></dt><dd><p>The logger object to use for logging warning and error messages.
+Default is the root logger.</p>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h3>Returns:<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<dl>
+<dt>dict</dt><dd><p>A dictionary containing information about the duplicates.
+‘column_name_freq’: dict</p>
+<blockquote>
+<div><p>A dictionary where keys are duplicate column names, and values are the number of occurrences.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>‘COLUMN_NAMES_DUPLICATES_TEST’: bool</dt><dd><p>True if duplicate column names are found, False otherwise.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="refineryframe.detect_unexpected.check_duplicates">
+<span class="sig-prename descclassname"><span class="pre">refineryframe.detect_unexpected.</span></span><span class="sig-name descname"><span class="pre">check_duplicates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">independent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">throw_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'key_dup_score':</span> <span class="pre">100,</span> <span class="pre">'row_dup_score':</span> <span class="pre">100}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/refineryframe/detect_unexpected.html#check_duplicates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.detect_unexpected.check_duplicates" title="Permalink to this definition"></a></dt>
+<dd><p>Check for duplicates in a pandas DataFrame.</p>
+<section id="id7">
+<h3>Parameters:<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>dataframe<span class="classifier">pandas DataFrame</span></dt><dd><p>The DataFrame to check for duplicates.</p>
+</dd>
+<dt>subset<span class="classifier">list of str, optional</span></dt><dd><p>A list of column names to consider when identifying duplicates.
+If not specified, all columnsare used to identify duplicates.</p>
+</dd>
+</dl>
+</section>
+<section id="id8">
+<h3>Returns:<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>int</dt><dd><p>The number of duplicates found.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="refineryframe.detect_unexpected.check_inf_values">
+<span class="sig-prename descclassname"><span class="pre">refineryframe.detect_unexpected.</span></span><span class="sig-name descname"><span class="pre">check_inf_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">independent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">throw_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'inf_score':</span> <span class="pre">100}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/refineryframe/detect_unexpected.html#check_inf_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.detect_unexpected.check_inf_values" title="Permalink to this definition"></a></dt>
+<dd><p>Count the inf values in each column of a pandas DataFrame.</p>
+<section id="id9">
+<h3>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>dataframe<span class="classifier">pandas DataFrame</span></dt><dd><p>The DataFrame to count inf values in.</p>
+</dd>
+</dl>
+</section>
+<section id="id10">
+<h3>Returns<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h3>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="refineryframe.detect_unexpected.check_missing_types">
+<span class="sig-prename descclassname"><span class="pre">refineryframe.detect_unexpected.</span></span><span class="sig-name descname"><span class="pre">check_missing_types</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MISSING_TYPES</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">independent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">throw_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'cat_score':</span> <span class="pre">100,</span> <span class="pre">'date_score':</span> <span class="pre">100,</span> <span class="pre">'numeric_score':</span> <span class="pre">100}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/refineryframe/detect_unexpected.html#check_missing_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.detect_unexpected.check_missing_types" title="Permalink to this definition"></a></dt>
+<dd><p>The function takes a DataFrame and a dictionary of missing types as input, and
+searches for any instances of these missing types in each column of the DataFrame.
+If any instances are found, a warning message is logged containing the column name,
+the missing value, and the count of missing values found.</p>
+<section id="id11">
+<h3>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>dataframe<span class="classifier">pandas DataFrame</span></dt><dd><p>The DataFrame to search for missing values.</p>
+</dd>
+<dt>MISSING_TYPES<span class="classifier">dict</span></dt><dd><p>A dictionary of missing types to search for. The keys represent the missing type
+and the values are the corresponding values to search for.</p>
+</dd>
+</dl>
+</section>
+<section id="id12">
+<h3>Returns<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>None</dt><dd><p>The function does not return anything, but logs a warning message for each
+instance of a missing value found in the DataFrame.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="refineryframe.detect_unexpected.check_missing_values">
+<span class="sig-prename descclassname"><span class="pre">refineryframe.detect_unexpected.</span></span><span class="sig-name descname"><span class="pre">check_missing_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">independent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">throw_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'missing_values_score':</span> <span class="pre">100}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/refineryframe/detect_unexpected.html#check_missing_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.detect_unexpected.check_missing_values" title="Permalink to this definition"></a></dt>
+<dd><p>Count the number of NaN, None, and NaT values in each column of a pandas DataFrame.</p>
+<section id="id13">
+<h3>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>dataframe<span class="classifier">pandas DataFrame</span></dt><dd><p>The DataFrame to count missing values in.</p>
+</dd>
+</dl>
+</section>
+<section id="id14">
+<h3>Returns<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h3>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="refineryframe.detect_unexpected.check_numeric_range">
+<span class="sig-prename descclassname"><span class="pre">refineryframe.detect_unexpected.</span></span><span class="sig-name descname"><span class="pre">check_numeric_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numeric_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">independent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">throw_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'low_numeric_score':</span> <span class="pre">100,</span> <span class="pre">'upper_numeric_score':</span> <span class="pre">100}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/refineryframe/detect_unexpected.html#check_numeric_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.detect_unexpected.check_numeric_range" title="Permalink to this definition"></a></dt>
+<dd><p>Check if numeric values are in expected ranges</p>
+<section id="id15">
+<h3>Parameters:<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>dataframe<span class="classifier">pandas DataFrame</span></dt><dd><p>The DataFrame to check for numeric values.</p>
+</dd>
+<dt>lower_bound<span class="classifier">float, optional</span></dt><dd><p>The lower bound allowed for numeric values. Defaults to -infinity.</p>
+</dd>
+<dt>upper_bound<span class="classifier">float, optional</span></dt><dd><p>The upper bound allowed for numeric values. Defaults to infinity.</p>
+</dd>
+<dt>independent<span class="classifier">bool, optional</span></dt><dd><p>Whether to check the range of each column independently or not. Defaults to True.</p>
+</dd>
+<dt>ignore_values<span class="classifier">list, optional</span></dt><dd><p>A list of values to ignore when checking for values outside the specified range. Defaults to empty list.</p>
+</dd>
+</dl>
+</section>
+<section id="id16">
+<h3>Returns:<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h3>
+<dl>
+<dt>bool or tuple</dt><dd><p>Returns True if all numeric values in the DataFrame are within the specified range, False otherwise.
+If <cite>independent</cite> is False, returns a tuple of two bools, the first indicating</p>
+<blockquote>
+<div><p>if all lower bounds are met and the second if all upper bounds are met.</p>
+</div></blockquote>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="refineryframe.detect_unexpected.detect_unexpected_values">
+<span class="sig-prename descclassname"><span class="pre">refineryframe.detect_unexpected.</span></span><span class="sig-name descname"><span class="pre">detect_unexpected_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MISSING_TYPES</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'character_not_delivered':</span> <span class="pre">'missing',</span> <span class="pre">'date_not_delivered':</span> <span class="pre">'1850-01-09',</span> <span class="pre">'numeric_not_delivered':</span> <span class="pre">-999}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unexpected_exceptions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'col_names_types':</span> <span class="pre">'NONE',</span> <span class="pre">'date_format':</span> <span class="pre">'NONE',</span> <span class="pre">'date_range':</span> <span class="pre">'NONE',</span> <span class="pre">'duplicates':</span> <span class="pre">'NONE',</span> <span class="pre">'inf_values':</span> <span class="pre">'NONE',</span> <span class="pre">'missing_types':</span> <span class="pre">'NONE',</span> <span class="pre">'missing_values':</span> <span class="pre">'NONE',</span> <span class="pre">'numeric_range':</span> <span class="pre">'NONE'}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unexpected_exceptions_error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'col_name_duplicates':</span> <span class="pre">False,</span> <span class="pre">'col_names_types':</span> <span class="pre">False,</span> <span class="pre">'date_format':</span> <span class="pre">False,</span> <span class="pre">'date_range':</span> <span class="pre">False,</span> <span class="pre">'duplicates':</span> <span class="pre">False,</span> <span class="pre">'inf_values':</span> <span class="pre">False,</span> <span class="pre">'missing_types':</span> <span class="pre">False,</span> <span class="pre">'missing_values':</span> <span class="pre">False,</span> <span class="pre">'numeric_range':</span> <span class="pre">False}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unexpected_conditions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'ccnt_scores':</span> <span class="pre">{'incorrect_dtypes_score':</span> <span class="pre">100,</span> <span class="pre">'missing_score':</span> <span class="pre">100},</span> <span class="pre">'cdf_scores':</span> <span class="pre">{'date_format_score':</span> <span class="pre">100},</span> <span class="pre">'cdr_scores':</span> <span class="pre">{'early_dates_score':</span> <span class="pre">100,</span> <span class="pre">'future_dates_score':</span> <span class="pre">100},</span> <span class="pre">'cmt_scores':</span> <span class="pre">{'cat_score':</span> <span class="pre">100,</span> <span class="pre">'date_score':</span> <span class="pre">100,</span> <span class="pre">'numeric_score':</span> <span class="pre">100},</span> <span class="pre">'cmv_scores':</span> <span class="pre">{'missing_values_score':</span> <span class="pre">100},</span> <span class="pre">'cnr_scores':</span> <span class="pre">{'low_numeric_score':</span> <span class="pre">100,</span> <span class="pre">'upper_numeric_score':</span> <span class="pre">100},</span> <span class="pre">'dup_scores':</span> <span class="pre">{'key_dup_score':</span> <span class="pre">100,</span> <span class="pre">'row_dup_score':</span> <span class="pre">100},</span> <span class="pre">'inf_scores':</span> <span class="pre">{'inf_score':</span> <span class="pre">100}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ids_for_dedup</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TEST_DUV_FLAGS_PATH</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">types_dict_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_date_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'%Y-%m-%d'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">earliest_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'1900-08-25'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latest_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'2100-01-01'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numeric_lower_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numeric_upper_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_score</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/refineryframe/detect_unexpected.html#detect_unexpected_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.detect_unexpected.detect_unexpected_values" title="Permalink to this definition"></a></dt>
+<dd><p>Detect unexpected values in a pandas DataFrame.</p>
+<section id="id17">
+<h3>Parameters:<a class="headerlink" href="#id17" title="Permalink to this heading"></a></h3>
+<p>dataframe (pandas DataFrame): The DataFrame to be checked.
+MISSING_TYPES (dict): Dictionary that maps column names to the values considered as missing</p>
+<blockquote>
+<div><p>for that column.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>unexpected_exceptions (dict): Dictionary that lists column exceptions for each of the</dt><dd><p>following checks: col_names_types, missing_values, missing_types,
+inf_values, date_format, duplicates, date_range, and numeric_range.</p>
+</dd>
+</dl>
+<p>unexpected_exceptions_error (dict): Dictionary indicating whether to throw errors for each type of unexpected exception.
+unexpected_conditions (dict): Dictionary containing additional conditions to check for unexpected values.
+thresholds (dict): Dictionary containing threshold scores for different checks.
+ids_for_dedup (list): List of columns to identify duplicates (default is None).
+TEST_DUV_FLAGS_PATH (str): Path for checking unexpected values (default is None).
+types_dict_str (str): String that describes the expected types of the columns (default is None).
+expected_date_format (str): The expected date format (default is ‘%Y-%m-%d’).
+earliest_date (str): The earliest acceptable date (default is “1900-08-25”).
+latest_date (str): The latest acceptable date (default is “2100-01-01”).
+numeric_lower_bound (float): The lowest acceptable value for numeric columns (default is 0).
+numeric_upper_bound (float): The highest acceptable value for numeric columns (default is infinity).
+print_score (bool): Whether to print the duv score (default is True).
+logger (logging.Logger): Logger object for logging messages (default is logging).</p>
+</section>
+<section id="id18">
+<h3>Returns:<a class="headerlink" href="#id18" title="Permalink to this heading"></a></h3>
+<p>duv_score (float): Number between 0 and 1 representing the percentage of passed tests.
+check_scores (dict): Scores for each check.
+unexpected_exceptions_scaned (dict): Unexpected exceptions based on detected unexpected values.</p>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-refineryframe.other">
+<span id="refineryframe-other-module"></span><h2>refineryframe.other module<a class="headerlink" href="#module-refineryframe.other" title="Permalink to this heading"></a></h2>
+<p>Module Name: other.py</p>
+<p>This module contains various utility functions for logging, data manipulation, and data type handling.</p>
+<dl>
+<dt>Functions:</dt><dd><dl>
+<dt>shoutOUT(type=”dline”, mess=None, dotline_length=50, logger: logging.Logger = logging):</dt><dd><p>Print a line of text with a specified length and format.</p>
+</dd>
+<dt>get_type_dict(dataframe: pd.DataFrame, explicit: bool = True, stringout: bool = False,</dt><dd><blockquote>
+<div><p>logger: logging.Logger = logging) -&gt; str:</p>
+</div></blockquote>
+<p>Returns a string representation of a dictionary containing the data types
+of each column in the given pandas DataFrame.</p>
+</dd>
+<dt>set_types(dataframe: pd.DataFrame, types_dict_str: dict, replace_dict: dict = None,</dt><dd><blockquote>
+<div><p>expected_date_format: str = ‘%Y-%m-%d’, logger: logging.Logger = logging) -&gt; pd.DataFrame:</p>
+</div></blockquote>
+<p>Change the data types of the columns in the given DataFrame based on a dictionary of intended data types.</p>
+</dd>
+<dt>treat_unexpected_cond(df: pd.DataFrame, description: str, group: str, features: list,</dt><dd><blockquote>
+<div><p>query: str, warning: bool, replace, logger: logging.Logger = logging) -&gt; pd.DataFrame:</p>
+</div></blockquote>
+<p>Replace unexpected values in a pandas DataFrame with replace values.</p>
+</dd>
+</dl>
+</dd>
+<dt>Dependencies:</dt><dd><ul class="simple">
+<li><p>logging</p></li>
+<li><p>pandas as pd</p></li>
+<li><p>re</p></li>
+</ul>
+</dd>
+<dt>Note:</dt><dd><p>Please refer to the docstrings of individual functions for detailed information and usage examples.</p>
+</dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="refineryframe.other.get_type_dict">
+<span class="sig-prename descclassname"><span class="pre">refineryframe.other.</span></span><span class="sig-name descname"><span class="pre">get_type_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">explicit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stringout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/refineryframe/other.html#get_type_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.other.get_type_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a string representation of a dictionary containing the data types
+of each column in the given pandas DataFrame.</p>
+<p>Numeric columns will have type ‘numeric’, date columns will have type ‘date’,
+character columns will have type ‘category’, and columns containing ‘id’ at
+the beginning or end of their name will have type ‘index’.</p>
+<section id="id19">
+<h3>Parameters<a class="headerlink" href="#id19" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>dataframe<span class="classifier">pandas DataFrame</span></dt><dd><p>The DataFrame to extract column data types from.</p>
+</dd>
+</dl>
+</section>
+<section id="id20">
+<h3>Returns<a class="headerlink" href="#id20" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>str</dt><dd><p>A string representation of a dictionary containing the data types
+of each column in the given DataFrame. The keys are the column names
+and the values are the corresponding data types.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="refineryframe.other.set_types">
+<span class="sig-prename descclassname"><span class="pre">refineryframe.other.</span></span><span class="sig-name descname"><span class="pre">set_types</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">types_dict_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_date_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'%Y-%m-%d'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="_modules/refineryframe/other.html#set_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.other.set_types" title="Permalink to this definition"></a></dt>
+<dd><p>Change the data types of the columns in the given DataFrame
+based on a dictionary of intended data types.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>dataframe (pandas.DataFrame):</dt><dd><p>The DataFrame to change the data types of.</p>
+</dd>
+<dt>types_dict_str (dict):</dt><dd><p>A dictionary where the keys are the column names
+and the values are the intended data types for those columns.</p>
+</dd>
+<dt>replace_dict (dict, optional):</dt><dd><p>A dictionary containing replacement values
+for specific columns. Defaults to None.</p>
+</dd>
+<dt>expected_date_format (str, optional):</dt><dd><p>The expected date format for date columns.
+Defaults to ‘%Y-%m-%d’.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>pandas.DataFrame: The DataFrame with the changed data types.</p>
+</dd>
+<dt>Raises:</dt><dd><p>ValueError: If the keys in the dictionary do not match the columns in the DataFrame.
+TypeError: If the data types cannot be changed successfully.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="refineryframe.other.shoutOUT">
+<span class="sig-prename descclassname"><span class="pre">refineryframe.other.</span></span><span class="sig-name descname"><span class="pre">shoutOUT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dline'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mess</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dotline_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/refineryframe/other.html#shoutOUT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.other.shoutOUT" title="Permalink to this definition"></a></dt>
+<dd><p>Print a line of text with a specified length and format.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>output_type (str):</dt><dd><p>The type of line to print. Valid values are “dline” (default),
+“line”, “pline”, “HEAD1”, “title”, “subtitle”, “subtitle2”, “subtitle3”, and “warning”.</p>
+</dd>
+<dt>mess (str):</dt><dd><p>The text to print out.</p>
+</dd>
+<dt>dotline_length (int):</dt><dd><p>The length of the line to print.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>None</p>
+</dd>
+<dt>Examples:</dt><dd><p>shoutOUT(“HEAD1”, mess=”Header”, dotline_length=50)
+shoutOUT(output_type=”dline”, dotline_length=50)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="refineryframe.other.treat_unexpected_cond">
+<span class="sig-prename descclassname"><span class="pre">refineryframe.other.</span></span><span class="sig-name descname"><span class="pre">treat_unexpected_cond</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">warning</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="_modules/refineryframe/other.html#treat_unexpected_cond"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.other.treat_unexpected_cond" title="Permalink to this definition"></a></dt>
+<dd><p>Replace unexpected values in a pandas DataFrame with replace values.</p>
+<section id="id21">
+<h3>Parameters:<a class="headerlink" href="#id21" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>df (pandas DataFrame):</dt><dd><p>The DataFrame to be checked.</p>
+</dd>
+<dt>description (str):</dt><dd><p>Description of the unexpected condition being treated.</p>
+</dd>
+<dt>group (str):</dt><dd><p>Group identifier for the unexpected condition.</p>
+</dd>
+<dt>features (list):</dt><dd><p>List of column names or regex pattern for selecting columns.</p>
+</dd>
+<dt>query (str):</dt><dd><p>Query string for selecting rows based on the unexpected condition.</p>
+</dd>
+<dt>warning (str):</dt><dd><p>Warning message to be logged if unexpected condition is found.</p>
+</dd>
+<dt>replace (object):</dt><dd><p>Value to replace the unexpected values with.</p>
+</dd>
+</dl>
+</section>
+<section id="id22">
+<h3>Returns:<a class="headerlink" href="#id22" title="Permalink to this heading"></a></h3>
+<p>df (pandas DataFrame): The DataFrame with replaced unexpected values, if replace is not None.</p>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-refineryframe.refiner">
+<span id="refineryframe-refiner-module"></span><h2>refineryframe.refiner module<a class="headerlink" href="#module-refineryframe.refiner" title="Permalink to this heading"></a></h2>
+<p>refineryframe Module</p>
+<p>This module provides a Refiner class to encapsulate functions for data refinement
+and validation. The Refiner class is designed to work with pandas DataFrames and
+perform various checks and replacements for data preprocessing.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="refineryframe.refiner.Refiner">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">refineryframe.refiner.</span></span><span class="sig-name descname"><span class="pre">Refiner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe:</span> <span class="pre">~pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_dict:</span> <span class="pre">dict</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MISSING_TYPES:</span> <span class="pre">dict</span> <span class="pre">=</span> <span class="pre">{'character_not_delivered':</span> <span class="pre">'missing'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'date_not_delivered':</span> <span class="pre">'1850-01-09'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'numeric_not_delivered':</span> <span class="pre">-999}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_date_format:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'%Y-%m-%d'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mess:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'INITIAL</span> <span class="pre">PREPROCESSING'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shout_type:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'HEAD2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger=&lt;module</span> <span class="pre">'logging'</span> <span class="pre">from</span> <span class="pre">'/Users/insani_dei/miniconda3/envs/tf_env/lib/python3.9/logging/__init__.py'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_name='Refiner'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loggerLvl=20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dotline_length:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_bound=-inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_bound=inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">earliest_date='1900-08-25'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latest_date='2100-01-01'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ids_for_dedup:</span> <span class="pre">list</span> <span class="pre">=</span> <span class="pre">'ALL'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unexpected_exceptions_duv:</span> <span class="pre">dict</span> <span class="pre">=</span> <span class="pre">{'col_names_types':</span> <span class="pre">'NONE'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'date_format':</span> <span class="pre">'NONE'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'date_range':</span> <span class="pre">'NONE'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'duplicates':</span> <span class="pre">'NONE'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'inf_values':</span> <span class="pre">'NONE'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'missing_types':</span> <span class="pre">'NONE'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'missing_values':</span> <span class="pre">'NONE'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'numeric_range':</span> <span class="pre">'NONE'}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unexpected_exceptions_ruv:</span> <span class="pre">dict</span> <span class="pre">=</span> <span class="pre">{'capitalization':</span> <span class="pre">'NONE'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'date_range':</span> <span class="pre">'NONE'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'irregular_values':</span> <span class="pre">'NONE'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'numeric_range':</span> <span class="pre">'NONE'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'unicode_character':</span> <span class="pre">'NONE'}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unexpected_exceptions_error:</span> <span class="pre">dict</span> <span class="pre">=</span> <span class="pre">{'col_name_duplicates':</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'col_names_types':</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'date_format':</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'date_range':</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'duplicates':</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'inf_values':</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'missing_types':</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'missing_values':</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'numeric_range':</span> <span class="pre">False}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds:</span> <span class="pre">dict</span> <span class="pre">=</span> <span class="pre">{'ccnt_scores':</span> <span class="pre">{'incorrect_dtypes_score':</span> <span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'missing_score':</span> <span class="pre">100}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'cdf_scores':</span> <span class="pre">{'date_format_score':</span> <span class="pre">100}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'cdr_scores':</span> <span class="pre">{'early_dates_score':</span> <span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'future_dates_score':</span> <span class="pre">100}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'cmt_scores':</span> <span class="pre">{'cat_score':</span> <span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'date_score':</span> <span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'numeric_score':</span> <span class="pre">100}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'cmv_scores':</span> <span class="pre">{'missing_values_score':</span> <span class="pre">100}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'cnr_scores':</span> <span class="pre">{'low_numeric_score':</span> <span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'upper_numeric_score':</span> <span class="pre">100}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'dup_scores':</span> <span class="pre">{'key_dup_score':</span> <span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'row_dup_score':</span> <span class="pre">100}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'inf_scores':</span> <span class="pre">{'inf_score':</span> <span class="pre">100}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unexpected_conditions=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_values=[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_dates=[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/refineryframe/refiner.html#Refiner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.refiner.Refiner" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class that encapsulates functions for data refining and validation.</p>
+<dl>
+<dt>Attributes:</dt><dd><dl class="simple">
+<dt>dataframe (pd.DataFrame):</dt><dd><p>The input pandas DataFrame to be processed.</p>
+</dd>
+<dt>replace_dict (dict, optional):</dt><dd><p>A dictionary to define replacements for specific values in the DataFrame.</p>
+</dd>
+<dt>MISSING_TYPES (dict, optional):</dt><dd><p>Default values for missing types in different columns of the DataFrame.</p>
+</dd>
+<dt>expected_date_format (str, optional):</dt><dd><p>The expected date format for date columns in the DataFrame.</p>
+</dd>
+<dt>mess (str, optional):</dt><dd><p>A custom message used in the <cite>shout</cite> method for printing.</p>
+</dd>
+<dt>shout_type (str, optional):</dt><dd><p>The type of output for the <cite>shout</cite> method (e.g., ‘HEAD2’).</p>
+</dd>
+<dt>logger (logging.Logger, optional):</dt><dd><p>A custom logger object for logging messages.</p>
+</dd>
+<dt>logger_name (str, optional):</dt><dd><p>The name of the logger for the class instance.</p>
+</dd>
+<dt>loggerLvl (int, optional):</dt><dd><p>The logging level for the logger.</p>
+</dd>
+<dt>dotline_length (int, optional):</dt><dd><p>The length of the line to be printed in the <cite>shout</cite> method.</p>
+</dd>
+<dt>lower_bound (float, optional):</dt><dd><p>The lower bound for numeric range validation.</p>
+</dd>
+<dt>upper_bound (float, optional):</dt><dd><p>The upper bound for numeric range validation.</p>
+</dd>
+<dt>earliest_date (str, optional):</dt><dd><p>The earliest allowed date for date range validation.</p>
+</dd>
+<dt>latest_date (str, optional):</dt><dd><p>The latest allowed date for date range validation.</p>
+</dd>
+<dt>ids_for_dedup (list, optional):</dt><dd><p>A list of column names to be used for duplicate detection.</p>
+</dd>
+<dt>unexpected_exceptions_duv (dict, optional):</dt><dd><p>A dictionary of unexpected exceptions for data value validation.</p>
+</dd>
+<dt>unexpected_exceptions_ruv (dict, optional):</dt><dd><p>A dictionary of unexpected exceptions for data replacement validation.</p>
+</dd>
+<dt>unexpected_exceptions_error (dict, optional):</dt><dd><p>A dictionary that indicates if error should be raised during duv.</p>
+</dd>
+<dt>unexpected_conditions (None or callable, optional):</dt><dd><p>A callable function for custom unexpected conditions.</p>
+</dd>
+<dt>ignore_values (list, optional):</dt><dd><p>A list of values to ignore during numeric range validation.</p>
+</dd>
+<dt>ignore_dates (list, optional):</dt><dd><p>A list of dates to ignore during date range validation.</p>
+</dd>
+</dl>
+</dd>
+<dt>Methods:</dt><dd><p>shout(mess=None): Prints a line of text with a specified length and format.
+get_type_dict_from_dataframe(explicit=True, stringout=False): Returns a dictionary containing the data types</p>
+<blockquote>
+<div><p>of each column in the given pandas DataFrame.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>set_type_dict(type_dict=None, explicit=True, stringout=False): Changes the data types of the columns in the</dt><dd><p>DataFrame based on a dictionary of intended data types.</p>
+</dd>
+<dt>set_types(type_dict=None, replace_dict=None, expected_date_format=None): Changes the data types of the columns</dt><dd><p>in the DataFrame based on a dictionary of intended data types.</p>
+</dd>
+</dl>
+<p>get_refiner_settings(): Extracts values of parameters from the Refiner and saves them in a dictionary for later use.
+set_refiner_settings(settings: dict): Updates input parameters with values from the provided settings dict.
+check_duplicate_col_names(throw_error=None): Checks for duplicate column names in a pandas DataFrame.
+add_index_to_duplicate_columns(column_names_freq: dict): Adds an index to duplicate column names in a pandas DataFrame.
+check_missing_types(): Searches for instances of missing types in each column of the DataFrame.
+check_missing_values(): Counts the number of NaN, None, and NaT values in each column of the DataFrame.
+check_inf_values(): Counts the inf values in each column of the DataFrame.
+check_date_format(): Checks if the values in the datetime columns have the expected ‘YYYY-MM-DD’ format.
+check_duplicates(subset=None): Checks for duplicates in the DataFrame.
+check_col_names_types(): Checks if the DataFrame has the same column names as the types_dict_str dictionary</p>
+<blockquote>
+<div><p>and those columns have the same types as items in the dictionary.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>check_numeric_range(numeric_cols=None, lower_bound=None, upper_bound=None, ignore_values=None): Checks if</dt><dd><p>numeric values are in expected ranges.</p>
+</dd>
+</dl>
+<p>check_date_range(earliest_date=None, latest_date=None, ignore_dates=None): Checks if dates are in expected ranges.
+detect_unexpected_values(MISSING_TYPES=None, unexpected_exceptions=None, unexpected_conditions=None,</p>
+<blockquote>
+<div><p>ids_for_dedup=None, TEST_DUV_FLAGS_PATH=None, types_dict_str=None,
+expected_date_format=None, earliest_date=None, latest_date=None, numeric_lower_bound=None,
+numeric_upper_bound=None, print_score=True): Detects unexpected values in the DataFrame.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>get_unexpected_exceptions_scaned(dataframe=None): Returns unexpected_exceptions with appropriate settings for the</dt><dd><p>values in the DataFrame.</p>
+</dd>
+<dt>replace_unexpected_values(MISSING_TYPES=None, unexpected_exceptions=None, unexpected_conditions=None,</dt><dd><p>TEST_RUV_FLAGS_PATH=None, earliest_date=None, latest_date=None, numeric_lower_bound=None,
+numeric_upper_bound=None): Replaces unexpected values in the DataFrame with missing types
+based on a dictionary of unexpected exceptions.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="refineryframe.refiner.Refiner.add_index_to_duplicate_columns">
+<span class="sig-name descname"><span class="pre">add_index_to_duplicate_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_name_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/refineryframe/refiner.html#Refiner.add_index_to_duplicate_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.refiner.Refiner.add_index_to_duplicate_columns" title="Permalink to this definition"></a></dt>
+<dd><p>Adds an index to duplicate column names in a pandas DataFrame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="refineryframe.refiner.Refiner.check_col_names_types">
+<span class="sig-name descname"><span class="pre">check_col_names_types</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/refineryframe/refiner.html#Refiner.check_col_names_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.refiner.Refiner.check_col_names_types" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if a given dataframe has the same column names as keys in a given dictionary
+and those columns have the same types as items in the dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="refineryframe.refiner.Refiner.check_date_format">
+<span class="sig-name descname"><span class="pre">check_date_format</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/refineryframe/refiner.html#Refiner.check_date_format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.refiner.Refiner.check_date_format" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if the values in the datetime columns of the input dataframe
+have the expected ‘YYYY-MM-DD’ format.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="refineryframe.refiner.Refiner.check_date_range">
+<span class="sig-name descname"><span class="pre">check_date_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">earliest_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latest_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_dates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/refineryframe/refiner.html#Refiner.check_date_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.refiner.Refiner.check_date_range" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if dates are in expected ranges.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="refineryframe.refiner.Refiner.check_duplicate_col_names">
+<span class="sig-name descname"><span class="pre">check_duplicate_col_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">throw_error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/refineryframe/refiner.html#Refiner.check_duplicate_col_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.refiner.Refiner.check_duplicate_col_names" title="Permalink to this definition"></a></dt>
+<dd><p>Checks for duplicate column names in a pandas DataFrame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="refineryframe.refiner.Refiner.check_duplicates">
+<span class="sig-name descname"><span class="pre">check_duplicates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/refineryframe/refiner.html#Refiner.check_duplicates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.refiner.Refiner.check_duplicates" title="Permalink to this definition"></a></dt>
+<dd><p>Checks for duplicates in a pandas DataFrame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="refineryframe.refiner.Refiner.check_inf_values">
+<span class="sig-name descname"><span class="pre">check_inf_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/refineryframe/refiner.html#Refiner.check_inf_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.refiner.Refiner.check_inf_values" title="Permalink to this definition"></a></dt>
+<dd><p>Counts the inf values in each column of a pandas DataFrame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="refineryframe.refiner.Refiner.check_missing_types">
+<span class="sig-name descname"><span class="pre">check_missing_types</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/refineryframe/refiner.html#Refiner.check_missing_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.refiner.Refiner.check_missing_types" title="Permalink to this definition"></a></dt>
+<dd><p>Takes a DataFrame and a dictionary of missing types as input,
+and searches for any instances of these missing types in each column of the DataFrame.</p>
+<p>If any instances are found, a warning message is logged containing the column name,
+the missing value, and the count of missing values found.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="refineryframe.refiner.Refiner.check_missing_values">
+<span class="sig-name descname"><span class="pre">check_missing_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/refineryframe/refiner.html#Refiner.check_missing_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.refiner.Refiner.check_missing_values" title="Permalink to this definition"></a></dt>
+<dd><p>Counts the number of NaN, None, and NaT values in each column of a pandas DataFrame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="refineryframe.refiner.Refiner.check_numeric_range">
+<span class="sig-name descname"><span class="pre">check_numeric_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numeric_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/refineryframe/refiner.html#Refiner.check_numeric_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.refiner.Refiner.check_numeric_range" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if numeric values are in expected ranges.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="refineryframe.refiner.Refiner.detect_unexpected_values">
+<span class="sig-name descname"><span class="pre">detect_unexpected_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MISSING_TYPES</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unexpected_exceptions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unexpected_conditions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ids_for_dedup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TEST_DUV_FLAGS_PATH</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">types_dict_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_date_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">earliest_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latest_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numeric_lower_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numeric_upper_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/refineryframe/refiner.html#Refiner.detect_unexpected_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.refiner.Refiner.detect_unexpected_values" title="Permalink to this definition"></a></dt>
+<dd><p>Detects unexpected values in a pandas DataFrame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="refineryframe.refiner.Refiner.get_refiner_settings">
+<span class="sig-name descname"><span class="pre">get_refiner_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/refineryframe/refiner.html#Refiner.get_refiner_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.refiner.Refiner.get_refiner_settings" title="Permalink to this definition"></a></dt>
+<dd><p>Extracts values of parameters from refiner and saves them in dictionary for later use.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="refineryframe.refiner.Refiner.get_type_dict_from_dataframe">
+<span class="sig-name descname"><span class="pre">get_type_dict_from_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">explicit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stringout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/refineryframe/refiner.html#Refiner.get_type_dict_from_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.refiner.Refiner.get_type_dict_from_dataframe" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a dictionary or string representation of a dictionary containing the data types
+of each column in the given pandas DataFrame.</p>
+<p>Numeric columns will have type ‘numeric’, date columns will have type ‘date’,
+character columns will have type ‘category’, and columns containing ‘id’ at
+the beginning or end of their name will have type ‘index’.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="refineryframe.refiner.Refiner.get_unexpected_exceptions_scaned">
+<span class="sig-name descname"><span class="pre">get_unexpected_exceptions_scaned</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/refineryframe/refiner.html#Refiner.get_unexpected_exceptions_scaned"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.refiner.Refiner.get_unexpected_exceptions_scaned" title="Permalink to this definition"></a></dt>
+<dd><p>Returns unexpected_exceptions with appropriate settings to the values in the dataframe.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="refineryframe.refiner.Refiner.initialize_logger">
+<span class="sig-name descname"><span class="pre">initialize_logger</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/refineryframe/refiner.html#Refiner.initialize_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.refiner.Refiner.initialize_logger" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize a logger for the class instance based on the specified logging level and logger name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="refineryframe.refiner.Refiner.replace_unexpected_values">
+<span class="sig-name descname"><span class="pre">replace_unexpected_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">MISSING_TYPES</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unexpected_exceptions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unexpected_conditions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TEST_RUV_FLAGS_PATH</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">earliest_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latest_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numeric_lower_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numeric_upper_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/refineryframe/refiner.html#Refiner.replace_unexpected_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.refiner.Refiner.replace_unexpected_values" title="Permalink to this definition"></a></dt>
+<dd><p>Replaces unexpected values in a pandas DataFrame with missing types.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="refineryframe.refiner.Refiner.set_refiner_settings">
+<span class="sig-name descname"><span class="pre">set_refiner_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/refineryframe/refiner.html#Refiner.set_refiner_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.refiner.Refiner.set_refiner_settings" title="Permalink to this definition"></a></dt>
+<dd><p>Updates input parameters with values from provided settings dict.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="refineryframe.refiner.Refiner.set_type_dict">
+<span class="sig-name descname"><span class="pre">set_type_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">explicit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stringout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/refineryframe/refiner.html#Refiner.set_type_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.refiner.Refiner.set_type_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Changes the data types of the columns in the given DataFrame
+based on a dictionary of intended data types.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="refineryframe.refiner.Refiner.set_types">
+<span class="sig-name descname"><span class="pre">set_types</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_date_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/refineryframe/refiner.html#Refiner.set_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.refiner.Refiner.set_types" title="Permalink to this definition"></a></dt>
+<dd><p>Changes the data types of the columns in the given DataFrame
+based on a dictionary of intended data types.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="refineryframe.refiner.Refiner.shout">
+<span class="sig-name descname"><span class="pre">shout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mess</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/refineryframe/refiner.html#Refiner.shout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.refiner.Refiner.shout" title="Permalink to this definition"></a></dt>
+<dd><p>Prints a line of text with a specified length and format.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-refineryframe.replace_unexpected">
+<span id="refineryframe-replace-unexpected-module"></span><h2>refineryframe.replace_unexpected module<a class="headerlink" href="#module-refineryframe.replace_unexpected" title="Permalink to this heading"></a></h2>
+<p>replace_unexpected.py - Data Replacement Module</p>
+<p>This module contains a function to replace unexpected values in a pandas DataFrame with specified missing types.
+It covers various aspects of data validation, including replacing missing values, out-of-range numeric values,
+date values outside specified date ranges, and handling character-related issues such as capitalization and Unicode characters.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="refineryframe.replace_unexpected.replace_unexpected_values">
+<span class="sig-prename descclassname"><span class="pre">refineryframe.replace_unexpected.</span></span><span class="sig-name descname"><span class="pre">replace_unexpected_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MISSING_TYPES</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'character_not_delivered':</span> <span class="pre">'missing',</span> <span class="pre">'date_not_delivered':</span> <span class="pre">'1850-01-09',</span> <span class="pre">'numeric_not_delivered':</span> <span class="pre">-999}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unexpected_exceptions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'capitalization':</span> <span class="pre">'NONE',</span> <span class="pre">'date_range':</span> <span class="pre">'NONE',</span> <span class="pre">'irregular_values':</span> <span class="pre">'NONE',</span> <span class="pre">'numeric_range':</span> <span class="pre">'NONE',</span> <span class="pre">'unicode_character':</span> <span class="pre">'NONE'}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unexpected_conditions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TEST_RUV_FLAGS_PATH</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">earliest_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'1900-08-25'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latest_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'2100-01-01'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numeric_lower_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numeric_upper_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/refineryframe/replace_unexpected.html#replace_unexpected_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#refineryframe.replace_unexpected.replace_unexpected_values" title="Permalink to this definition"></a></dt>
+<dd><p>Replace unexpected values in a pandas DataFrame with missing types.</p>
+<section id="id23">
+<h3>Parameters:<a class="headerlink" href="#id23" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>dataframe (pandas DataFrame):</dt><dd><p>The DataFrame to be checked.</p>
+</dd>
+<dt>MISSING_TYPES (dict):</dt><dd><p>Dictionary that maps column names to the values considered as missing
+for that column.</p>
+</dd>
+<dt>unexpected_exceptions (dict):</dt><dd><p>Dictionary that lists column exceptions for each of the             following checks: col_names_types, missing_values, missing_types,                 inf_values, date_format, duplicates, date_range, and numeric_range.</p>
+</dd>
+<dt>TEST_DUV_FLAGS_PATH (str):</dt><dd><p>Path for checking unexpected values (default is None).</p>
+</dd>
+<dt>earliest_date (str):</dt><dd><p>The earliest acceptable date (default is “1900-08-25”).</p>
+</dd>
+<dt>latest_date (str):</dt><dd><p>The latest acceptable date (default is “2100-01-01”).</p>
+</dd>
+<dt>numeric_lower_bound (float):</dt><dd><p>The lowest acceptable value for numeric columns (default is 0).</p>
+</dd>
+<dt>numeric_upper_bound (float):</dt><dd><p>The highest acceptable value for numeric columns
+(default is infinity).</p>
+</dd>
+<dt>Returns:</dt><dd><p>ruv_score - number between 0 and 1 that means data quality score</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-refineryframe">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-refineryframe" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="refineryframe" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Kyrylo Mordan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

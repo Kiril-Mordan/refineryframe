@@ -38,15 +38,18 @@ import pandas as pd
 def shoutOUT(output_type : str = "dline",
              mess : str = None,
              dotline_length : int = 50,
-             logger : logging.Logger = logging) -> None:
+             logger : logging.Logger = None) -> None:
     """
     Print a line of text with a specified length and format.
 
     Args:
-        output_type (str): The type of line to print. Valid values are "dline" (default),
+        output_type (str):
+            The type of line to print. Valid values are "dline" (default),
             "line", "pline", "HEAD1", "title", "subtitle", "subtitle2", "subtitle3", and "warning".
-        mess (str): The text to print out.
-        dotline_length (int): The length of the line to print.
+        mess (str):
+            The text to print out.
+        dotline_length (int):
+            The length of the line to print.
 
     Returns:
         None
@@ -55,6 +58,10 @@ def shoutOUT(output_type : str = "dline",
         shoutOUT("HEAD1", mess="Header", dotline_length=50)
         shoutOUT(output_type="dline", dotline_length=50)
     """
+
+    # Create a logger if not provided
+    if logger is None:
+        logger = logging.getLogger(__name__)
 
     switch = {
         "dline": lambda: logger.info("=" * dotline_length),
@@ -89,7 +96,7 @@ def shoutOUT(output_type : str = "dline",
 def get_type_dict(dataframe : pd.DataFrame,
                   explicit : bool = True,
                   stringout : bool = False,
-                  logger : logging.Logger = logging) -> dict:
+                  logger : logging.Logger = None) -> dict:
     """
     Returns a string representation of a dictionary containing the data types
     of each column in the given pandas DataFrame.
@@ -110,6 +117,10 @@ def get_type_dict(dataframe : pd.DataFrame,
         of each column in the given DataFrame. The keys are the column names
         and the values are the corresponding data types.
     """
+
+    # Create a logger if not provided
+    if logger is None:
+        logger = logging.getLogger(__name__)
 
     try:
 
@@ -158,18 +169,22 @@ def set_types(dataframe: pd.DataFrame,
               types_dict_str: dict,
               replace_dict: dict = None,
               expected_date_format: str = '%Y-%m-%d',
-             logger : logging.Logger = logging) -> pd.DataFrame:
+             logger : logging.Logger = None) -> pd.DataFrame:
     """
     Change the data types of the columns in the given DataFrame
     based on a dictionary of intended data types.
 
     Args:
-        dataframe (pandas.DataFrame): The DataFrame to change the data types of.
-        types_dict_str (dict): A dictionary where the keys are the column names
+        dataframe (pandas.DataFrame):
+            The DataFrame to change the data types of.
+        types_dict_str (dict):
+            A dictionary where the keys are the column names
             and the values are the intended data types for those columns.
-        replace_dict (dict, optional): A dictionary containing replacement values
+        replace_dict (dict, optional):
+            A dictionary containing replacement values
             for specific columns. Defaults to None.
-        expected_date_format (str, optional): The expected date format for date columns.
+        expected_date_format (str, optional):
+            The expected date format for date columns.
             Defaults to '%Y-%m-%d'.
 
     Returns:
@@ -179,6 +194,11 @@ def set_types(dataframe: pd.DataFrame,
         ValueError: If the keys in the dictionary do not match the columns in the DataFrame.
         TypeError: If the data types cannot be changed successfully.
     """
+
+    # Create a logger if not provided
+    if logger is None:
+        logger = logging.getLogger(__name__)
+
     try:
         dataframe = dataframe.copy()
 
@@ -214,25 +234,36 @@ def treat_unexpected_cond(df : pd.DataFrame,
                           query : str,
                           warning : bool,
                           replace,
-                          logger : logging.Logger = logging) -> pd.DataFrame:
+                          logger : logging.Logger = None) -> pd.DataFrame:
 
     """
     Replace unexpected values in a pandas DataFrame with replace values.
 
     Parameters:
     -----------
-    df (pandas DataFrame): The DataFrame to be checked.
-    description (str): Description of the unexpected condition being treated.
-    group (str): Group identifier for the unexpected condition.
-    features (list): List of column names or regex pattern for selecting columns.
-    query (str): Query string for selecting rows based on the unexpected condition.
-    warning (str): Warning message to be logged if unexpected condition is found.
-    replace (object): Value to replace the unexpected values with.
+    df (pandas DataFrame):
+        The DataFrame to be checked.
+    description (str):
+        Description of the unexpected condition being treated.
+    group (str):
+        Group identifier for the unexpected condition.
+    features (list):
+        List of column names or regex pattern for selecting columns.
+    query (str):
+        Query string for selecting rows based on the unexpected condition.
+    warning (str):
+        Warning message to be logged if unexpected condition is found.
+    replace (object):
+        Value to replace the unexpected values with.
 
     Returns:
     -------
     df (pandas DataFrame): The DataFrame with replaced unexpected values, if replace is not None.
     """
+
+    # Create a logger if not provided
+    if logger is None:
+        logger = logging.getLogger(__name__)
 
     df = df.copy()
 

@@ -24,27 +24,48 @@ class Refiner:
     Class that encapsulates functions for data refining and validation.
 
     Attributes:
-        dataframe (pd.DataFrame): The input pandas DataFrame to be processed.
-        replace_dict (dict, optional): A dictionary to define replacements for specific values in the DataFrame.
-        MISSING_TYPES (dict, optional): Default values for missing types in different columns of the DataFrame.
-        expected_date_format (str, optional): The expected date format for date columns in the DataFrame.
-        mess (str, optional): A custom message used in the `shout` method for printing.
-        shout_type (str, optional): The type of output for the `shout` method (e.g., 'HEAD2').
-        logger (logging.Logger, optional): A custom logger object for logging messages.
-        logger_name (str, optional): The name of the logger for the class instance.
-        loggerLvl (int, optional): The logging level for the logger.
-        dotline_length (int, optional): The length of the line to be printed in the `shout` method.
-        lower_bound (float, optional): The lower bound for numeric range validation.
-        upper_bound (float, optional): The upper bound for numeric range validation.
-        earliest_date (str, optional): The earliest allowed date for date range validation.
-        latest_date (str, optional): The latest allowed date for date range validation.
-        ids_for_dedup (list, optional): A list of column names to be used for duplicate detection.
-        unexpected_exceptions_duv (dict, optional): A dictionary of unexpected exceptions for data value validation.
-        unexpected_exceptions_ruv (dict, optional): A dictionary of unexpected exceptions for data replacement validation.
-        unexpected_exceptions_error (dict, optional): A dictionary that indicates if error should be raised during duv.
-        unexpected_conditions (None or callable, optional): A callable function for custom unexpected conditions.
-        ignore_values (list, optional): A list of values to ignore during numeric range validation.
-        ignore_dates (list, optional): A list of dates to ignore during date range validation.
+        dataframe (pd.DataFrame):
+            The input pandas DataFrame to be processed.
+        replace_dict (dict, optional):
+            A dictionary to define replacements for specific values in the DataFrame.
+        MISSING_TYPES (dict, optional):
+            Default values for missing types in different columns of the DataFrame.
+        expected_date_format (str, optional):
+            The expected date format for date columns in the DataFrame.
+        mess (str, optional):
+            A custom message used in the `shout` method for printing.
+        shout_type (str, optional):
+            The type of output for the `shout` method (e.g., 'HEAD2').
+        logger (logging.Logger, optional):
+            A custom logger object for logging messages.
+        logger_name (str, optional):
+            The name of the logger for the class instance.
+        loggerLvl (int, optional):
+            The logging level for the logger.
+        dotline_length (int, optional):
+            The length of the line to be printed in the `shout` method.
+        lower_bound (float, optional):
+            The lower bound for numeric range validation.
+        upper_bound (float, optional):
+            The upper bound for numeric range validation.
+        earliest_date (str, optional):
+            The earliest allowed date for date range validation.
+        latest_date (str, optional):
+            The latest allowed date for date range validation.
+        ids_for_dedup (list, optional):
+            A list of column names to be used for duplicate detection.
+        unexpected_exceptions_duv (dict, optional):
+            A dictionary of unexpected exceptions for data value validation.
+        unexpected_exceptions_ruv (dict, optional):
+            A dictionary of unexpected exceptions for data replacement validation.
+        unexpected_exceptions_error (dict, optional):
+            A dictionary that indicates if error should be raised during duv.
+        unexpected_conditions (None or callable, optional):
+            A callable function for custom unexpected conditions.
+        ignore_values (list, optional):
+            A list of values to ignore during numeric range validation.
+        ignore_dates (list, optional):
+            A list of dates to ignore during date range validation.
 
     Methods:
         shout(mess=None): Prints a line of text with a specified length and format.
@@ -130,19 +151,19 @@ class Refiner:
                                                     "numeric_range": False}, type=dict)
 
     thresholds = attr.ib(default= {'cmt_scores' : {'numeric_score' : 100,
-                                                                  'date_score' : 100,
-                                                                  'cat_score' : 100},
-                                                  'cmv_scores' : {'missing_values_score' : 100},
-                                                  'ccnt_scores' : {'missing_score' : 100,
-                                                                   'incorrect_dtypes_score' : 100},
-                                                  'inf_scores' : {'inf_score' : 100},
-                                                  'cdf_scores' : {'date_format_score' : 100},
-                                                  'dup_scores' : {'row_dup_score' : 100,
-                                                                  'key_dup_score' : 100},
-                                                  'cnr_scores' : {'low_numeric_score' : 100,
-                                                                  'upper_numeric_score' : 100},
-                                                  'cdr_scores' : {'early_dates_score' : 100,
-                                                                  'future_dates_score' : 100}}, type=dict)
+                                                    'date_score' : 100,
+                                                    'cat_score' : 100},
+                                    'cmv_scores' : {'missing_values_score' : 100},
+                                    'ccnt_scores' : {'missing_score' : 100,
+                                                    'incorrect_dtypes_score' : 100},
+                                    'inf_scores' : {'inf_score' : 100},
+                                    'cdf_scores' : {'date_format_score' : 100},
+                                    'dup_scores' : {'row_dup_score' : 100,
+                                                    'key_dup_score' : 100},
+                                    'cnr_scores' : {'low_numeric_score' : 100,
+                                                    'upper_numeric_score' : 100},
+                                    'cdr_scores' : {'early_dates_score' : 100,
+                                                    'future_dates_score' : 100}}, type=dict)
 
     unexpected_conditions = attr.ib(default=None)
 

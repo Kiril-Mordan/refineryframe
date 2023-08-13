@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feature List &mdash; refineryframe package  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            refineryframe package
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">refineryframe</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">refineryframe package</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Feature List</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/feature_list.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="feature-list">
+<h1>Feature List<a class="headerlink" href="#feature-list" title="Permalink to this heading"></a></h1>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">refineryframe.refiner.Refiner.add_index_to_duplicate_columns</span></code> - adds an index to duplicate column names in a pandas DataFrame.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">refineryframe.refiner.Refiner.check_col_names_types</span></code> - checks if a given dataframe has the same column names as keys in a given dictionary
+and those columns have the same types as items in the dictionary.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">refineryframe.refiner.Refiner.check_date_format</span></code> - checks if the values in the datetime columns of the input dataframe
+have the expected ‘YYYY-MM-DD’ format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">refineryframe.refiner.Refiner.check_date_range</span></code> - checks if dates are in expected ranges.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">refineryframe.refiner.Refiner.check_duplicate_col_names</span></code> - checks for duplicate column names in a pandas DataFrame.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">refineryframe.refiner.Refiner.check_duplicates</span></code> - checks for duplicates in a pandas DataFrame.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">refineryframe.refiner.Refiner.check_inf_values</span></code> - counts the inf values in each column of a pandas DataFrame.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">refineryframe.refiner.Refiner.check_missing_types</span></code> - takes a DataFrame and a dictionary of missing types as input,
+and searches for any instances of these missing types in each column of the DataFrame.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">refineryframe.refiner.Refiner.check_missing_values</span></code> - counts the number of NaN, None, and NaT values in each column of a pandas DataFrame.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">refineryframe.refiner.Refiner.check_numeric_range</span></code> - checks if numeric values are in expected ranges.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">refineryframe.refiner.Refiner.detect_unexpected_values</span></code> - detects unexpected values in a pandas DataFrame.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">refineryframe.refiner.Refiner.get_refiner_settings</span></code> - extracts values of parameters from refiner and saves them in dictionary for later use.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">refineryframe.refiner.Refiner.get_type_dict_from_dataframe</span></code> - returns a dictionary or string representation of a dictionary containing the data types
+of each column in the given pandas DataFrame.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">refineryframe.refiner.Refiner.get_unexpected_exceptions_scaned</span></code> - returns unexpected_exceptions with appropriate settings to the values in the dataframe.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">refineryframe.refiner.Refiner.replace_unexpected_values</span></code> - replaces unexpected values in a pandas DataFrame with missing types.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">refineryframe.refiner.Refiner.set_refiner_settings</span></code> - updates input parameters with values from provided settings dict.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">refineryframe.refiner.Refiner.set_type_dict</span></code> - changes the data types of the columns in the given DataFrame
+based on a dictionary of intended data types.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">refineryframe.refiner.Refiner.set_types</span></code> - changes the data types of the columns in the given DataFrame
+based on a dictionary of intended data types.</p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Kyrylo Mordan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
