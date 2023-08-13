@@ -81,7 +81,7 @@ def test_check_inf_values_print_error(caplog):
 
     assert "Error occured while checking inf values!" in caplog.text
 
-
+################
 
 def test_check_date_format_error(df):
     with pytest.raises(ValueError):
@@ -94,6 +94,18 @@ def test_check_date_format_print_error(caplog):
                       throw_error=False)
 
     assert "Error occurred while checking date format!" in caplog.text
+
+
+def test_check_date_format_scores_check_error(df):
+
+    cdf_obj = check_date_format(df,
+                                independent=False,
+                                throw_error=False)
+
+    assert cdf_obj['scores']['cdf_scores']['date_format_score'] == 50.0
+
+
+########
 
 def test_check_duplicates_error(df2):
     with pytest.raises(ValueError):
@@ -112,6 +124,18 @@ def test_check_duplicates_error3(df_dup):
     with pytest.raises(ValueError):
         check_duplicates(df_dup,
                          throw_error=True)
+
+
+def test_check_duplicates_error(df_dup):
+
+    dup_obj = check_duplicates(df_dup,
+                               independent=False,
+                               throw_error=False)
+
+    assert dup_obj['scores']['dup_scores']['row_dup_score'] == 83.33
+    assert dup_obj['scores']['dup_scores']['key_dup_score'] == 100.0
+
+##############
 
 
 def test_check_col_names_types_error(df, types_dict_str):
@@ -173,6 +197,19 @@ def test_check_numeric_range_error(caplog):
 
     assert "Error occurred while checking numeric ranges!" in caplog.text
 
+def test_check_numeric_range_scores_check_error(df):
+
+    cnr_obj = check_numeric_range(df[['num_id','NumericColumn','NumericColumn_exepted','NumericColumn2','NumericColumn3']],
+                                  lower_bound=0,
+                                  upper_bound=3,
+                                  independent=False,
+                                  throw_error=False)
+
+    assert cnr_obj['scores']['cnr_scores']['low_numeric_score'] == 93.33
+    assert cnr_obj['scores']['cnr_scores']['upper_numeric_score'] == 80.0
+
+###############
+
 def test_check_date_range_error(df1):
     with pytest.raises(ValueError):
         check_date_range(df1,
@@ -210,6 +247,20 @@ def test_check_date_range_latest_error(df1):
         check_date_range(df1,
                          latest_date=['DateColumn2'],
                          throw_error=True)
+
+
+def test_check_date_range_scores_ckeck_error(df):
+
+    cdr_obj = check_date_range(df[['DateColumn','DateColumn2']],
+                 earliest_date="2023-01-01",
+                 latest_date='2021-01-01',
+                    independent=False,
+                    silent = False)
+
+    assert cdr_obj['scores']['cdr_scores']['early_dates_score'] == 60.0
+    assert cdr_obj['scores']['cdr_scores']['future_dates_score'] == 60.0
+
+############
 
 def test_check_duplicate_col_names_error(df_dup2):
     with pytest.raises(ValueError):
