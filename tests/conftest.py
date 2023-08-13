@@ -6,11 +6,6 @@ import attr
 from datetime import datetime
 from refineryframe.refiner import Refiner
 
-@pytest.fixture(scope='session')
-def b():
-    yield 2
-
-
 
 @pytest.fixture(scope='session')
 def df():
@@ -217,6 +212,20 @@ def refiner_settings():
                                                     "duplicates": False,
                                                     "date_range": False,
                                                     "numeric_range": False},
+                        'thresholds' : {'cmt_scores' : {'numeric_score' : 100,
+                                                    'date_score' : 100,
+                                                    'cat_score' : 100},
+                                    'cmv_scores' : {'missing_values_score' : 100},
+                                    'ccnt_scores' : {'missing_score' : 100,
+                                                    'incorrect_dtypes_score' : 100},
+                                    'inf_scores' : {'inf_score' : 100},
+                                    'cdf_scores' : {'date_format_score' : 100},
+                                    'dup_scores' : {'row_dup_score' : 100,
+                                                    'key_dup_score' : 100},
+                                    'cnr_scores' : {'low_numeric_score' : 100,
+                                                    'upper_numeric_score' : 100},
+                                    'cdr_scores' : {'early_dates_score' : 100,
+                                                    'future_dates_score' : 100}},
                         'ignore_values': [],
                         'ignore_dates': [],
                         'type_dict': {}}

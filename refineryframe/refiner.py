@@ -129,13 +129,29 @@ class Refiner:
                                                     "date_range": False,
                                                     "numeric_range": False}, type=dict)
 
+    thresholds = attr.ib(default= {'cmt_scores' : {'numeric_score' : 100,
+                                                                  'date_score' : 100,
+                                                                  'cat_score' : 100},
+                                                  'cmv_scores' : {'missing_values_score' : 100},
+                                                  'ccnt_scores' : {'missing_score' : 100,
+                                                                   'incorrect_dtypes_score' : 100},
+                                                  'inf_scores' : {'inf_score' : 100},
+                                                  'cdf_scores' : {'date_format_score' : 100},
+                                                  'dup_scores' : {'row_dup_score' : 100,
+                                                                  'key_dup_score' : 100},
+                                                  'cnr_scores' : {'low_numeric_score' : 100,
+                                                                  'upper_numeric_score' : 100},
+                                                  'cdr_scores' : {'early_dates_score' : 100,
+                                                                  'future_dates_score' : 100}}, type=dict)
+
     unexpected_conditions = attr.ib(default=None)
 
     ignore_values = attr.ib(default=[])
     ignore_dates = attr.ib(default=[])
 
     # outputs
-    unexpected_exceptions_scaned = attr.ib(default={},init = False, type=dict)
+    unexpected_exceptions_scaned = attr.ib(default={}, init = False, type=dict)
+    thresholds_scaned = attr.ib(default={}, init = False, type=dict)
     type_dict = attr.ib(default={}, init = False, type=dict)
 
     COLUMN_NAMES_DUPLICATES_TEST = attr.ib(default=None, init = False)
@@ -294,6 +310,7 @@ class Refiner:
                                 'NUMERIC_RANGE_TEST',
                                 'logger',
                                 'unexpected_exceptions_scaned',
+                                'thresholds_scaned',
                                 'duv_score',
                                 'ruv_score0',
                                 'ruv_score1',
@@ -443,6 +460,7 @@ class Refiner:
                                                 logger = self.logger)
 
     def detect_unexpected_values(self,
+                                 dataframe = None,
                                  MISSING_TYPES = None,
                                  unexpected_exceptions = None,
                                  unexpected_conditions = None,
@@ -454,12 +472,15 @@ class Refiner:
                                  latest_date = None,
                                  numeric_lower_bound = None,
                                  numeric_upper_bound = None,
+                                 thresholds = None,
                                  print_score = True) -> None:
 
         """
         Detects unexpected values in a pandas DataFrame.
         """
 
+        if dataframe is None:
+            dataframe = self.dataframe
         if MISSING_TYPES is None:
             MISSING_TYPES = self.MISSING_TYPES
         if unexpected_exceptions is None:
@@ -480,8 +501,10 @@ class Refiner:
             numeric_lower_bound = self.lower_bound
         if numeric_upper_bound is None:
             numeric_upper_bound = self.upper_bound
+        if thresholds is None:
+            thresholds = self.thresholds
 
-        duv_obj = detect_unexpected_values(dataframe = self.dataframe,
+        duv_obj = detect_unexpected_values(dataframe = dataframe,
                                                  MISSING_TYPES = MISSING_TYPES,
                                                  unexpected_exceptions = unexpected_exceptions,
                                                  unexpected_conditions = unexpected_conditions,
@@ -493,10 +516,12 @@ class Refiner:
                                                  latest_date = latest_date,
                                                  numeric_lower_bound = numeric_lower_bound,
                                                  numeric_upper_bound = numeric_upper_bound,
+                                                 thresholds = thresholds,
                                                  print_score = print_score,
                                       logger = self.logger)
 
         self.duv_score = duv_obj['duv_score']
+        self.thresholds_scaned = duv_obj['check_scores']
         self.unexpected_exceptions_scaned = duv_obj['unexpected_exceptions_scaned']
 
     def get_unexpected_exceptions_scaned(self, dataframe = None) -> dict:

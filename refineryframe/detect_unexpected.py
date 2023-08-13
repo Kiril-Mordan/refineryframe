@@ -77,8 +77,12 @@ from refineryframe.other import get_type_dict, treat_unexpected_cond
 def check_missing_types(dataframe : pd.DataFrame,
                         MISSING_TYPES : dict,
                         independent : bool = True,
+                        silent : bool = False,
                         throw_error : bool = False,
-                        logger : logging.Logger = logging):
+                        thresholds : dict = {'numeric_score' : 100,
+                                             'date_score' : 100,
+                                             'cat_score' : 100},
+                        logger : logging.Logger = logging) -> dict:
 
     """
     The function takes a DataFrame and a dictionary of missing types as input, and
@@ -103,11 +107,19 @@ def check_missing_types(dataframe : pd.DataFrame,
 
     try:
 
+        if (not independent) and (not silent):
+            logger.debug("=== checking for presence of missing types")
+
         DATE_MISS_TYPES_TEST_LIST = []
         NUMERIC_MISS_TYPES_TEST_LIST = []
         CHARACTER_MISS_TYPES_TEST_LIST = []
 
+        DATE_MISS_TYPES_SCORE_LIST = [100]
+        NUMERIC_MISS_TYPES_SCORE_LIST = [100]
+        CHARACTER_MISS_TYPES_SCORE_LIST = [100]
+
         counts = {}
+
         for col in dataframe.columns:
             dtype = str(dataframe[col].dtype)
 
@@ -116,44 +128,91 @@ def check_missing_types(dataframe : pd.DataFrame,
                     if (dataframe[col] == v).any():
                     #if v in dataframe[col].values:
                         counts[k] = len(dataframe[dataframe[col] == v])
-                        if counts[k] > 0:
-                            logger.warning(f"Column {col}: ({v}) : {counts[k]} : {(counts[k]/dataframe.shape[0])*100:.2f}%")
+                        numeric_score = (counts[k]/dataframe.shape[0])*100
+
+                        if (counts[k] > 0) and (not silent):
+                            logger.warning(f"Column {col}: ({v}) : {counts[k]} : {numeric_score:.2f}%")
 
                         NUMERIC_MISS_TYPES_TEST_LIST.append(False)
+                        NUMERIC_MISS_TYPES_SCORE_LIST.append(100-numeric_score)
 
                         if throw_error:
                             raise ValueError("Resolve issues before proceesing any further!")
                     else:
                         NUMERIC_MISS_TYPES_TEST_LIST.append(True)
+                        NUMERIC_MISS_TYPES_SCORE_LIST.append(100)
+
             elif dtype.startswith('datetime') or dtype.startswith('datetime64'):
                 for k, v in MISSING_TYPES.items():
                     if pd.to_datetime(v, errors='coerce') is not pd.NaT:
                         if dataframe[col].isin([pd.to_datetime(v, errors='coerce')]).sum() > 0:
                             counts[k] = (dataframe[col] == pd.to_datetime(v, errors='coerce')).sum()
-                            if counts[k] > 0:
-                                logger.warning(f"Column {col}: ({v}) : {counts[k]} : {(counts[k]/dataframe.shape[0])*100:.2f}%")
+                            date_score = (counts[k]/dataframe.shape[0])*100
+
+                            if (counts[k] > 0) and (not silent):
+                                logger.warning(f"Column {col}: ({v}) : {counts[k]} : {date_score:.2f}%")
+
                             DATE_MISS_TYPES_TEST_LIST.append(False)
+                            DATE_MISS_TYPES_SCORE_LIST.append(100-date_score)
 
                             if throw_error:
                                 raise ValueError("Resolve issues before proceesing any further!")
                         else:
                             DATE_MISS_TYPES_TEST_LIST.append(True)
+                            DATE_MISS_TYPES_SCORE_LIST.append(100)
                     else:
                         DATE_MISS_TYPES_TEST_LIST.append(True)
+                        DATE_MISS_TYPES_SCORE_LIST.append(100)
 
             elif dtype.startswith('object'):
                 for k, v in MISSING_TYPES.items():
                     if dataframe[col].isin([v]).sum() > 0:
                         counts[k] = (dataframe[col] == v).sum()
-                        if counts[k] > 0:
-                            logger.warning(f"Column {col}: ({v}) : {counts[k]} : {(counts[k]/dataframe.shape[0])*100:.2f}%")
+                        cat_score = (counts[k]/dataframe.shape[0])*100
+
+                        if (counts[k] > 0) and (not silent):
+                            logger.warning(f"Column {col}: ({v}) : {counts[k]} : {cat_score:.2f}%")
+
                         CHARACTER_MISS_TYPES_TEST_LIST.append(False)
+                        CHARACTER_MISS_TYPES_SCORE_LIST.append(100-cat_score)
 
                         if throw_error:
                             raise ValueError("Resolve issues before proceesing any further!")
 
                     else:
                         CHARACTER_MISS_TYPES_TEST_LIST.append(True)
+                        CHARACTER_MISS_TYPES_SCORE_LIST.append(100)
+
+        numeric_score = np.round(np.mean(NUMERIC_MISS_TYPES_SCORE_LIST),2)
+        date_score = np.round(np.mean(DATE_MISS_TYPES_SCORE_LIST),2)
+        cat_score = np.round(np.mean(CHARACTER_MISS_TYPES_SCORE_LIST),2)
+
+
+        if numeric_score < thresholds['numeric_score']:
+
+            if not silent:
+                logger.warning(f"Numeric score was lower then expected: {numeric_score} < {thresholds['numeric_score']}")
+
+            if throw_error:
+                raise ValueError("Resolve issues before proceesing any further!")
+
+        if date_score < thresholds['date_score']:
+
+            if not silent:
+                logger.warning(f"Date score was lower then expected: {date_score} < {thresholds['date_score']}")
+
+            if throw_error:
+                raise ValueError("Resolve issues before proceesing any further!")
+
+        if cat_score < thresholds['cat_score']:
+
+            if not silent:
+                logger.warning(f"Character score was lower then expected: {cat_score} < {thresholds['cat_score']}")
+
+            if throw_error:
+                raise ValueError("Resolve issues before proceesing any further!")
+
+
     except Exception as e:
 
         logger.error("Error occured while checking missing types!")
@@ -167,21 +226,34 @@ def check_missing_types(dataframe : pd.DataFrame,
         NUMERIC_MISS_TYPES_TEST_LIST = [False]
         CHARACTER_MISS_TYPES_TEST_LIST = [False]
 
+        numeric_score = 0
+        date_score = 0
+        cat_score = 0
+
     if independent:
 
         return all([all(DATE_MISS_TYPES_TEST_LIST),
                     all(NUMERIC_MISS_TYPES_TEST_LIST),
                     all(CHARACTER_MISS_TYPES_TEST_LIST)])
     else:
-        return (all(DATE_MISS_TYPES_TEST_LIST),
-               all(NUMERIC_MISS_TYPES_TEST_LIST),
-               all(CHARACTER_MISS_TYPES_TEST_LIST))
+
+        output_dict = {'scores': {'cmt_scores': {'numeric_score' : numeric_score,
+                                                'date_score' : date_score,
+                                                'cat_score' : cat_score}},
+                       'checks': (all(DATE_MISS_TYPES_TEST_LIST),
+                                  all(NUMERIC_MISS_TYPES_TEST_LIST),
+                                  all(CHARACTER_MISS_TYPES_TEST_LIST))}
+
+        return output_dict
 
 
 
 def check_missing_values(dataframe : pd.DataFrame,
+                         independent : bool = True,
+                         silent : bool = False,
                          throw_error : bool = False,
-                        logger : logging.Logger = logging):
+                         thresholds : dict = {'missing_values_score' : 100},
+                        logger : logging.Logger = logging) -> dict:
     """
     Count the number of NaN, None, and NaT values in each column of a pandas DataFrame.
 
@@ -197,7 +269,11 @@ def check_missing_values(dataframe : pd.DataFrame,
 
     try:
 
+        if (not independent) and (not silent):
+            logger.debug("=== checking for presence of missing values")
+
         MISSING_COUNT_TEST = False
+        MISSING_COUNT_SCORE_LIST = [100]
 
         # Define the missing values to check for
         missing_values = [np.nan, None, pd.NaT]
@@ -209,31 +285,55 @@ def check_missing_values(dataframe : pd.DataFrame,
 
         if len(missing_counts_filtered) > 0:
             for col, count in zip(missing_counts_filtered.index.to_list(), list(missing_counts_filtered.values)):
-                logger.warning(f"Column {col}: (NA) : {count} : {count/dataframe.shape[0]*100:.2f}%")
+
+                count_score = count/dataframe.shape[0]*100
+                if not silent:
+                    logger.warning(f"Column {col}: (NA) : {count} : {count_score:.2f}%")
+
+                MISSING_COUNT_SCORE_LIST.append(100-count_score)
+
+
 
             if throw_error:
                     raise ValueError("Resolve issues before proceesing any further!")
         else:
             MISSING_COUNT_TEST = True
 
+        missing_values_score = np.round(np.mean(MISSING_COUNT_SCORE_LIST),2)
+
+        if missing_values_score < thresholds['missing_values_score']:
+
+            if not silent:
+                logger.warning(f"Missing values score was lower then expected: {missing_values_score} < {thresholds['missing_values_score']}")
+
+            if throw_error:
+                raise ValueError("Resolve issues before proceesing any further!")
+
     except Exception as e:
 
         logger.error("Error occured while counting missing values!")
-
 
         if throw_error:
             raise e
         else:
             print("The error:", e)
 
-    return MISSING_COUNT_TEST
+        missing_values_score = 0
+        MISSING_COUNT_TEST = False
+
+    output_dict = {'scores': {'cmv_scores': {'missing_values_score' : missing_values_score}},
+                   'checks': [MISSING_COUNT_TEST]}
+
+    return output_dict
 
 
 
 def check_inf_values(dataframe : pd.DataFrame,
                      independent : bool = True,
+                     silent : bool = False,
                      throw_error : bool = False,
-                     logger : logging.Logger = logging):
+                     thresholds : dict = {'inf_score' : 100},
+                     logger : logging.Logger = logging) -> dict:
     """
     Count the inf values in each column of a pandas DataFrame.
 
@@ -249,27 +349,47 @@ def check_inf_values(dataframe : pd.DataFrame,
 
     try:
 
+        if (not independent) and (not silent):
+            logger.debug("=== checking for presense of inf values in numeric colums")
+
         NUM_INF_TEST_LIST = []
+        NUM_INF_SCORE_LIST = [100]
 
         # Count the number of INF values
         for col in dataframe.columns:
 
             if independent:
-
                 col_missing_counts = sum(dataframe[col].apply(lambda x: np.isinf(x)
                                                               if isinstance(x, (int, float)) else False))
             else:
-
                 col_missing_counts = sum(dataframe[col].apply(lambda x: np.isinf(x)))
 
             if col_missing_counts > 0:
-                logger.warning(f"Column {col}: (INF) : {col_missing_counts} : {col_missing_counts/dataframe.shape[0]*100:.2f}%")
+
+                inf_score = col_missing_counts/dataframe.shape[0]*100
+
+                if not silent:
+                    logger.warning(f"Column {col}: (INF) : {col_missing_counts} : {inf_score:.2f}%")
+
                 NUM_INF_TEST_LIST.append(False)
+                NUM_INF_SCORE_LIST.append(100-inf_score)
 
                 if throw_error:
-                        raise ValueError("Resolve issues before proceesing any further!")
+                    raise ValueError("Resolve issues before proceesing any further!")
             else:
                 NUM_INF_TEST_LIST.append(True)
+                NUM_INF_SCORE_LIST.append(100)
+
+        inf_score = np.round(np.mean(NUM_INF_SCORE_LIST),2)
+
+        if inf_score < thresholds['inf_score']:
+
+            if not silent:
+                logger.warning(f"Inf score was lower then expected: {inf_score} < {thresholds['inf_score']}")
+
+            if throw_error:
+                raise ValueError("Resolve issues before proceesing any further!")
+
     except Exception as e:
         logger.error("Error occured while checking inf values!")
 
@@ -279,14 +399,20 @@ def check_inf_values(dataframe : pd.DataFrame,
             print("The error:", e)
 
         NUM_INF_TEST_LIST = [False]
+        inf_score = 0
 
-    return all(NUM_INF_TEST_LIST)
+    output_dict = {'scores': {'inf_scores': {'inf_score' : inf_score}},
+                   'checks': [all(NUM_INF_TEST_LIST)]}
+
+    return output_dict
 
 def check_date_format(dataframe : pd.DataFrame,
                       expected_date_format : str = '%Y-%m-%d',
                       independent : bool = True,
+                      silent : bool = False,
                       throw_error : bool = False,
-                      logger : logging.Logger = logging) -> bool:
+                      thresholds : dict = {'date_format_score' : 100},
+                      logger : logging.Logger = logging) -> dict:
 
     """
     Check if the values in the datetime columns of the input dataframe
@@ -303,6 +429,10 @@ def check_date_format(dataframe : pd.DataFrame,
     """
 
     try:
+
+        if (not independent) and (not silent):
+            logger.debug("=== checking propper date format")
+
         DATE_FORMAT_TEST_LIST = []
 
         for col in dataframe.columns:
@@ -313,7 +443,10 @@ def check_date_format(dataframe : pd.DataFrame,
                 non_date_mask = date_vals.isna()
 
                 if any(non_date_mask):
-                    logger.warning(f"Column {col} has non-date values or unexpected format.")
+
+                    if not silent:
+                        logger.warning(f"Column {col} has non-date values or unexpected format.")
+
                     DATE_FORMAT_TEST_LIST.append(False)
 
                     if throw_error:
@@ -321,9 +454,20 @@ def check_date_format(dataframe : pd.DataFrame,
                 else:
                     DATE_FORMAT_TEST_LIST.append(True)
 
+        date_format_score = np.round((sum(DATE_FORMAT_TEST_LIST)/len(DATE_FORMAT_TEST_LIST))*100,2)
+
         if not independent:
             if any(DATE_FORMAT_TEST_LIST):
                 DATE_FORMAT_TEST_LIST = [all(DATE_FORMAT_TEST_LIST)]
+
+        if date_format_score < thresholds['date_format_score']:
+
+            if not silent:
+                logger.warning(f"Date format score was lower then expected: {date_format_score} < {thresholds['date_format_score']}")
+
+            if throw_error:
+                raise ValueError("Resolve issues before proceesing any further!")
+
 
     except Exception as e:
         logger.error("Error occurred while checking date format!")
@@ -334,16 +478,26 @@ def check_date_format(dataframe : pd.DataFrame,
             print("The error:", e)
 
         DATE_FORMAT_TEST_LIST = [False]
+        date_format_score = 0
 
-    return all(DATE_FORMAT_TEST_LIST)
 
+    output_dict = {'scores': {'cdf_scores': {'date_format_score' : date_format_score}},
+                                             'checks': [all(DATE_FORMAT_TEST_LIST)]}
+
+    if independent:
+        return all(DATE_FORMAT_TEST_LIST)
+    else:
+        return output_dict
 
 
 def check_duplicates(dataframe  : pd.DataFrame,
                      subset : list = None,
                      independent : bool = True,
+                     silent : bool = False,
                      throw_error : bool = False,
-                    logger : logging.Logger = logging) -> bool:
+                     thresholds : dict = {'row_dup_score' : 100,
+                                          'key_dup_score' : 100},
+                    logger : logging.Logger = logging) -> dict:
     """
     Check for duplicates in a pandas DataFrame.
 
@@ -363,8 +517,10 @@ def check_duplicates(dataframe  : pd.DataFrame,
 
     try:
 
+        if (not independent) and (not silent):
+            logger.debug("=== checking for duplicates")
+
         ROW_DUPLICATES = False
-        KEY_DUPLICATES = False
 
         duplicates = dataframe.duplicated()
         n_duplicates = duplicates.sum()
@@ -374,21 +530,34 @@ def check_duplicates(dataframe  : pd.DataFrame,
             n_subset_duplicates = subset_duplicates.sum()
 
             if n_subset_duplicates > 0:
-                logger.warning(f"There are {n_subset_duplicates} duplicate keys : {n_subset_duplicates/dataframe.shape[0]*100:.2f}%")
+
+                key_dup_score = n_subset_duplicates/dataframe.shape[0]*100
+
+                if not silent:
+                    logger.warning(f"There are {n_subset_duplicates} duplicate keys : {key_dup_score:.2f}%")
 
                 n_duplicates = dataframe.drop(columns=subset).duplicated().sum()
                 n_true_dup = n_subset_duplicates - n_duplicates
 
                 if n_true_dup > 0:
 
-                    logger.warning("** Deduplication keys do not form the super key!")
-                    logger.warning(f"There are {n_true_dup} duplicates beyond keys : {n_true_dup/dataframe.shape[0]*100:.2f}%")
+                    row_dup_score = n_true_dup/dataframe.shape[0]*100
+
+                    if not silent:
+                        logger.warning("** Deduplication keys do not form the super key!")
+                        logger.warning(f"There are {n_true_dup} duplicates beyond keys : {row_dup_score:.2f}%")
 
                     if throw_error:
                         raise ValueError("Resolve issues before proceesing any further!")
+
+                    KEY_DUPLICATES = False
+
+
                 else:
                     ROW_DUPLICATES = False
                     KEY_DUPLICATES = True
+
+                    row_dup_score = n_subset_duplicates/dataframe.shape[0]*100
 
                     if throw_error:
                         raise ValueError("Resolve issue with row duplicates before proceesing any further!")
@@ -396,15 +565,51 @@ def check_duplicates(dataframe  : pd.DataFrame,
             else:
                 ROW_DUPLICATES = True
                 KEY_DUPLICATES = True
+
+                row_dup_score = 0
+                key_dup_score = 0
+
+
         else:
             if n_duplicates > 0:
-                logger.warning(f"There are {n_duplicates} duplicates : {n_duplicates/dataframe.shape[0]*100:.2f}%")
+
+                KEY_DUPLICATES = True
+
+                row_dup_score = n_duplicates/dataframe.shape[0]*100
+                key_dup_score = 0
+
+                if not silent:
+                    logger.warning(f"There are {n_duplicates} duplicates : {row_dup_score:.2f}%")
 
                 if throw_error:
                     raise ValueError("Resolve issue with row duplicates before proceesing any further!")
             else:
                 ROW_DUPLICATES = True
                 KEY_DUPLICATES = True
+
+                row_dup_score = 0
+                key_dup_score = 0
+
+        row_dup_score = np.round(100 - row_dup_score, 2)
+        key_dup_score = np.round(100 - key_dup_score, 2)
+
+        if row_dup_score < thresholds['row_dup_score']:
+
+            if not silent:
+                logger.warning(f"Row duplicates score was lower then expected: {row_dup_score} < {thresholds['row_dup_score']}")
+
+            if throw_error:
+                raise ValueError("Resolve issues before proceesing any further!")
+
+        if key_dup_score < thresholds['key_dup_score']:
+
+            if not silent:
+                logger.warning(f"Key duplicates score was lower then expected: {key_dup_score} < {thresholds['key_dup_score']}")
+
+            if throw_error:
+                raise ValueError("Resolve issues before proceesing any further!")
+
+
 
     except Exception as e:
         logger.error("Error occured while checking duplicates!")
@@ -414,19 +619,29 @@ def check_duplicates(dataframe  : pd.DataFrame,
         else:
             print("The error:", e)
 
+        row_dup_score = 0
+        key_dup_score = 0
+
+    output_dict = {'scores': {'dup_scores': {'row_dup_score' : row_dup_score,
+                                             'key_dup_score' : key_dup_score}},
+                                             'checks': [ROW_DUPLICATES, KEY_DUPLICATES]}
+
 
     if independent:
         return all([ROW_DUPLICATES, KEY_DUPLICATES])
     else:
-        return ROW_DUPLICATES, KEY_DUPLICATES
+        return output_dict
 
 
 
 def check_col_names_types(dataframe : pd.DataFrame,
                           types_dict_str : dict,
+                          silent : bool = False,
                           independent : bool = True,
                           throw_error : bool = False,
-                          logger : logging.Logger = logging) -> bool:
+                          thresholds : dict = {'missing_score' : 100,
+                                               'incorrect_dtypes_score' : 100},
+                          logger : logging.Logger = logging) -> dict:
     """
     Checks if a given dataframe has the same column names as keys in a given dictionary
     and those columns have the same types as items in the dictionary.
@@ -440,6 +655,9 @@ def check_col_names_types(dataframe : pd.DataFrame,
     """
 
     try:
+
+        if (not independent) and (not silent):
+            logger.debug(f"=== checking column names and types")
 
         if isinstance(types_dict_str, str):
 
@@ -458,9 +676,15 @@ def check_col_names_types(dataframe : pd.DataFrame,
 
         # Check if dataframe has all the columns in the dictionary
         missing_cols = set(dtypes_str_dict.keys()) - set(dataframe.columns)
+
+        # Calculate missing score
+        missing_score = np.round((1 - len(missing_cols)/len(set(dtypes_str_dict.keys())))*100,2)
+
         if missing_cols:
-            logger.warning("** Columns in the dataframe are not the same as in the provided dictionary")
-            logger.warning(f"Missing columns: {', '.join(missing_cols)}")
+
+            if not silent:
+                logger.warning("** Columns in the dataframe are not the same as in the provided dictionary")
+                logger.warning(f"Missing columns: {', '.join(missing_cols)}")
 
             if throw_error:
                     raise ValueError("Resolve issues before proceesing any further!")
@@ -469,18 +693,41 @@ def check_col_names_types(dataframe : pd.DataFrame,
 
         # Check if data types of columns in the dataframe match the expected data types in the dictionary
         incorrect_dtypes = []
+
         for col, dtype in dtypes_str_dict.items():
             if dataframe[col].dtype.name != dtype:
                 incorrect_dtypes.append((col, dataframe[col].dtype.name, dtype))
+
+
         if incorrect_dtypes:
             logger.warning("Incorrect data types:")
             for col, actual_dtype, expected_dtype in incorrect_dtypes:
-                logger.warning(f"Column {col}: actual dtype is {actual_dtype}, expected dtype is {expected_dtype}")
+                if not silent:
+                    logger.warning(f"Column {col}: actual dtype is {actual_dtype}, expected dtype is {expected_dtype}")
 
             if throw_error:
                     raise ValueError("Resolve issues before proceesing any further!")
         else:
             COL_TYPES_TEST = True
+
+        incorrect_dtypes_score = np.round((1 - len(incorrect_dtypes)/len(set(dtypes_str_dict.keys())))*100,2)
+
+        if missing_score < thresholds['missing_score']:
+
+                if not silent:
+                    logger.warning(f"Missing col score was lower then expected: {missing_score} < {thresholds['missing_score']}")
+
+                if throw_error:
+                    raise ValueError("Resolve issues before proceesing any further!")
+
+
+        if incorrect_dtypes_score < thresholds['incorrect_dtypes_score']:
+
+                if not silent:
+                    logger.warning(f"Dtypes score was lower then expected: {incorrect_dtypes_score} < {thresholds['incorrect_dtypes_score']}")
+
+                if throw_error:
+                    raise ValueError("Resolve issues before proceesing any further!")
 
 
     except Exception as e:
@@ -494,20 +741,31 @@ def check_col_names_types(dataframe : pd.DataFrame,
         COL_NAMES_TEST = False
         COL_TYPES_TEST = False
 
+        missing_score = 0
+        incorrect_dtypes_score = 0
+
 
     if independent:
         return all([COL_NAMES_TEST, COL_TYPES_TEST])
     else:
-        return COL_NAMES_TEST, COL_TYPES_TEST
+
+        output_dict = {'scores': {'ccnt_scores': {'missing_score' : missing_score,
+                                              'incorrect_dtypes_score' : incorrect_dtypes_score}},
+                       'checks': (COL_NAMES_TEST, COL_TYPES_TEST)}
+
+        return output_dict
 
 def check_numeric_range(dataframe : pd.DataFrame,
                         numeric_cols : list = None,
                         lower_bound : float = -float("inf"),
                         upper_bound : float = float("inf"),
                         independent : bool = True,
+                        silent : bool = False,
                         ignore_values : list = [],
                         throw_error : bool = False,
-                        logger : logging.Logger = logging) -> bool:
+                        thresholds : dict = {'low_numeric_score' : 100,
+                                             'upper_numeric_score' : 100},
+                        logger : logging.Logger = logging) -> dict:
     """
     Check if numeric values are in expected ranges
 
@@ -534,8 +792,14 @@ def check_numeric_range(dataframe : pd.DataFrame,
 
     try:
 
+        if (not independent) and (not silent):
+            logger.debug("=== checking expected numeric range")
+
         LOW_NUMERIC_TEST_LIST = []
         HIGH_NUMERIC_TEST_LIST = []
+
+        LOW_NUMERIC_SCORES_LIST = [100]
+        HIGH_NUMERIC_SCORES_LIST = [100]
 
         if independent:
             # Select only numeric columns
@@ -559,12 +823,17 @@ def check_numeric_range(dataframe : pd.DataFrame,
                 min_values = (dataframe[col] < lower_bound) & (~dataframe[col].isin(ignore_values))
 
                 min_values_n = sum(min_values)
-
                 min_value = min(dataframe[col][min_values])
 
-                logger.warning(f"** Not all values in {col} are higher than {lower_bound}")
-                logger.warning(f"Column {col}: unexpected low values : {min_value} : {min_values_n/dataframe.shape[0]*100:.2f} %")
+                low_numeric_score = min_values_n/dataframe.shape[0]*100
+
+                if not silent:
+                    logger.warning(f"** Not all values in {col} are higher than {lower_bound}")
+                    logger.warning(f"Column {col}: unexpected low values : {min_value} : {low_numeric_score:.2f} %")
+
+
                 LOW_NUMERIC_TEST_LIST.append(False)
+                LOW_NUMERIC_SCORES_LIST.append(100 - low_numeric_score)
 
                 if throw_error:
 
@@ -572,23 +841,50 @@ def check_numeric_range(dataframe : pd.DataFrame,
 
             else:
                 LOW_NUMERIC_TEST_LIST.append(True)
+                LOW_NUMERIC_SCORES_LIST.append(100)
 
             # Check if all values in the column are < upper_bound
             if outside_upper_bound > 0:
                 max_values = (dataframe[col] > upper_bound) & (~dataframe[col].isin(ignore_values))
 
                 max_values_n = sum(max_values)
-
                 max_value = max(dataframe[col][max_values])
-                logger.warning(f"** Not all values in {col} are lower than {upper_bound}")
-                logger.warning(f"Column {col}: unexpected high values : {max_value} : {max_values_n/dataframe.shape[0]*100:.2f} %")
+
+                upper_numeric_score = max_values_n/dataframe.shape[0]*100
+
+                if not silent:
+                    logger.warning(f"** Not all values in {col} are lower than {upper_bound}")
+                    logger.warning(f"Column {col}: unexpected high values : {max_value} : {upper_numeric_score:.2f} %")
+
                 HIGH_NUMERIC_TEST_LIST.append(False)
+                HIGH_NUMERIC_SCORES_LIST.append(100-upper_numeric_score)
 
                 if throw_error:
 
                     raise ValueError("Resolve issue with numeric values exceeding upper bound before proceesing any further!")
             else:
                 HIGH_NUMERIC_TEST_LIST.append(True)
+                HIGH_NUMERIC_SCORES_LIST.append(100)
+
+
+        low_numeric_score = np.round(np.mean(LOW_NUMERIC_SCORES_LIST),2)
+        upper_numeric_score = np.round(np.mean(HIGH_NUMERIC_SCORES_LIST),2)
+
+        if low_numeric_score < thresholds['low_numeric_score']:
+
+            if not silent:
+                logger.warning(f"Lower numeric score was lower then expected: {low_numeric_score} < {thresholds['low_numeric_score']}")
+
+            if throw_error:
+                raise ValueError("Resolve issues before proceesing any further!")
+
+        if upper_numeric_score < thresholds['upper_numeric_score']:
+
+            if not silent:
+                logger.warning(f"Upper numeric score was lower then expected: {upper_numeric_score} < {thresholds['upper_numeric_score']}")
+
+            if throw_error:
+                raise ValueError("Resolve issues before proceesing any further!")
 
     except Exception as e:
         logger.error("Error occurred while checking numeric ranges!")
@@ -601,20 +897,31 @@ def check_numeric_range(dataframe : pd.DataFrame,
         LOW_NUMERIC_TEST_LIST = [False]
         HIGH_NUMERIC_TEST_LIST = [False]
 
+        low_numeric_score = 0
+        upper_numeric_score = 0
+
 
     if independent:
         return all([all(LOW_NUMERIC_TEST_LIST), all(HIGH_NUMERIC_TEST_LIST)])
     else:
-        return all(LOW_NUMERIC_TEST_LIST), all(HIGH_NUMERIC_TEST_LIST)
+
+        output_dict = {'scores': {'cnr_scores': {'low_numeric_score' : low_numeric_score,
+                                                'upper_numeric_score' : upper_numeric_score}},
+                       'checks': [all(LOW_NUMERIC_TEST_LIST), all(HIGH_NUMERIC_TEST_LIST)]}
+
+        return output_dict
 
 
 def check_date_range(dataframe : pd.DataFrame,
                      earliest_date : str = "1900-08-25",
                      latest_date : str = "2100-01-01",
                      independent : bool = True,
+                     silent : bool = False,
                      ignore_dates : list = [],
                      throw_error : bool = False,
-                    logger : logging.Logger = logging) -> bool:
+                     thresholds : dict = {'early_dates_score' : 100,
+                                          'future_dates_score' : 100},
+                    logger : logging.Logger = logging) -> dict:
     """
     Check if dates are in expected ranges
 
@@ -636,8 +943,14 @@ def check_date_range(dataframe : pd.DataFrame,
 
     try:
 
+        if (not independent) and (not silent):
+            logger.debug("=== checking expected date range")
+
         ANCIENT_DATE_TEST_LIST = []
         FUTURE_DATE_TEST_LIST = []
+
+        ANCIENT_DATE_SCORES_LIST = [100]
+        FUTURE_DATE_SCORES_LIST = [100]
 
         if independent:
             df = dataframe.select_dtypes(include=['datetime']).columns
@@ -662,27 +975,58 @@ def check_date_range(dataframe : pd.DataFrame,
 
             # Check if all dates are later than earliest_date
             if early_dates > 0:
-                logger.warning(f"** Not all dates in {col} are later than {earliest_date}")
-                logger.warning(f"Column {col} : ancient date : {early_dates} : {early_dates/dataframe.shape[0]*100:.2f}%")
+
+                early_dates_score = early_dates/dataframe.shape[0]*100
+
+                if not silent:
+                    logger.warning(f"** Not all dates in {col} are later than {earliest_date}")
+                    logger.warning(f"Column {col} : ancient date : {early_dates} : {early_dates_score:.2f}%")
+
                 ANCIENT_DATE_TEST_LIST.append(False)
+                ANCIENT_DATE_SCORES_LIST.append(100-early_dates_score)
 
                 if throw_error:
                     raise ValueError("Resolve issue with ancient dates before proceesing any further!")
             else:
                 ANCIENT_DATE_TEST_LIST.append(True)
+                ANCIENT_DATE_SCORES_LIST.append(100)
 
             # Check if all dates are not later than latest_date
             if future_dates > 0:
 
-                logger.warning(f"** Not all dates in {col} are later than {latest_date}")
-                logger.warning(f"Column {col} : future date : {future_dates} : {future_dates/dataframe.shape[0]*100:.2f}%")
+                future_dates_score = future_dates/dataframe.shape[0]*100
+
+                if not silent:
+                    logger.warning(f"** Not all dates in {col} are later than {latest_date}")
+                    logger.warning(f"Column {col} : future date : {future_dates} : {future_dates_score:.2f}%")
+
                 FUTURE_DATE_TEST_LIST.append(False)
+                FUTURE_DATE_SCORES_LIST.append(100-future_dates_score)
 
                 if throw_error:
                     raise ValueError("Resolve issue with future dates before proceesing any further!")
             else:
                 FUTURE_DATE_TEST_LIST.append(True)
+                FUTURE_DATE_SCORES_LIST.append(100)
 
+        early_dates_score = np.round(np.mean(ANCIENT_DATE_SCORES_LIST),2)
+        future_dates_score = np.round(np.mean(FUTURE_DATE_SCORES_LIST),2)
+
+        if early_dates_score < thresholds['early_dates_score']:
+
+                if not silent:
+                    logger.warning(f"Early dates score was lower then expected: {early_dates_score} < {thresholds['early_dates_score']}")
+
+                if throw_error:
+                    raise ValueError("Resolve issues before proceesing any further!")
+
+        if future_dates_score < thresholds['future_dates_score']:
+
+                if not silent:
+                    logger.warning(f"Future dates score was lower then expected: {future_dates_score} < {thresholds['future_dates_score']}")
+
+                if throw_error:
+                    raise ValueError("Resolve issues before proceesing any further!")
 
     except Exception as e:
         logger.error("Error occured while checking date ranges!")
@@ -695,10 +1039,19 @@ def check_date_range(dataframe : pd.DataFrame,
         ANCIENT_DATE_TEST_LIST = [False]
         FUTURE_DATE_TEST_LIST = [False]
 
+        early_dates_score = 0
+        future_dates_score = 0
+
+
     if independent:
         return all([all(ANCIENT_DATE_TEST_LIST), all(FUTURE_DATE_TEST_LIST)])
     else:
-        return (all(ANCIENT_DATE_TEST_LIST), all(FUTURE_DATE_TEST_LIST))
+
+        output_dict = {'scores': {'cdr_scores': {'early_dates_score' : early_dates_score,
+                                                 'future_dates_score' : future_dates_score}},
+                       'checks': [all(ANCIENT_DATE_TEST_LIST), all(FUTURE_DATE_TEST_LIST)]}
+
+        return output_dict
 
 def check_duplicate_col_names(dataframe  : pd.DataFrame,
                                 throw_error : bool = False,
@@ -837,6 +1190,20 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
                                                     "date_range": False,
                                                     "numeric_range": False},
                              unexpected_conditions : dict = None,
+                             thresholds : dict = {'cmt_scores' : {'numeric_score' : 100,
+                                                                  'date_score' : 100,
+                                                                  'cat_score' : 100},
+                                                  'cmv_scores' : {'missing_values_score' : 100},
+                                                  'ccnt_scores' : {'missing_score' : 100,
+                                                                   'incorrect_dtypes_score' : 100},
+                                                  'inf_scores' : {'inf_score' : 100},
+                                                  'cdf_scores' : {'date_format_score' : 100},
+                                                  'dup_scores' : {'row_dup_score' : 100,
+                                                                  'key_dup_score' : 100},
+                                                  'cnr_scores' : {'low_numeric_score' : 100,
+                                                                  'upper_numeric_score' : 100},
+                                                  'cdr_scores' : {'early_dates_score' : 100,
+                                                                  'future_dates_score' : 100}},
                              ids_for_dedup : list = None,
                              TEST_DUV_FLAGS_PATH : str = None,
                              types_dict_str : dict = None,
@@ -882,6 +1249,9 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
 
         # Checks for duv score
         checks_list = []
+
+        # Check scores dict
+        check_score_dict = {}
 
         # Check of column names are not duplicated
 
@@ -949,6 +1319,17 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
         run_check_inf_values = (unexpected_exceptions["inf_values"] != "ALL") & (len(cols_check_inf_values) > 0)
         run_check_numeric_range = (unexpected_exceptions["numeric_range"] != "ALL") & (len(cols_check_numeric_range) > 0)
 
+        run_silent_check_missing_types = (unexpected_exceptions["missing_types"] != "IGNORE") & (len(cols_check_missing_types) > 0)
+        run_silent_check_missing_values = (unexpected_exceptions["missing_values"] != "IGNORE") & (len(cols_check_missing_values) > 0)
+        run_silent_check_duplicates = (unexpected_exceptions["duplicates"] != "IGNORE") & (len(cols_check_duplicates) > 0)
+        run_silent_check_col_names_types = (unexpected_exceptions["col_names_types"] != "IGNORE") \
+            & (types_dict_str is not None) \
+                & (len(cols_check_col_names_types) > 0)
+        run_silent_check_date_format = (unexpected_exceptions["date_format"] != "IGNORE") & (len(cols_check_date_format) > 0)
+        run_silent_check_date_range = (unexpected_exceptions["date_range"] != "IGNORE") & (len(cols_check_date_range) > 0)
+        run_silent_check_inf_values = (unexpected_exceptions["inf_values"] != "IGNORE") & (len(cols_check_inf_values) > 0)
+        run_silent_check_numeric_range = (unexpected_exceptions["numeric_range"] != "IGNORE") & (len(cols_check_numeric_range) > 0)
+
         if unexpected_conditions:
             run_check_additional_cons = sum([unexpected_conditions[i]['warning'] for i in unexpected_conditions]) > 0
         else:
@@ -975,116 +1356,171 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
             "numeric_range": "NONE"
         }
 
+        ##
+        if run_silent_check_col_names_types:
+
+            ccnt_obj = check_col_names_types(dataframe = dataframe[cols_check_col_names_types],
+                                                       types_dict_str = types_dict_str,
+                                                       independent = False,
+                                                       silent = not run_check_col_names_types,
+                                                       throw_error = unexpected_exceptions_error['col_names_types'],
+                                                       logger = logger)
+
+            check_score_dict.update(ccnt_obj['scores'])
+
 
         if run_check_col_names_types:
 
-            logger.debug(f"=== checking column names and types")
-
-            checks_list.extend(check_col_names_types(dataframe = dataframe[cols_check_col_names_types],
-                                                       types_dict_str = types_dict_str,
-                                                       independent = False,
-                                                       throw_error = unexpected_exceptions_error['col_names_types'],
-                                                       logger = logger))
+            checks_list.extend(ccnt_obj['checks'])
 
             if not checks_list[-1]:
                 unexpected_exceptions_scaned["col_names_types"] = "ALL"
+        ##
+        if run_silent_check_missing_values:
+
+            cmv_obj = check_missing_values(dataframe = dataframe[cols_check_missing_values],
+                                                     independent = False,
+                                                     silent = not run_check_missing_values,
+                                                     throw_error = unexpected_exceptions_error['missing_values'],
+                                                     thresholds = thresholds['cmv_scores'],
+                                                     logger = logger)
+
+            check_score_dict.update(cmv_obj['scores'])
 
         if run_check_missing_values:
 
-            logger.debug("=== checking for presence of missing values")
-
-            checks_list.extend([check_missing_values(dataframe = dataframe[cols_check_missing_values],
-                                                     throw_error = unexpected_exceptions_error['missing_values'],
-                                                     logger = logger)])
+            checks_list.extend(cmv_obj['checks'])
 
             if not checks_list[-1]:
                 unexpected_exceptions_scaned["missing_values"] = "ALL"
+        ##
+        if run_silent_check_missing_types:
+
+            cmt_obj = check_missing_types(dataframe = dataframe[cols_check_missing_types],
+                                                    MISSING_TYPES = MISSING_TYPES,
+                                                    independent = False,
+                                                    silent = not run_check_missing_types,
+                                                    throw_error = unexpected_exceptions_error['missing_types'],
+                                                    thresholds = thresholds['cmt_scores'],
+                                                    logger = logger)
+
+            check_score_dict.update(cmt_obj['scores'])
 
         if run_check_missing_types:
 
-            logger.debug("=== checking for presence of missing types")
-
-            checks_list.extend(check_missing_types(dataframe = dataframe[cols_check_missing_types],
-                                                    MISSING_TYPES = MISSING_TYPES,
-                                                    independent = False,
-                                                    throw_error = unexpected_exceptions_error['missing_types'],
-                                                    logger = logger))
+            checks_list.extend(cmt_obj['checks'])
 
             if not checks_list[-1]:
                 unexpected_exceptions_scaned["missing_types"] = "ALL"
+        ##
+
+        if run_silent_check_date_format:
+
+            cdf_obj = check_date_format(dataframe = dataframe[cols_check_date_format],
+                                                  expected_date_format = expected_date_format,
+                                                  independent = False,
+                                                  silent = not run_check_date_format,
+                                                  throw_error = unexpected_exceptions_error['date_format'],
+                                                  thresholds = thresholds['cdf_scores'],
+                                                  logger = logger)
+
+            check_score_dict.update(cdf_obj['scores'])
 
         if run_check_date_format:
 
-            logger.debug("=== checking propper date format")
-
-            checks_list.extend([check_date_format(dataframe = dataframe[cols_check_date_format],
-                                                  expected_date_format = expected_date_format,
-                                                  independent = False,
-                                                  throw_error = unexpected_exceptions_error['date_format'],
-                                                  logger = logger)])
+            checks_list.extend(cdf_obj['checks'])
 
             if not checks_list[-1]:
                 unexpected_exceptions_scaned["date_format"] = "ALL"
 
+        ##
 
-        if run_check_date_range:
+        if run_silent_check_date_range:
 
-            logger.debug("=== checking expected date range")
-
-            checks_list.extend(check_date_range(dataframe = dataframe[cols_check_date_range],
+            cdr_obj = check_date_range(dataframe = dataframe[cols_check_date_range],
                                                  earliest_date = earliest_date,
                                                  latest_date = latest_date,
                                                  independent = False,
+                                                 silent = not run_check_date_range,
                                                  ignore_dates = [v for k, v in MISSING_TYPES.items()
                                                                  if k.startswith("date_")],
                                                  throw_error = unexpected_exceptions_error['date_range'],
-                                                 logger = logger))
+                                                 thresholds = thresholds['cdr_scores'],
+                                                 logger = logger)
+
+            check_score_dict.update(cdr_obj['scores'])
+
+        if run_check_date_range:
+
+            checks_list.extend(cdr_obj['checks'])
 
             if not checks_list[-1]:
                 unexpected_exceptions_scaned["date_range"] = "ALL"
+        ##
+
+        if run_silent_check_duplicates:
+
+            dup_obj = check_duplicates(dataframe = dataframe[cols_check_duplicates],
+                                                subset = ids_for_dedup,
+                                                independent = False,
+                                                silent = not run_check_duplicates,
+                                                throw_error = unexpected_exceptions_error['duplicates'],
+                                                thresholds = thresholds['dup_scores'],
+                                                logger = logger)
+
+            check_score_dict.update(dup_obj['scores'])
 
         if run_check_duplicates:
 
-            logger.debug("=== checking for duplicates")
-
-            checks_list.extend(check_duplicates(dataframe = dataframe[cols_check_duplicates],
-                                                subset = ids_for_dedup,
-                                                independent = False,
-                                                throw_error = unexpected_exceptions_error['duplicates'],
-                                                logger = logger))
+            checks_list.extend(dup_obj['checks'])
 
             if not checks_list[-1]:
                 unexpected_exceptions_scaned["duplicates"] = "ALL"
+        ##
 
+        if run_silent_check_inf_values:
+
+            inf_obj = check_inf_values(dataframe = dataframe[cols_check_inf_values],
+                                       independent = False,
+                                       silent = not run_check_inf_values,
+                                       throw_error = unexpected_exceptions_error['inf_values'],
+                                       thresholds = thresholds['inf_scores'],
+                                       logger = logger)
+
+            check_score_dict.update(inf_obj['scores'])
 
         if run_check_inf_values:
 
-            logger.debug("=== checking for presense of inf values in numeric colums")
-
-            checks_list.extend([check_inf_values(dataframe = dataframe[cols_check_inf_values],
-                                                 independent = False,
-                                                 throw_error = unexpected_exceptions_error['inf_values'],
-                                                 logger = logger)])
+            checks_list.extend(inf_obj['checks'])
 
             if not checks_list[-1]:
                 unexpected_exceptions_scaned["inf_values"] = "ALL"
 
-        if run_check_numeric_range:
+        ##
 
-            logger.debug("=== checking expected numeric range")
+        if run_silent_check_numeric_range:
 
-            checks_list.extend(check_numeric_range(dataframe = dataframe[cols_check_numeric_range],
+            cnr_obj = check_numeric_range(dataframe = dataframe[cols_check_numeric_range],
                                                     lower_bound = numeric_lower_bound,
                                                     upper_bound = numeric_upper_bound,
                                                     independent = False,
+                                                    silent = not run_check_numeric_range,
                                                     ignore_values = [v for k, v in MISSING_TYPES.items()
                                                                      if k.startswith("numeric_")],
                                                     throw_error = unexpected_exceptions_error['numeric_range'],
-                                                    logger = logger))
+                                                    thresholds = thresholds['cnr_scores'],
+                                                    logger = logger)
+
+            check_score_dict.update(cnr_obj['scores'])
+
+        if run_check_numeric_range:
+
+            checks_list.extend(cnr_obj['checks'])
 
             if not checks_list[-1]:
                 unexpected_exceptions_scaned["numeric_range"] = "ALL"
 
+        ##
 
         if run_check_additional_cons:
 
@@ -1121,6 +1557,7 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
         else:
 
             return {'duv_score' : duv_score,
+                    'check_scores' : check_score_dict,
                     'unexpected_exceptions_scaned' : unexpected_exceptions_scaned}
 
 
