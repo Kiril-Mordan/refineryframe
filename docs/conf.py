@@ -22,7 +22,7 @@ extensions = ["sphinx.ext.todo",
               "sphinx.ext.autodoc"]  # Add the m2r2 extension for Markdown support
 
 templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store','setup.py']
+exclude_patterns = ['Thumbs.db', '.DS_Store','setup.py']
 autodoc_mock_imports = ['setup']
 
 
