@@ -6,9 +6,9 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('..'))
+import os
+import sys
+sys.path.insert(0, os.path.abspath('..'))
 
 project = 'refineryframe package'
 copyright = '2023, Kyrylo Mordan'
@@ -22,7 +22,7 @@ extensions = ["sphinx.ext.todo",
               "sphinx.ext.autodoc"]  # Add the m2r2 extension for Markdown support
 
 templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store','setup.py']
+exclude_patterns = ['Thumbs.db', '.DS_Store','setup.py']
 autodoc_mock_imports = ['setup']
 
 
