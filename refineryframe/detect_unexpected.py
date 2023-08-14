@@ -704,7 +704,10 @@ def check_col_names_types(dataframe : pd.DataFrame,
         missing_cols = set(dtypes_str_dict.keys()) - set(dataframe.columns)
 
         # Calculate missing score
-        missing_score = np.round((1 - len(missing_cols)/len(set(dtypes_str_dict.keys())))*100,2)
+        if dtypes_str_dict == {}:
+            missing_score = 100
+        else:
+            missing_score = np.round((1 - len(missing_cols)/len(set(dtypes_str_dict.keys())))*100,2)
 
         if missing_cols:
 
@@ -736,7 +739,11 @@ def check_col_names_types(dataframe : pd.DataFrame,
         else:
             COL_TYPES_TEST = True
 
-        incorrect_dtypes_score = np.round((1 - len(incorrect_dtypes)/len(set(dtypes_str_dict.keys())))*100,2)
+
+        if dtypes_str_dict == {}:
+            incorrect_dtypes_score = 100
+        else:
+            incorrect_dtypes_score = np.round((1 - len(incorrect_dtypes)/len(set(dtypes_str_dict.keys())))*100,2)
 
         if missing_score < thresholds['missing_score']:
 
@@ -1413,6 +1420,7 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
                                                        independent = False,
                                                        silent = not run_check_col_names_types,
                                                        throw_error = unexpected_exceptions_error['col_names_types'],
+                                                       thresholds = thresholds['ccnt_scores'],
                                                        logger = logger)
 
             check_score_dict.update(ccnt_obj['scores'])
