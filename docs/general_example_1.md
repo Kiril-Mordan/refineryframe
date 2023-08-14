@@ -235,12 +235,8 @@ tns.check_numeric_range()
     WARNING:Refiner:Column NumericColumn: (INF) : 2 : 40.00%
     WARNING:Refiner:Column NumericColumn_exepted: (INF) : 1 : 20.00%
     WARNING:Refiner:Inf score was lower then expected: 94.0 < 100
-    ERROR:Refiner:Error occured while checking column names and types
     WARNING:Refiner:Column DateColumn2 has non-date values or unexpected format.
     WARNING:Refiner:Date format score was lower then expected: 50.0 < 100
-
-
-    The error: division by zero
 
 
 ##### moulding types <a class="anchor" id="moulding-types"></a>
