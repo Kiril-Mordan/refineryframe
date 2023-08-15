@@ -28,11 +28,12 @@ jobs:
           ./tools/update_additional_content.sh
           cd doc
           make html
+          cd ..
       - name: Archive documentation
         uses: actions/upload-pages-artifact@v1
         with:
           name: github-pages
-          path: _build/html/
+          path: doc/_build/html/
   deploy:
       environment:
         name: github-pages
