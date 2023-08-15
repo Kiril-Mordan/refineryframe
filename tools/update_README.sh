@@ -43,10 +43,6 @@ echo 'adding example2 to README.md'
 cat doc/general_example_2.md >> README.md
 echo '' >> README.md
 
-# add score to README.md
-echo 'adding score to README.md'
-cat doc/scores.md >> README.md
-echo '' >> README.md
 
 
 
