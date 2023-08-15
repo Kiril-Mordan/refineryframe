@@ -1,7 +1,7 @@
-refineryframe
+additional info
 =============
 
 .. toctree::
    :maxdepth: 4
 
-   refineryframe
+   scores

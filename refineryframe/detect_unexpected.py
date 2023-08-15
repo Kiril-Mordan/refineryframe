@@ -8,57 +8,61 @@ incorrect date formats, out-of-range numeric values, and date values outside spe
 
 Functions:
 
-1. check_missing_types(dataframe, MISSING_TYPES, independent=True, logger=logging):
+1. check_missing_types(dataframe, MISSING_TYPES, independent=True, throw_error, thresholds, logger):
 
-    Check for instances of missing types in each column of the DataFrame.
+    Checks for instances of missing types in each column of the DataFrame.
     Logs warning messages if any missing values are found.
 
-2. check_missing_values(dataframe, logger=logging):
+2. check_missing_values(dataframe, throw_error, thresholds, logger):
 
-    Count the number of NaN, None, and NaT values in each column of the DataFrame.
+    Counts the number of NaN, None, and NaT values in each column of the DataFrame.
     Logs warning messages if any missing values are found.
 
-3. check_inf_values(dataframe, independent=True, logger=logging):
+3. check_inf_values(dataframe, independent=True, throw_error, thresholds, logger):
 
-    Count the infinite (INF) values in each numeric column of the DataFrame.
+    Counts the infinite (INF) values in each numeric column of the DataFrame.
     Logs warning messages if any INF values are found.
 
-4. check_date_format(dataframe, expected_date_format='%Y-%m-%d', independent=True, logger=logging):
+4. check_date_format(dataframe, expected_date_format='%Y-%m-%d', independent=True, throw_error, thresholds, logger):
 
-    Check if the values in datetime columns of the DataFrame have the expected format.
+    Checks if the values in datetime columns of the DataFrame have the expected format.
     Logs warning messages for columns with non-date values or unexpected date formats.
 
-5. check_duplicates(dataframe, subset=None, independent=True, logger=logging):
+5. check_duplicates(dataframe, subset=None, independent=True, throw_error, thresholds, logger):
 
-    Check for duplicates in the DataFrame.
+    Checks for duplicates in the DataFrame.
     Logs warning messages if any duplicates are found based on specified columns.
 
-6. check_col_names_types(dataframe, types_dict_str, independent=True, logger=logging):
+6. check_col_names_types(dataframe, types_dict_str, independent=True, throw_error, thresholds, logger):
 
-    Check if the DataFrame has the same column names as specified in the dictionary
+    Checks if the DataFrame has the same column names as specified in the dictionary
     and if those columns have the expected data types as values in the dictionary.
     Logs warning messages for columns with incorrect names or data types.
 
 7. check_numeric_range(dataframe, numeric_cols=None, lower_bound=-float('inf'), upper_bound=float('inf'),\
-    independent=True, ignore_values=[], logger=logging):
+    independent=True, ignore_values=[], throw_error, thresholds, logger):
 
-    Check if numeric values in the DataFrame are within specified ranges.
+    Checks if numeric values in the DataFrame are within specified ranges.
     Logs warning messages for numeric values outside the specified range.
 
 8. check_date_range(dataframe, earliest_date='1900-01-01', latest_date='2100-12-31',\
-    independent=True, ignore_dates=[], logger=logging):
+    independent=True, ignore_dates=[], throw_error, thresholds, logger):
 
-    Check if date values in the DataFrame are within specified date ranges.
+    Checks if date values in the DataFrame are within specified date ranges.
     Logs warning messages for date values outside the specified range.
 
-9. detect_unexpected_values(dataframe, MISSING_TYPES, unexpected_exceptions,\
+9. check_duplicate_col_names(dataframe, throw_error, logger) -> dict:
+
+    Checks for duplicate column names in a pandas DataFrame.
+
+10. detect_unexpected_values(dataframe, MISSING_TYPES, unexpected_exceptions,\
                             unexpected_exceptions_error, unexpected_conditions, thresholds,\
                             ids_for_dedup, TEST_DUV_FLAGS_PATH, types_dict_str,\
                             expected_date_format, earliest_date, latest_date,\
                             numeric_lower_bound, numeric_upper_bound, print_score,\
                             logger):
 
-    Detect unexpected values in a pandas DataFrame by running a series of data quality checks.
+    Detects unexpected values in a pandas DataFrame by running a series of data quality checks.
     The function returns the "duv_score," representing the percentage of passed tests.
 
 Note:
@@ -74,7 +78,7 @@ import logging
 from datetime import datetime
 import pandas as pd
 import numpy as np
-from refineryframe.other import get_type_dict, treat_unexpected_cond
+from refineryframe.other import get_type_dict, treat_unexpected_cond, add_index_to_duplicate_columns
 
 def check_missing_types(dataframe : pd.DataFrame,
                         MISSING_TYPES : dict,
@@ -87,24 +91,31 @@ def check_missing_types(dataframe : pd.DataFrame,
                         logger : logging.Logger = None) -> dict:
 
     """
-    The function takes a DataFrame and a dictionary of missing types as input, and
-    searches for any instances of these missing types in each column of the DataFrame.
-    If any instances are found, a warning message is logged containing the column name,
-    the missing value, and the count of missing values found.
+    Check for instances of missing types in each column of a DataFrame and log warning messages for any found.
 
     Parameters
     ----------
     dataframe : pandas DataFrame
-                The DataFrame to search for missing values.
+        The DataFrame to search for missing values.
     MISSING_TYPES : dict
-        A dictionary of missing types to search for. The keys represent the missing type
-        and the values are the corresponding values to search for.
+        A dictionary of missing types to search for.
+        Keys represent the missing type, and values are the corresponding values to search for.
+    independent : bool, optional
+        If True, return a boolean indicating whether all checks passed, by default True.
+    silent : bool, optional
+        If True, suppress log warnings, by default False.
+    throw_error : bool, optional
+        If True, raise an error if issues are found, by default False.
+    thresholds : dict, optional
+        Dictionary containing thresholds for numeric_score, date_score, and cat_score, by default {'numeric_score': 100, 'date_score': 100, 'cat_score': 100}.
+    logger : logging.Logger, optional
+        Logger object for log messages, by default None.
 
     Returns
     -------
-    None
-        The function does not return anything, but logs a warning message for each
-        instance of a missing value found in the DataFrame.
+    dict or bool
+        If independent is True, return a boolean indicating whether all checks passed.
+        If independent is False, return a dictionary containing scores and checks information.
     """
 
     # Create a logger if not provided
@@ -1170,50 +1181,6 @@ def check_duplicate_col_names(dataframe  : pd.DataFrame,
     return {'column_name_freq' : column_name_freq,
             'COLUMN_NAMES_DUPLICATES_TEST' : [COLUMN_NAMES_DUPLICATES_TEST]}
 
-
-def add_index_to_duplicate_columns(dataframe: pd.DataFrame,
-                                   column_name_freq: dict,
-                                  logger : logging.Logger = None) -> pd.DataFrame:
-    """
-    Adds an index to duplicate column names in a pandas DataFrame.
-
-    Parameters:
-    -----------
-    dataframe : pandas DataFrame
-        The DataFrame containing the duplicate columns.
-    column_name_freq : dict
-        A dictionary where keys are duplicate column names, and values are the number of occurrences.
-
-    Returns:
-    --------
-    pandas DataFrame
-        The DataFrame with updated column names.
-    """
-
-    # Create a logger if not provided
-    if logger is None:
-        logger = logging.getLogger(__name__)
-
-    try:
-
-        dataframe = dataframe.copy()
-
-        new_columns = []
-        for col, freq in column_name_freq.items():
-            if freq == 1:
-                new_columns.append(col)
-            else:
-                new_columns.extend([f"{col}_({i + 1})" for i in range(freq)])
-        dataframe.columns = new_columns
-
-        logger.warning("Indexes added to duplicated column names!")
-
-    except Exception as e:
-        logger.error("Error occured while adding index to duplicated column names!")
-        raise e
-
-
-    return dataframe
 
 
 def detect_unexpected_values(dataframe : pd.DataFrame,

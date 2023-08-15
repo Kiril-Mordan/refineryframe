@@ -1,4 +1,4 @@
-## Package usage example
+## Simple package usage examples
 
 ### Content:
 
@@ -17,6 +17,3 @@
     * [extracting settigns](#extracting-refiner-class-settings)
     * [scanning unexpected conditions](#scanning-dataframe)
     * [recreating identical class with settings](#recreating-refiner-class-settings)
-* [Data quality scores](#scores)
-    * [duv score](#duv_scores)
-    * [ruv scores](#ruv_scores)

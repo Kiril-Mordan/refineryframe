@@ -11,8 +11,8 @@ from datetime import datetime
 import pandas as pd
 import numpy as np
 from unidecode import unidecode
-from refineryframe.other import get_type_dict, treat_unexpected_cond
-from refineryframe.detect_unexpected import check_duplicate_col_names, add_index_to_duplicate_columns
+from refineryframe.other import get_type_dict, treat_unexpected_cond, add_index_to_duplicate_columns
+from refineryframe.detect_unexpected import check_duplicate_col_names
 
 
 ####

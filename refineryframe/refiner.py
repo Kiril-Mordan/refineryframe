@@ -13,9 +13,9 @@ from refineryframe.other import shoutOUT, get_type_dict, set_types
 from refineryframe.detect_unexpected import check_date_range, \
     check_col_names_types, check_date_format, check_duplicates, \
         check_inf_values, check_missing_values, check_numeric_range, \
-            check_missing_types, detect_unexpected_values, add_index_to_duplicate_columns, \
+            check_missing_types, detect_unexpected_values, \
                 check_duplicate_col_names
-from refineryframe.replace_unexpected import replace_unexpected_values
+from refineryframe.replace_unexpected import replace_unexpected_values, add_index_to_duplicate_columns
 
 @attr.s
 class Refiner:

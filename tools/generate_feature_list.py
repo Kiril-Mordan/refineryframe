@@ -25,7 +25,7 @@ def generate_feature_list(module, exceptions=[]):
     for feature in feature_list:
         markdown_content += f"- `{feature['function']}` - {feature['description']}\n"
 
-    with open("../docs/feature_list.md", "w") as file:
+    with open("../doc/feature_list.md", "w") as file:
         file.write(markdown_content)
 
 if __name__ == "__main__":
