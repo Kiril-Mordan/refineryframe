@@ -382,3 +382,48 @@ def treat_unexpected_cond(df : pd.DataFrame,
 
     if replace is not None:
         return df
+
+
+def add_index_to_duplicate_columns(dataframe: pd.DataFrame,
+                                   column_name_freq: dict,
+                                  logger : logging.Logger = None) -> pd.DataFrame:
+    """
+    Adds an index to duplicate column names in a pandas DataFrame.
+
+    Parameters:
+    -----------
+    dataframe : pandas DataFrame
+        The DataFrame containing the duplicate columns.
+    column_name_freq : dict
+        A dictionary where keys are duplicate column names, and values are the number of occurrences.
+
+    Returns:
+    --------
+    pandas DataFrame
+        The DataFrame with updated column names.
+    """
+
+    # Create a logger if not provided
+    if logger is None:
+        logger = logging.getLogger(__name__)
+
+    try:
+
+        dataframe = dataframe.copy()
+
+        new_columns = []
+        for col, freq in column_name_freq.items():
+            if freq == 1:
+                new_columns.append(col)
+            else:
+                new_columns.extend([f"{col}_({i + 1})" for i in range(freq)])
+        dataframe.columns = new_columns
+
+        logger.warning("Indexes added to duplicated column names!")
+
+    except Exception as e:
+        logger.error("Error occured while adding index to duplicated column names!")
+        raise e
+
+
+    return dataframe
