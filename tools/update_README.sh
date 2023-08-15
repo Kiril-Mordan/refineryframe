@@ -17,6 +17,11 @@ echo 'making README_base.md a beginning of README.md'
 cat doc/README_base.md > README.md
 echo '' >> README.md
 
+# add link to documentation to README.md
+echo 'adding link to documentation to README.md'
+cat doc/documentation.md >> README.md
+echo '' >> README.md
+
 # add feature list to README.md
 echo 'adding feature list to README.md'
 cat doc/feature_list.md >> README.md

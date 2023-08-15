@@ -3,7 +3,7 @@ name: Docs
 on:
   push:
     branches:
-      - test
+      - main
 permissions:
       contents: read
       pages: write
@@ -12,6 +12,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    needs: other_workflow_job
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -24,15 +25,14 @@ jobs:
       - name: build docs
         run: |
           sphinx-apidoc -o doc refineryframe
+          ./tools/update_additional_content.sh
           cd doc
           make html
-          mkdir docs
-          mv _build/html/* docs/.
       - name: Archive documentation
         uses: actions/upload-pages-artifact@v1
         with:
           name: github-pages
-          path: doc/docs/
+          path: _build/html/
   deploy:
       environment:
         name: github-pages

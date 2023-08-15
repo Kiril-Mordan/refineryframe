@@ -65,6 +65,8 @@ Install ``refineryframe`` via pip with
    :caption: Contents:
 
    modules
+   other
+
 
 Indices and tables
 ==================
