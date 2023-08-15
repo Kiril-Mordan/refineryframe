@@ -21,6 +21,7 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip install sphinx sphinx_rtd_theme
+          sudo apt-get install -y pandoc
       - name: build docs
         run: |
           sphinx-apidoc -o doc refineryframe
