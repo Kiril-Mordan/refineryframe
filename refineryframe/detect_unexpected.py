@@ -7,71 +7,49 @@ of data validation, including checking for missing values, unexpected data types
 incorrect date formats, out-of-range numeric values, and date values outside specified date ranges.
 
 Functions:
-
+-----------
 1. check_missing_types(dataframe, MISSING_TYPES, independent=True, throw_error, thresholds, logger):
-
-    Checks for instances of missing types in each column of the DataFrame.
-    Logs warning messages if any missing values are found.
-
+    ...
 2. check_missing_values(dataframe, throw_error, thresholds, logger):
-
-    Counts the number of NaN, None, and NaT values in each column of the DataFrame.
-    Logs warning messages if any missing values are found.
-
+    ...
 3. check_inf_values(dataframe, independent=True, throw_error, thresholds, logger):
-
-    Counts the infinite (INF) values in each numeric column of the DataFrame.
-    Logs warning messages if any INF values are found.
-
+    ...
 4. check_date_format(dataframe, expected_date_format='%Y-%m-%d', independent=True, throw_error, thresholds, logger):
-
-    Checks if the values in datetime columns of the DataFrame have the expected format.
-    Logs warning messages for columns with non-date values or unexpected date formats.
-
+    ...
 5. check_duplicates(dataframe, subset=None, independent=True, throw_error, thresholds, logger):
-
-    Checks for duplicates in the DataFrame.
-    Logs warning messages if any duplicates are found based on specified columns.
-
+    ...
 6. check_col_names_types(dataframe, types_dict_str, independent=True, throw_error, thresholds, logger):
-
-    Checks if the DataFrame has the same column names as specified in the dictionary
-    and if those columns have the expected data types as values in the dictionary.
-    Logs warning messages for columns with incorrect names or data types.
-
+    ...
 7. check_numeric_range(dataframe, numeric_cols=None, lower_bound=-float('inf'), upper_bound=float('inf'),\
     independent=True, ignore_values=[], throw_error, thresholds, logger):
-
-    Checks if numeric values in the DataFrame are within specified ranges.
-    Logs warning messages for numeric values outside the specified range.
-
+    ...
 8. check_date_range(dataframe, earliest_date='1900-01-01', latest_date='2100-12-31',\
     independent=True, ignore_dates=[], throw_error, thresholds, logger):
-
-    Checks if date values in the DataFrame are within specified date ranges.
-    Logs warning messages for date values outside the specified range.
-
+    ...
 9. check_duplicate_col_names(dataframe, throw_error, logger) -> dict:
-
-    Checks for duplicate column names in a pandas DataFrame.
-
+    ...
 10. detect_unexpected_values(dataframe, MISSING_TYPES, unexpected_exceptions,\
                             unexpected_exceptions_error, unexpected_conditions, thresholds,\
                             ids_for_dedup, TEST_DUV_FLAGS_PATH, types_dict_str,\
                             expected_date_format, earliest_date, latest_date,\
                             numeric_lower_bound, numeric_upper_bound, print_score,\
-                            logger):
-
-    Detects unexpected values in a pandas DataFrame by running a series of data quality checks.
-    The function returns the "duv_score," representing the percentage of passed tests.
+                            logger) -> dict:
+    ...
 
 Note:
+-----------
 - Some functions use the `logger` parameter for logging warning messages instead of printing.
+
 - Users can specify exceptions for certain checks using the `unexpected_exceptions` dictionary.
+
 - Users can define additional conditions to check for unexpected values using the `unexpected_conditions` dictionary.
+
 - The `thresholds` parameter in the `detect_unexpected_values` function allows users to set threshold scores for different checks.
 
+- Each function returns relevant information about detected issues or scores.
+
 """
+
 
 
 import logging
@@ -91,31 +69,37 @@ def check_missing_types(dataframe : pd.DataFrame,
                         logger : logging.Logger = None) -> dict:
 
     """
-    Check for instances of missing types in each column of a DataFrame and log warning messages for any found.
+    Checks for instances of missing types in each column of a DataFrame and log warning messages for any found.
 
-    Parameters
-    ----------
+    Parameters:
+    -----------
     dataframe : pandas DataFrame
         The DataFrame to search for missing values.
     MISSING_TYPES : dict
         A dictionary of missing types to search for.
         Keys represent the missing type, and values are the corresponding values to search for.
     independent : bool, optional
-        If True, return a boolean indicating whether all checks passed, by default True.
+        If True, return a boolean indicating whether all checks passed. Default is True.
     silent : bool, optional
-        If True, suppress log warnings, by default False.
+        If True, suppress log warnings. Default is False.
     throw_error : bool, optional
-        If True, raise an error if issues are found, by default False.
+        If True, raise an error if issues are found. Default is False.
     thresholds : dict, optional
-        Dictionary containing thresholds for numeric_score, date_score, and cat_score, by default {'numeric_score': 100, 'date_score': 100, 'cat_score': 100}.
+        Dictionary containing thresholds for numeric_score, date_score, and cat_score.
+        Default is {'numeric_score': 100, 'date_score': 100, 'cat_score': 100}.
     logger : logging.Logger, optional
-        Logger object for log messages, by default None.
+        Logger object for log messages. If not provided, a new logger will be created.
 
-    Returns
-    -------
-    dict or bool
+    Returns:
+    --------
+    bool or dict
         If independent is True, return a boolean indicating whether all checks passed.
         If independent is False, return a dictionary containing scores and checks information.
+
+    Raises:
+    -------
+    ValueError
+        If throw_error is True and missing type checks fail.
     """
 
     # Create a logger if not provided
@@ -272,16 +256,34 @@ def check_missing_values(dataframe : pd.DataFrame,
                          thresholds : dict = {'missing_values_score' : 100},
                         logger : logging.Logger = None) -> dict:
     """
-    Count the number of NaN, None, and NaT values in each column of a pandas DataFrame.
+    Counts the number of NaN, None, and NaT values in each column of a pandas DataFrame.
 
-    Parameters
-    ----------
+    Parameters:
+    -----------
     dataframe : pandas DataFrame
-                The DataFrame to count missing values in.
+        The DataFrame to count missing values in.
+    independent : bool, optional
+        If True, consider only columns with missing values as defined by NaN, None, and NaT.
+        If False, count missing values in all columns. Default is True.
+    silent : bool, optional
+        If True, suppress warning messages. Default is False.
+    throw_error : bool, optional
+        If True, raise a ValueError for failed missing value checks. Default is False.
+    thresholds : dict, optional
+        A dictionary containing thresholds for scoring missing value checks.
+        Default is {'missing_values_score': 100}.
+    logger : logging.Logger, optional
+        A logger instance for logging messages. If not provided, a new logger will be created.
 
-    Returns
+    Returns:
+    --------
+    dict
+        A dictionary containing scores and checks for missing value checks.
+
+    Raises:
     -------
-    None
+    ValueError
+        If throw_error is True and missing value checks fail.
     """
 
     # Create a logger if not provided
@@ -356,16 +358,34 @@ def check_inf_values(dataframe : pd.DataFrame,
                      thresholds : dict = {'inf_score' : 100},
                      logger : logging.Logger = None) -> dict:
     """
-    Count the inf values in each column of a pandas DataFrame.
+    Counts the infinite (inf) values in each column of a pandas DataFrame.
 
-    Parameters
-    ----------
+    Parameters:
+    -----------
     dataframe : pandas DataFrame
-                The DataFrame to count inf values in.
+        The DataFrame to count infinite values in.
+    independent : bool, optional
+        If True, consider only numeric columns when counting inf values.
+        If False, count inf values in all columns. Default is True.
+    silent : bool, optional
+        If True, suppress warning messages. Default is False.
+    throw_error : bool, optional
+        If True, raise a ValueError for failed inf value checks. Default is False.
+    thresholds : dict, optional
+        A dictionary containing thresholds for scoring inf value checks.
+        Default is {'inf_score': 100}.
+    logger : logging.Logger, optional
+        A logger instance for logging messages. If not provided, a new logger will be created.
 
-    Returns
+    Returns:
+    --------
+    dict
+        A dictionary containing scores and checks for inf value checks.
+
+    Raises:
     -------
-    None
+    ValueError
+        If throw_error is True and inf value checks fail.
     """
 
     # Create a logger if not provided
@@ -440,17 +460,38 @@ def check_date_format(dataframe : pd.DataFrame,
                       logger : logging.Logger = None) -> dict:
 
     """
-    Check if the values in the datetime columns of the input dataframe
+    Checks if the values in the datetime columns of the input DataFrame
     have the expected 'YYYY-MM-DD' format.
 
     Parameters:
     -----------
-    dataframe: pandas.DataFrame
-        The dataframe to be checked for date format.
+    dataframe : pandas DataFrame
+        The DataFrame to be checked for date format.
+    expected_date_format : str, optional
+        The expected date format. Default is '%Y-%m-%d'.
+    independent : bool, optional
+        If True, return a Boolean indicating if date format checks passed.
+        If False, return a dictionary containing scores and checks. Default is True.
+    silent : bool, optional
+        If True, suppress warning messages. Default is False.
+    throw_error : bool, optional
+        If True, raise a ValueError for failed date format checks. Default is False.
+    thresholds : dict, optional
+        A dictionary containing thresholds for scoring date format checks.
+        Default is {'date_format_score': 100}.
+    logger : logging.Logger, optional
+        A logger instance for logging messages. If not provided, a new logger will be created.
 
     Returns:
     --------
-    None
+    bool or dict
+        If independent is True, return a Boolean indicating if date format checks passed.
+        If independent is False, return a dictionary containing scores and checks.
+
+    Raises:
+    -------
+    ValueError
+        If throw_error is True and date format checks fail.
     """
 
     # Create a logger if not provided
@@ -468,7 +509,9 @@ def check_date_format(dataframe : pd.DataFrame,
             dtype = str(dataframe[col].dtype)
 
             if dtype.startswith('datetime'):
-                date_vals = pd.to_datetime(dataframe[col], errors='coerce').dt.date
+                date_vals = pd.to_datetime(dataframe[col],
+                                           errors='coerce',
+                                           format=expected_date_format).dt.date
                 non_date_mask = date_vals.isna()
 
                 if any(non_date_mask):
@@ -528,20 +571,38 @@ def check_duplicates(dataframe  : pd.DataFrame,
                                           'key_dup_score' : 100},
                     logger : logging.Logger = None) -> dict:
     """
-    Check for duplicates in a pandas DataFrame.
+    Checks for duplicates in a pandas DataFrame.
 
     Parameters:
     -----------
     dataframe : pandas DataFrame
         The DataFrame to check for duplicates.
-    subset : list of str, optional
+    subset : list of str or None, optional
         A list of column names to consider when identifying duplicates.
-        If not specified, all columnsare used to identify duplicates.
+        If not specified or None, all columns are used to identify duplicates.
+    independent : bool, optional
+        If True, return a Boolean indicating if duplicate checks passed.
+        If False, return a dictionary containing scores and checks. Default is True.
+    silent : bool, optional
+        If True, suppress warning messages. Default is False.
+    throw_error : bool, optional
+        If True, raise a ValueError for failed duplicate checks. Default is False.
+    thresholds : dict, optional
+        A dictionary containing thresholds for scoring duplicate checks.
+        Default is {'row_dup_score': 100, 'key_dup_score': 100}.
+    logger : logging.Logger or None, optional
+        A logger instance for logging messages. If not provided, a new logger will be created.
 
     Returns:
     --------
-    int
-        The number of duplicates found.
+    bool or dict
+        If independent is True, return a Boolean indicating if duplicate checks passed.
+        If independent is False, return a dictionary containing scores and checks.
+
+    Raises:
+    -------
+    ValueError
+        If throw_error is True and duplicate checks fail.
     """
 
     # Create a logger if not provided
@@ -676,15 +737,38 @@ def check_col_names_types(dataframe : pd.DataFrame,
                                                'incorrect_dtypes_score' : 100},
                           logger : logging.Logger = None) -> dict:
     """
-    Checks if a given dataframe has the same column names as keys in a given dictionary
-    and those columns have the same types as items in the dictionary.
+    Checks if a given DataFrame has the same column names as keys in a provided dictionary
+    and if those columns have the same data types as the corresponding values in the dictionary.
 
-    Args:
-    - dataframe: pandas DataFrame
-    - column_dict: dictionary with column names as keys and expected data types as values
+    Parameters:
+    -----------
+    dataframe : pandas DataFrame
+        The DataFrame to be checked.
+    types_dict_str : dict or str
+        A dictionary with column names as keys and expected data types as values,
+        or a string representation of such a dictionary.
+    silent : bool, optional
+        If True, suppress warning messages. Default is False.
+    independent : bool, optional
+        If True, return a Boolean indicating if checks passed. If False, return a dictionary
+        containing scores and checks. Default is True.
+    throw_error : bool, optional
+        If True, raise a ValueError for failed checks. Default is False.
+    thresholds : dict, optional
+        A dictionary containing thresholds for scoring. Default is {'missing_score': 100, 'incorrect_dtypes_score': 100}.
+    logger : logging.Logger, optional
+        A logger instance for logging messages. If not provided, a new logger will be created.
 
     Returns:
-    - Boolean indicating whether the dataframe has the same columns and types as specified in the dictionary
+    --------
+    dict or bool
+        If independent is True, return a Boolean indicating if checks passed.
+        If independent is False, return a dictionary containing scores and checks.
+
+    Raises:
+    -------
+    ValueError
+        If throw_error is True and any checks fail.
     """
 
     # Create a logger if not provided
@@ -811,27 +895,42 @@ def check_numeric_range(dataframe : pd.DataFrame,
                                              'upper_numeric_score' : 100},
                         logger : logging.Logger = None) -> dict:
     """
-    Check if numeric values are in expected ranges
+    Checks if numeric values are within expected ranges in each column of a DataFrame.
 
     Parameters:
     -----------
     dataframe : pandas DataFrame
         The DataFrame to check for numeric values.
+    numeric_cols : list of str, optional
+        A list of column names to consider. If None, all numeric columns are checked.
     lower_bound : float, optional
-        The lower bound allowed for numeric values. Defaults to -infinity.
+        The lower bound allowed for numeric values. Default is -infinity.
     upper_bound : float, optional
-        The upper bound allowed for numeric values. Defaults to infinity.
+        The upper bound allowed for numeric values. Default is infinity.
     independent : bool, optional
-        Whether to check the range of each column independently or not. Defaults to True.
+        If True, return a boolean indicating whether all checks passed. Default is True.
+    silent : bool, optional
+        If True, suppress log warnings. Default is False.
     ignore_values : list, optional
-        A list of values to ignore when checking for values outside the specified range. Defaults to empty list.
+        A list of values to ignore when checking for values outside the specified range. Default is empty list.
+    throw_error : bool, optional
+        If True, raise an error if issues are found. Default is False.
+    thresholds : dict, optional
+        Dictionary containing thresholds for low_numeric_score and upper_numeric_score.
+        Default is {'low_numeric_score': 100, 'upper_numeric_score': 100}.
+    logger : logging.Logger, optional
+        Logger object for log messages. If not provided, a new logger will be created.
 
     Returns:
     --------
-    bool or tuple
-        Returns True if all numeric values in the DataFrame are within the specified range, False otherwise.
-        If `independent` is False, returns a tuple of two bools, the first indicating
-            if all lower bounds are met and the second if all upper bounds are met.
+    bool or dict
+        If independent is True, return a boolean indicating whether all checks passed.
+        If independent is False, return a dictionary containing scores and checks information.
+
+    Raises:
+    -------
+    ValueError
+        If throw_error is True and numeric range checks fail.
     """
 
     # Create a logger if not provided
@@ -971,22 +1070,40 @@ def check_date_range(dataframe : pd.DataFrame,
                                           'future_dates_score' : 100},
                     logger : logging.Logger = None) -> dict:
     """
-    Check if dates are in expected ranges
+    Checks if date values are within expected date ranges in each column of a DataFrame.
 
     Parameters:
     -----------
     dataframe : pandas DataFrame
-        The DataFrame to check for dates.
+        The DataFrame to check for date values.
     earliest_date : str, optional
-        The earliest date allowed in the DataFrame. Defaults to '1900-08-25'.
+        The earliest date allowed in the DataFrame. Default is '1900-08-25'.
     latest_date : str, optional
-        The latest date allowed in the DataFrame. Defaults to '2100-01-01'.
+        The latest date allowed in the DataFrame. Default is '2100-01-01'.
+    independent : bool, optional
+        If True, return a boolean indicating whether all checks passed. Default is True.
+    silent : bool, optional
+        If True, suppress log warnings. Default is False.
+    ignore_dates : list, optional
+        A list of dates to ignore when checking for dates outside the specified range. Default is an empty list.
+    throw_error : bool, optional
+        If True, raise an error if issues are found. Default is False.
+    thresholds : dict, optional
+        Dictionary containing thresholds for early_dates_score and future_dates_score.
+        Default is {'early_dates_score': 100, 'future_dates_score': 100}.
+    logger : logging.Logger, optional
+        Logger object for log messages. If not provided, a new logger will be created.
 
     Returns:
     --------
-    None
-        This function does not return anything, but logs warning messages if any dates are outside
-        the specified range.
+    bool or dict
+        If independent is True, return a boolean indicating whether all checks passed.
+        If independent is False, return a dictionary containing scores and checks information.
+
+    Raises:
+    -------
+    ValueError
+        If throw_error is True and date range checks fail.
     """
 
     # Create a logger if not provided
@@ -1110,7 +1227,7 @@ def check_duplicate_col_names(dataframe  : pd.DataFrame,
                               logger : logging.Logger = None) -> dict:
 
     """
-    Check for duplicate column names in a pandas DataFrame.
+    Checks for duplicate column names in a pandas DataFrame.
 
     Parameters:
     -----------
@@ -1132,6 +1249,11 @@ def check_duplicate_col_names(dataframe  : pd.DataFrame,
             A dictionary where keys are duplicate column names, and values are the number of occurrences.
         'COLUMN_NAMES_DUPLICATES_TEST': bool
             True if duplicate column names are found, False otherwise.
+
+    Raises:
+    -------
+    ValueError
+        If throw_error is True and duplicate column names are found.
     """
 
     # Create a logger if not provided
@@ -1231,7 +1353,7 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
                             logger : logging.Logger = None) -> dict:
 
     """
-    Detect unexpected values in a pandas DataFrame.
+    Detects unexpected values in a pandas DataFrame.
 
     Parameters:
     -----------
@@ -1257,9 +1379,15 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
 
     Returns:
     -------
-    duv_score (float): Number between 0 and 1 representing the percentage of passed tests.
-    check_scores (dict): Scores for each check.
-    unexpected_exceptions_scaned (dict): Unexpected exceptions based on detected unexpected values.
+    dict:
+        duv_score (float): Number between 0 and 1 representing the percentage of passed tests.
+        check_scores (dict): Scores for each check.
+        unexpected_exceptions_scaned (dict): Unexpected exceptions based on detected unexpected values.
+
+    Raises:
+    -------
+    Exception:
+        If any errors occur during the detection process.
     """
 
     # Create a logger if not provided
