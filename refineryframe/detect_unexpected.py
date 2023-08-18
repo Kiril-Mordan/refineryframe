@@ -26,14 +26,14 @@ Functions:
 8. check_date_range(dataframe, earliest_date='1900-01-01', latest_date='2100-12-31',\
     independent=True, ignore_dates=[], throw_error, thresholds, logger):
     ...
-9. check_duplicate_col_names(dataframe, throw_error, logger) -> dict:
+9. check_duplicate_col_names(dataframe, throw_error, logger):
     ...
 10. detect_unexpected_values(dataframe, MISSING_TYPES, unexpected_exceptions,\
-                            unexpected_exceptions_error, unexpected_conditions, thresholds,\
-                            ids_for_dedup, TEST_DUV_FLAGS_PATH, types_dict_str,\
-                            expected_date_format, earliest_date, latest_date,\
-                            numeric_lower_bound, numeric_upper_bound, print_score,\
-                            logger) -> dict:
+    unexpected_exceptions_error, unexpected_conditions, thresholds,\
+    ids_for_dedup, TEST_DUV_FLAGS_PATH, types_dict_str,\
+    expected_date_format, earliest_date, latest_date,\
+    numeric_lower_bound, numeric_upper_bound, print_score,\
+    logger) -> dict:
     ...
 
 Note:
@@ -95,6 +95,22 @@ def check_missing_types(dataframe : pd.DataFrame,
     bool or dict
         If independent is True, return a boolean indicating whether all checks passed.
         If independent is False, return a dictionary containing scores and checks information.
+
+    Examples:
+    ---------
+    Example usage and expected outputs.
+
+    .. code-block:: python
+
+        from refineryframe.detect_unexpected import check_missing_types
+        from refineryframe.demo import tiny_example
+
+        data = tiny_example['dataframe']
+        MISSING_TYPES = tiny_example['MISSING_TYPES']
+
+        check_missing_types(dataframe = data,
+                            MISSING_TYPES = MISSING_TYPES)
+
 
     Raises:
     -------
@@ -280,6 +296,19 @@ def check_missing_values(dataframe : pd.DataFrame,
     dict
         A dictionary containing scores and checks for missing value checks.
 
+    Examples:
+    ---------
+    Example usage and expected outputs.
+
+    .. code-block:: python
+
+        from refineryframe.detect_unexpected import check_missing_values
+        from refineryframe.demo import tiny_example
+
+        data = tiny_example['dataframe']
+
+        check_missing_values(dataframe = data)
+
     Raises:
     -------
     ValueError
@@ -381,6 +410,20 @@ def check_inf_values(dataframe : pd.DataFrame,
     --------
     dict
         A dictionary containing scores and checks for inf value checks.
+
+
+    Examples:
+    ---------
+    Example usage and expected outputs.
+
+    .. code-block:: python
+
+        from refineryframe.detect_unexpected import check_missing_types
+        from refineryframe.demo import tiny_example
+
+        data = tiny_example['dataframe']
+
+        check_inf_values(dataframe = data)
 
     Raises:
     -------
@@ -487,6 +530,19 @@ def check_date_format(dataframe : pd.DataFrame,
     bool or dict
         If independent is True, return a Boolean indicating if date format checks passed.
         If independent is False, return a dictionary containing scores and checks.
+
+    Examples:
+    ---------
+    Example usage and expected outputs.
+
+    .. code-block:: python
+
+        from refineryframe.detect_unexpected import check_missing_types
+        from refineryframe.demo import tiny_example
+
+        data = tiny_example['dataframe']
+
+        check_date_format(dataframe = data)
 
     Raises:
     -------
@@ -598,6 +654,19 @@ def check_duplicates(dataframe  : pd.DataFrame,
     bool or dict
         If independent is True, return a Boolean indicating if duplicate checks passed.
         If independent is False, return a dictionary containing scores and checks.
+
+    Examples:
+    ---------
+    Example usage and expected outputs.
+
+    .. code-block:: python
+
+        from refineryframe.detect_unexpected import check_missing_types
+        from refineryframe.demo import tiny_example
+
+        data = tiny_example['dataframe']
+
+        check_duplicates(dataframe = data)
 
     Raises:
     -------
@@ -765,6 +834,19 @@ def check_col_names_types(dataframe : pd.DataFrame,
         If independent is True, return a Boolean indicating if checks passed.
         If independent is False, return a dictionary containing scores and checks.
 
+    Examples:
+    ---------
+    Example usage and expected outputs.
+
+    .. code-block:: python
+
+        from refineryframe.detect_unexpected import check_missing_types
+        from refineryframe.demo import tiny_example
+
+        data = tiny_example['dataframe']
+
+        check_col_names_types(dataframe = data)
+
     Raises:
     -------
     ValueError
@@ -926,6 +1008,19 @@ def check_numeric_range(dataframe : pd.DataFrame,
     bool or dict
         If independent is True, return a boolean indicating whether all checks passed.
         If independent is False, return a dictionary containing scores and checks information.
+
+    Examples:
+    ---------
+    Example usage and expected outputs.
+
+    .. code-block:: python
+
+        from refineryframe.detect_unexpected import check_missing_types
+        from refineryframe.demo import tiny_example
+
+        data = tiny_example['dataframe']
+
+        check_numeric_range(dataframe = data)
 
     Raises:
     -------
@@ -1100,6 +1195,19 @@ def check_date_range(dataframe : pd.DataFrame,
         If independent is True, return a boolean indicating whether all checks passed.
         If independent is False, return a dictionary containing scores and checks information.
 
+    Examples:
+    ---------
+    Example usage and expected outputs.
+
+    .. code-block:: python
+
+        from refineryframe.detect_unexpected import check_missing_types
+        from refineryframe.demo import tiny_example
+
+        data = tiny_example['dataframe']
+
+        check_date_range(dataframe = data)
+
     Raises:
     -------
     ValueError
@@ -1250,6 +1358,19 @@ def check_duplicate_col_names(dataframe  : pd.DataFrame,
         'COLUMN_NAMES_DUPLICATES_TEST': bool
             True if duplicate column names are found, False otherwise.
 
+    Examples:
+    ---------
+    Example usage and expected outputs.
+
+    .. code-block:: python
+
+        from refineryframe.detect_unexpected import check_missing_types
+        from refineryframe.demo import tiny_example
+
+        data = tiny_example['dataframe']
+
+        check_duplicate_col_names(dataframe = data)
+
     Raises:
     -------
     ValueError
@@ -1383,6 +1504,19 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
         duv_score (float): Number between 0 and 1 representing the percentage of passed tests.
         check_scores (dict): Scores for each check.
         unexpected_exceptions_scaned (dict): Unexpected exceptions based on detected unexpected values.
+
+    Examples:
+    ---------
+    Example usage and expected outputs.
+
+    .. code-block:: python
+
+        from refineryframe.detect_unexpected import check_missing_types
+        from refineryframe.demo import tiny_example
+
+        data = tiny_example['dataframe']
+
+        detect_unexpected_values(dataframe = data)
 
     Raises:
     -------
