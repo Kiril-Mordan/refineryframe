@@ -54,6 +54,8 @@ of each column in the given pandas DataFrame.
 based on a dictionary of intended data types.
 - `refineryframe.refiner.Refiner.set_types` - changes the data types of the columns in the given DataFrame
 based on a dictionary of intended data types.
+- `refineryframe.refiner.Refiner.set_updated_dataframe` - updates `dataframe` inside `Refiner` class.
+Usefull when some manipulations with the dataframe are done in between steps.
 
 ## Simple package usage examples
 
@@ -414,6 +416,10 @@ tns.replace_unexpected_values(numeric_lower_bound = "NumericColumn3",
     DEBUG:Refiner:=== replacing missing values in numeric cols with missing types
     DEBUG:Refiner:=== replacing values outside of expected date range
     DEBUG:Refiner:=== replacing values outside of expected numeric range
+    /home/runner/work/refineryframe/refineryframe/refineryframe/replace_unexpected.py:309: FutureWarning: DataFrame.applymap has been deprecated. Use DataFrame.map instead.
+      df3 = dataframe.applymap(lambda x: 1 if x in missing_not_delivered_types else 0)
+    /home/runner/work/refineryframe/refineryframe/refineryframe/replace_unexpected.py:310: FutureWarning: DataFrame.applymap has been deprecated. Use DataFrame.map instead.
+      df4 = dataframe.astype(str).applymap(lambda x: 1 if x in missing_not_delivered_types else 0)
     DEBUG:Refiner:** Usable values in the dataframe:  44.44%
     DEBUG:Refiner:** Uncorrected data quality score:  32.22%
     DEBUG:Refiner:** Corrected data quality score:  52.57%
@@ -514,6 +520,10 @@ tns.replace_unexpected_values(unexpected_conditions = unexpected_conditions)
     DEBUG:Refiner:=== replacing missing values in numeric cols with missing types
     DEBUG:Refiner:=== replacing values outside of expected date range
     DEBUG:Refiner:=== replacing values outside of expected numeric range
+    /home/runner/work/refineryframe/refineryframe/refineryframe/replace_unexpected.py:309: FutureWarning: DataFrame.applymap has been deprecated. Use DataFrame.map instead.
+      df3 = dataframe.applymap(lambda x: 1 if x in missing_not_delivered_types else 0)
+    /home/runner/work/refineryframe/refineryframe/refineryframe/replace_unexpected.py:310: FutureWarning: DataFrame.applymap has been deprecated. Use DataFrame.map instead.
+      df4 = dataframe.astype(str).applymap(lambda x: 1 if x in missing_not_delivered_types else 0)
     DEBUG:Refiner:** Usable values in the dataframe:  82.22%
     DEBUG:Refiner:** Uncorrected data quality score:  88.89%
     DEBUG:Refiner:** Corrected data quality score:  97.53%

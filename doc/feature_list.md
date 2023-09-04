@@ -24,3 +24,5 @@ of each column in the given pandas DataFrame.
 based on a dictionary of intended data types.
 - `refineryframe.refiner.Refiner.set_types` - changes the data types of the columns in the given DataFrame
 based on a dictionary of intended data types.
+- `refineryframe.refiner.Refiner.set_updated_dataframe` - updates `dataframe` inside `Refiner` class.
+Usefull when some manipulations with the dataframe are done in between steps.
