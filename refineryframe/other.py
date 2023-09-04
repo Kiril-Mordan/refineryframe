@@ -34,6 +34,7 @@ Note:
 import logging
 import re
 import pandas as pd
+import warnings
 
 def shoutOUT(output_type : str = "dline",
              mess : str = None,
@@ -205,20 +206,24 @@ def set_types(dataframe: pd.DataFrame,
         # Filter the dictionary to include only the columns present in the DataFrame
         dtypes_dict = {col: dtype for col, dtype in types_dict_str.items() if col in dataframe.columns}
 
-        # Use the astype() method to change the data types of the columns in the DataFrame
-        for col, dtype in dtypes_dict.items():
-            if dtype.startswith('datetime'):
-                if replace_dict is not None:
-                    dataframe[col] = dataframe[col].astype(str).replace(replace_dict)
-                dataframe[col] = pd.to_datetime(dataframe[col], errors='coerce', format=expected_date_format)
-            elif dtype.startswith('int'):
-                if replace_dict is not None:
-                    dataframe[col] = dataframe[col].astype("float64").replace(replace_dict)
-                dataframe[col] = dataframe[col].astype("float64").astype(dtype)
-            else:
-                if replace_dict is not None:
-                    dataframe[col] = dataframe[col].replace(replace_dict)
-                dataframe[col] = dataframe[col].astype(dtype)
+        # Supress warnings
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore")
+
+            # Use the astype() method to change the data types of the columns in the DataFrame
+            for col, dtype in dtypes_dict.items():
+                if dtype.startswith('datetime'):
+                    if replace_dict is not None:
+                        dataframe[col] = dataframe[col].astype(str).replace(replace_dict)
+                    dataframe[col] = pd.to_datetime(dataframe[col], errors='coerce', format=expected_date_format)
+                elif dtype.startswith('int'):
+                    if replace_dict is not None:
+                        dataframe[col] = dataframe[col].astype("float64").replace(replace_dict)
+                    dataframe[col] = dataframe[col].astype("float64").astype(dtype)
+                else:
+                    if replace_dict is not None:
+                        dataframe[col] = dataframe[col].replace(replace_dict)
+                    dataframe[col] = dataframe[col].astype(dtype)
 
     except Exception as e:
         logger.error("Unable to change the data types of the DataFrame.",

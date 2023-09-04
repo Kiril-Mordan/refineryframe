@@ -7,7 +7,7 @@ of data validation, including checking for missing values, unexpected data types
 incorrect date formats, out-of-range numeric values, and date values outside specified date ranges.
 
 Functions:
------------
+
 1. check_missing_types(dataframe, MISSING_TYPES, independent=True, throw_error, thresholds, logger):
     ...
 2. check_missing_values(dataframe, throw_error, thresholds, logger):
@@ -37,7 +37,7 @@ Functions:
     ...
 
 Note:
------------
+
 - Some functions use the `logger` parameter for logging warning messages instead of printing.
 
 - Users can specify exceptions for certain checks using the `unexpected_exceptions` dictionary.
@@ -1478,25 +1478,41 @@ def detect_unexpected_values(dataframe : pd.DataFrame,
 
     Parameters:
     -----------
-    dataframe (pandas DataFrame): The DataFrame to be checked.
-    MISSING_TYPES (dict): Dictionary that maps column names to the values considered as missing
-                         for that column.
-    unexpected_exceptions (dict): Dictionary that lists column exceptions for each of the
-                                 following checks: col_names_types, missing_values, missing_types,
-                                 inf_values, date_format, duplicates, date_range, and numeric_range.
-    unexpected_exceptions_error (dict): Dictionary indicating whether to throw errors for each type of unexpected exception.
-    unexpected_conditions (dict): Dictionary containing additional conditions to check for unexpected values.
-    thresholds (dict): Dictionary containing threshold scores for different checks.
-    ids_for_dedup (list): List of columns to identify duplicates (default is None).
-    TEST_DUV_FLAGS_PATH (str): Path for checking unexpected values (default is None).
-    types_dict_str (str): String that describes the expected types of the columns (default is None).
-    expected_date_format (str): The expected date format (default is '%Y-%m-%d').
-    earliest_date (str): The earliest acceptable date (default is "1900-08-25").
-    latest_date (str): The latest acceptable date (default is "2100-01-01").
-    numeric_lower_bound (float): The lowest acceptable value for numeric columns (default is 0).
-    numeric_upper_bound (float): The highest acceptable value for numeric columns (default is infinity).
-    print_score (bool): Whether to print the duv score (default is True).
-    logger (logging.Logger): Logger object for logging messages (default is logging).
+    dataframe (pandas DataFrame):
+        The DataFrame to be checked.
+    MISSING_TYPES (dict):
+        Dictionary that maps column names to the values considered as missing
+        for that column.
+    unexpected_exceptions (dict):
+        Dictionary that lists column exceptions for each of the
+        following checks: col_names_types, missing_values, missing_types,
+        inf_values, date_format, duplicates, date_range, and numeric_range.
+    unexpected_exceptions_error (dict):
+        Dictionary indicating whether to throw errors for each type of unexpected exception.
+    unexpected_conditions (dict):
+        Dictionary containing additional conditions to check for unexpected values.
+    thresholds (dict):
+        Dictionary containing threshold scores for different checks.
+    ids_for_dedup (list):
+        List of columns to identify duplicates (default is None).
+    TEST_DUV_FLAGS_PATH (str):
+        Path for checking unexpected values (default is None).
+    types_dict_str (str):
+        String that describes the expected types of the columns (default is None).
+    expected_date_format (str):
+        The expected date format (default is '%Y-%m-%d').
+    earliest_date (str):
+        The earliest acceptable date (default is "1900-08-25").
+    latest_date (str):
+        The latest acceptable date (default is "2100-01-01").
+    numeric_lower_bound (float):
+        The lowest acceptable value for numeric columns (default is 0).
+    numeric_upper_bound (float):
+        The highest acceptable value for numeric columns (default is infinity).
+    print_score (bool):
+        Whether to print the duv score (default is True).
+    logger (logging.Logger):
+        Logger object for logging messages (default is logging).
 
     Returns:
     -------
