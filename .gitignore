@@ -1,7 +1,6 @@
 .DS_Store
 .gitignore.swp
 build
-__pycache__
 .benchmarks
 refineryframe.egg-info
 .pytest_cache
