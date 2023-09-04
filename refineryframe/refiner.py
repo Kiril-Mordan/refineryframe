@@ -9,13 +9,13 @@ perform various checks and replacements for data preprocessing.
 import logging
 import pandas as pd
 import attr
-from refineryframe.other import shoutOUT, get_type_dict, set_types
+from refineryframe.other import shoutOUT, get_type_dict, set_types, add_index_to_duplicate_columns
 from refineryframe.detect_unexpected import check_date_range, \
     check_col_names_types, check_date_format, check_duplicates, \
         check_inf_values, check_missing_values, check_numeric_range, \
             check_missing_types, detect_unexpected_values, \
                 check_duplicate_col_names
-from refineryframe.replace_unexpected import replace_unexpected_values, add_index_to_duplicate_columns
+from refineryframe.replace_unexpected import replace_unexpected_values
 
 @attr.s
 class Refiner:
@@ -357,6 +357,15 @@ class Refiner:
 
         # Reinitialize logger
         self.initialize_logger()
+
+    def set_updated_dataframe(self, dataframe : pd.DataFrame) -> None:
+
+        """
+        Updates `dataframe` inside `Refiner` class.
+        Usefull when some manipulations with the dataframe are done in between steps.
+        """
+
+        self.dataframe = dataframe
 
 
     def check_missing_types(self) -> None:

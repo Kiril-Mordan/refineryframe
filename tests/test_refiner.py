@@ -232,20 +232,8 @@ def test_set_refiner_settings(tns2,df, refiner_settings):
 
     assert tns.duv_score == tns2.duv_score
 
+def test_set_updated_dataframe(tns, df_dup):
 
+    tns.set_updated_dataframe(dataframe = df_dup)
 
-#     @pytest.mark.parametrize("a,expected", [
-#     (2, 4),
-#     (6, 8)
-# ])
-# def test_my_function2(a,expected):
-
-#     assert my_function2(a) is expected
-
-# def test_invalid_val():
-#     with pytest.raises(TypeError):
-#         my_function2('2')
-
-
-# def test_with_fixture(b):
-#     assert my_function2(b) is 4
+    assert all(tns.dataframe == df_dup)
