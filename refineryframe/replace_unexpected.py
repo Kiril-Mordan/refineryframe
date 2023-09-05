@@ -306,8 +306,8 @@ def replace_unexpected_values(dataframe : pd.DataFrame,
             + [MISSING_TYPES['numeric_not_delivered']] \
                 + [MISSING_TYPES['character_not_delivered']])
 
-        df3 = dataframe.applymap(lambda x: 1 if x in missing_not_delivered_types else 0)
-        df4 = dataframe.astype(str).applymap(lambda x: 1 if x in missing_not_delivered_types else 0)
+        df3 = dataframe.apply(lambda col: col.map({item: 1 for item in missing_not_delivered_types}).fillna(0))
+        df4 = dataframe.astype(str).apply(lambda col: col.map({item: 1 for item in missing_not_delivered_types}).fillna(0))
         df5 = df3 + df4 > 0
 
         col_med = np.median(df5.sum(axis = 0) / df5.shape[0])
